@@ -1,0 +1,11 @@
+--- a/Makefile	2011-02-06 00:26:25.906428001 +0300
++++ b/Makefile	2011-02-06 00:26:37.584428000 +0300
+@@ -336,7 +336,7 @@
+ 
+ PDFINFO_SRC=apps/pdfinfo.c
+ PDFINFO_OBJ=$(PDFINFO_SRC:apps/%.c=$(OBJDIR)/%.o)
+-PDFINFO_EXE=$(OBJDIR)/pdfinfo
++PDFINFO_EXE=$(OBJDIR)/pdfinfo-mupdf
+ $(PDFINFO_OBJ): $(MUPDF_HDR)
+ $(PDFINFO_EXE): $(PDFINFO_OBJ) $(MUPDF_LIB) $(THIRD_LIBS)
+ 	$(LD_CMD)

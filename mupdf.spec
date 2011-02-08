@@ -1,0 +1,111 @@
+Name:           mupdf
+Version:        0.7
+Release:        6%{?dist}
+Summary:        A lightweight PDF viewer and toolkit
+
+Group:          Applications/Publishing
+License:        GPLv3
+URL:            http://mupdf.com/
+Source0:        http://mupdf.com/download/%{name}-%{version}.tar.gz
+Source1:        %{name}.desktop
+Patch1:         %{name}-pdfinfo.patch
+Patch2:         %{name}-libdir.patch
+Patch3:         %{name}-cflags.patch
+BuildRequires:  openjpeg-devel jbig2dec-devel desktop-file-utils
+BuildRequires:  libjpeg-turbo-devel freetype-devel libXext-devel
+
+%description
+MuPDF is a lightweight PDF viewer and toolkit written in portable C.
+The renderer in MuPDF is tailored for high quality anti-aliased
+graphics.  MuPDF renders text with metrics and spacing accurate to
+within fractions of a pixel for the highest fidelity in reproducing
+the look of a printed page on screen.
+MuPDF has a small footprint.  A binary that includes the standard
+Roman fonts is only one megabyte.  A build with full CJK support
+(including an Asian font) is approximately five megabytes.
+MuPDF has support for all non-interactive PDF 1.7 features, and the
+toolkit provides a simple API for accessing the internal structures of
+the PDF document.  Example code for navigating interactive links and
+bookmarks, encrypting PDF files, extracting fonts, images, and
+searchable text, and rendering pages to image files is provided.
+
+%package devel
+Summary:        Development files for %{name}
+Group:            Development/Libraries
+Requires:         %{name} = %{version}-%{release}
+Provides:         %{name}-static = %{version}-%{release}
+
+%description devel
+The mupdf-devel package contains header files for developing
+applications that use mupdf and static libraries
+
+%prep
+%setup -q
+## http://bugs.ghostscript.com/show_bug.cgi?id=691884
+%patch1 -p1 
+## http://bugs.ghostscript.com/show_bug.cgi?id=691885 
+%patch2 -p1
+%patch3 -p1
+
+%build
+export CFLAGS="%{optflags}"
+make %{?_smp_mflags} verbose=1 
+
+
+%install
+make DESTDIR=%{buildroot} install prefix=%{buildroot}/usr LIBDIR=%{buildroot}%{_libdir}
+desktop-file-install --dir=%{buildroot}%{_datadir}/applications %{SOURCE1}
+install -D -m644 debian/%{name}.xpm %{buildroot}/%{_datadir}/pixmaps/%{name}.xpm
+install -D -m644 debian/pdfshow.1 %{buildroot}/%{_mandir}/man1/%{name}.1
+install -D -m644 debian/pdfshow.1 %{buildroot}/%{_mandir}/man1/pdfshow.1
+install -D -m644 debian/pdfdraw.1 %{buildroot}/%{_mandir}/man1/pdfdraw.1
+install -D -m644 debian/pdfclean.1 %{buildroot}/%{_mandir}/man1/pdfclean.1
+## fix strange permissons
+chmod 0644 %{buildroot}/%{_includedir}/%{name}.h
+chmod 0644 %{buildroot}/%{_includedir}/fitz.h
+chmod 0644 %{buildroot}%{_libdir}/libmupdf.a
+
+%post
+update-desktop-database &> /dev/null || :
+
+%postun
+update-desktop-database &> /dev/null || :
+
+%files
+%defattr(-,root,root,-)
+%doc COPYING README
+%{_bindir}/%{name}
+%{_bindir}/pdfclean
+%{_bindir}/pdfdraw
+%{_bindir}/pdfextract
+%{_bindir}/pdfinfo-%{name}
+%{_bindir}/pdfshow
+%{_datadir}/applications/%{name}.desktop
+%{_datadir}/pixmaps/%{name}.xpm
+%{_mandir}/man?/*.1*
+
+%files devel
+%defattr(-,root,root,-)
+%{_includedir}/fitz.h
+%{_includedir}/%{name}.h
+%{_libdir}/libmupdf.a
+
+%changelog
+* Sun Feb 7 2011 Pavel Zhukov <pavel@zhukoff.net> - 0.7-6
+- roll back to static libraries  patch for shared libs has been rejected
+- Fix spec errors 
+
+* Fri Jan 14 2011 Pavel Zhukov <pavel@zhukoff.net> - 0.7-4
+- replac poitless macros to command names
+
+* Fri Jan 14 2011 Pavel Zhukov <pavel@zhukoff.net> - 0.7-3
+- Create patch for optflags
+- Change Summary
+- Fix Require for devel package
+
+* Thu Jan 13 2011 Pavel Zhukov <pavel@zhukoff.net> -0.7-2
+- add Fedora CFLAGS
+- create patch for use shared library
+
+* Wed Jan 12 2011 Pavel Zhukov <pavel@zhukoff.net>  - 0.7-1
+- Initial package

@@ -1,0 +1,20 @@
+--- a/Makefile	2011-02-06 00:31:40.957428001 +0300
++++ b/Makefile	2011-02-06 00:32:37.597428002 +0300
+@@ -7,6 +7,7 @@
+ 
+ build ?= debug
+ prefix ?= /usr/local
++LIBDIR ?= $(prefix)/lib
+ 
+ OBJDIR := build/$(build)
+ GENDIR := build/generated
+@@ -378,7 +379,7 @@
+ 	rm -rf build
+ 
+ install: $(OBJDIR) $(GENDIR) $(MUPDF_LIB) $(APPS)
+-	install -d $(prefix)/bin $(prefix)/lib $(prefix)/include
++	install -d $(prefix)/bin $(LIBDIR) $(prefix)/include
+ 	install $(APPS) $(prefix)/bin
+-	install $(MUPDF_LIB) $(prefix)/lib
++	install $(MUPDF_LIB) $(MUPDF_SO_LIB) $(LIBDIR)
+ 	install $(MUPDF_HDR) $(prefix)/include
