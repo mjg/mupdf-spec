@@ -1,6 +1,6 @@
 Name:           mupdf
 Version:        0.7
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 
 Group:          Applications/Publishing
@@ -12,7 +12,7 @@ Patch1:         %{name}-pdfinfo.patch
 Patch2:         %{name}-libdir.patch
 Patch3:         %{name}-cflags.patch
 BuildRequires:  openjpeg-devel jbig2dec-devel desktop-file-utils
-BuildRequires:  libjpeg-turbo-devel freetype-devel libXext-devel
+BuildRequires:  libjpeg-devel freetype-devel libXext-devel
 
 %description
 MuPDF is a lightweight PDF viewer and toolkit written in portable C.
@@ -91,6 +91,9 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/libmupdf.a
 
 %changelog
+* Tue Feb 9 2011 Pavel Zhukov <pavel@zhukoff.net> - 0.7-7
+- Fix dependency for F13
+
 * Sun Feb 7 2011 Pavel Zhukov <pavel@zhukoff.net> - 0.7-6
 - roll back to static libraries  patch for shared libs has been rejected
 - Fix spec errors 
