@@ -1,6 +1,6 @@
 Name:           mupdf
 Version:        0.7
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 
 Group:          Applications/Publishing
@@ -91,6 +91,9 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/libmupdf.a
 
 %changelog
+* Wed Feb 09 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.7-8
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_15_Mass_Rebuild
+
 * Tue Feb 9 2011 Pavel Zhukov <pavel@zhukoff.net> - 0.7-7
 - Fix dependency for F13
 
