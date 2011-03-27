@@ -1,16 +1,14 @@
 Name:           mupdf
-Version:        0.7
-Release:        8%{?dist}
+Version:        0.8.15
+Release:        1%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 
 Group:          Applications/Publishing
 License:        GPLv3
 URL:            http://mupdf.com/
-Source0:        http://mupdf.com/download/%{name}-%{version}.tar.gz
+Source0:        http://mupdf.com/download/%{name}-%{version}-source.tar.gz
 Source1:        %{name}.desktop
 Patch1:         %{name}-pdfinfo.patch
-Patch2:         %{name}-libdir.patch
-Patch3:         %{name}-cflags.patch
 BuildRequires:  openjpeg-devel jbig2dec-devel desktop-file-utils
 BuildRequires:  libjpeg-devel freetype-devel libXext-devel
 
@@ -43,9 +41,6 @@ applications that use mupdf and static libraries
 %setup -q
 ## http://bugs.ghostscript.com/show_bug.cgi?id=691884
 %patch1 -p1 
-## http://bugs.ghostscript.com/show_bug.cgi?id=691885 
-%patch2 -p1
-%patch3 -p1
 
 %build
 export CFLAGS="%{optflags}"
@@ -56,14 +51,11 @@ make %{?_smp_mflags} verbose=1
 make DESTDIR=%{buildroot} install prefix=%{buildroot}/usr LIBDIR=%{buildroot}%{_libdir}
 desktop-file-install --dir=%{buildroot}%{_datadir}/applications %{SOURCE1}
 install -D -m644 debian/%{name}.xpm %{buildroot}/%{_datadir}/pixmaps/%{name}.xpm
-install -D -m644 debian/pdfshow.1 %{buildroot}/%{_mandir}/man1/%{name}.1
-install -D -m644 debian/pdfshow.1 %{buildroot}/%{_mandir}/man1/pdfshow.1
-install -D -m644 debian/pdfdraw.1 %{buildroot}/%{_mandir}/man1/pdfdraw.1
-install -D -m644 debian/pdfclean.1 %{buildroot}/%{_mandir}/man1/pdfclean.1
 ## fix strange permissons
 chmod 0644 %{buildroot}/%{_includedir}/%{name}.h
 chmod 0644 %{buildroot}/%{_includedir}/fitz.h
 chmod 0644 %{buildroot}%{_libdir}/libmupdf.a
+find %{buildroot}/%{_mandir} -type f -exec chmod 0644 {} \;
 
 %post
 update-desktop-database &> /dev/null || :
@@ -91,27 +83,27 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/libmupdf.a
 
 %changelog
-* Wed Feb 09 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.7-8
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_15_Mass_Rebuild
+* Sun Mar 27 2011 Pavel Zhukov <landgraf@fedoraproject.org> - 0.8.15-1
+- New upstream release
 
-* Tue Feb 9 2011 Pavel Zhukov <pavel@zhukoff.net> - 0.7-7
+* Tue Feb 9 2011 Pavel Zhukov <landgraf@fedoraproject.org> - 0.7-7
 - Fix dependency for F13
 
-* Sun Feb 7 2011 Pavel Zhukov <pavel@zhukoff.net> - 0.7-6
+* Sun Feb 7 2011 Pavel Zhukov <landgraf@fedoraproject.org> - 0.7-6
 - roll back to static libraries  patch for shared libs has been rejected
 - Fix spec errors 
 
-* Fri Jan 14 2011 Pavel Zhukov <pavel@zhukoff.net> - 0.7-4
+* Fri Jan 14 2011 Pavel Zhukov <landgraf@fedoraproject.org> - 0.7-4
 - replac poitless macros to command names
 
-* Fri Jan 14 2011 Pavel Zhukov <pavel@zhukoff.net> - 0.7-3
+* Fri Jan 14 2011 Pavel Zhukov <landgraf@fedoraproject.org> - 0.7-3
 - Create patch for optflags
 - Change Summary
 - Fix Require for devel package
 
-* Thu Jan 13 2011 Pavel Zhukov <pavel@zhukoff.net> -0.7-2
+* Thu Jan 13 2011 Pavel Zhukov <landgraf@fedoraproject.org> -0.7-2
 - add Fedora CFLAGS
 - create patch for use shared library
 
-* Wed Jan 12 2011 Pavel Zhukov <pavel@zhukoff.net>  - 0.7-1
+* Wed Jan 12 2011 Pavel Zhukov <landgraf@fedoraproject.org>  - 0.7-1
 - Initial package
