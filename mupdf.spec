@@ -1,6 +1,6 @@
 Name:           mupdf
-Version:        0.8.15
-Release:        1%{?dist}
+Version:        0.8.165
+Release:        2%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 
 Group:          Applications/Publishing
@@ -8,7 +8,6 @@ License:        GPLv3
 URL:            http://mupdf.com/
 Source0:        http://mupdf.com/download/%{name}-%{version}-source.tar.gz
 Source1:        %{name}.desktop
-Patch1:         %{name}-pdfinfo.patch
 BuildRequires:  openjpeg-devel jbig2dec-devel desktop-file-utils
 BuildRequires:  libjpeg-devel freetype-devel libXext-devel
 
@@ -39,22 +38,20 @@ applications that use mupdf and static libraries
 
 %prep
 %setup -q
-## http://bugs.ghostscript.com/show_bug.cgi?id=691884
-%patch1 -p1 
 
 %build
 export CFLAGS="%{optflags}"
 make %{?_smp_mflags} verbose=1 
 
-
 %install
-make DESTDIR=%{buildroot} install prefix=%{buildroot}/usr LIBDIR=%{buildroot}%{_libdir}
+make DESTDIR=%{buildroot} install prefix=%{buildroot}/usr libdir=%{buildroot}%{_libdir}
 desktop-file-install --dir=%{buildroot}%{_datadir}/applications %{SOURCE1}
 install -D -m644 debian/%{name}.xpm %{buildroot}/%{_datadir}/pixmaps/%{name}.xpm
+## filename conflict with poppler
+mv %{buildroot}%{_bindir}/pdfinfo %{buildroot}%{_bindir}/pdfinfo-mupdf
 ## fix strange permissons
-chmod 0644 %{buildroot}/%{_includedir}/%{name}.h
-chmod 0644 %{buildroot}/%{_includedir}/fitz.h
-chmod 0644 %{buildroot}%{_libdir}/libmupdf.a
+chmod 0644 %{buildroot}/%{_includedir}/*.h
+chmod 0644 %{buildroot}%{_libdir}/*.a
 find %{buildroot}/%{_mandir} -type f -exec chmod 0644 {} \;
 
 %post
@@ -70,19 +67,27 @@ update-desktop-database &> /dev/null || :
 %{_bindir}/pdfclean
 %{_bindir}/pdfdraw
 %{_bindir}/pdfextract
-%{_bindir}/pdfinfo-%{name}
 %{_bindir}/pdfshow
+%{_bindir}/pdfinfo-mupdf
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/pixmaps/%{name}.xpm
 %{_mandir}/man?/*.1*
+%{_bindir}/xpsdraw
 
 %files devel
 %defattr(-,root,root,-)
 %{_includedir}/fitz.h
 %{_includedir}/%{name}.h
+%{_includedir}/muxps.h
+%{_libdir}/libfitz.a
 %{_libdir}/libmupdf.a
+%{_libdir}/libmuxps.a
 
 %changelog
+* Tue May 03 2011 Pavel Zhukov <landgraf@fedoraproject.org> - 0.8.165-2
+- New upstream release
+- Fix *.a and *.h permissions
+
 * Sun Mar 27 2011 Pavel Zhukov <landgraf@fedoraproject.org> - 0.8.15-1
 - New upstream release
 
