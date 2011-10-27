@@ -1,6 +1,6 @@
 Name:           mupdf
-Version:        0.8.165
-Release:        2%{?dist}
+Version:        0.9
+Release:        1%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 
 Group:          Applications/Publishing
@@ -84,6 +84,9 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/libmuxps.a
 
 %changelog
+* Wed Oct 27 2011 Pavel Zhukov <landgraf@fedoraproject.org> - 0.9-1
+- New release
+
 * Tue May 03 2011 Pavel Zhukov <landgraf@fedoraproject.org> - 0.8.165-2
 - New upstream release
 - Fix *.a and *.h permissions
