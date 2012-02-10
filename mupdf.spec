@@ -1,6 +1,6 @@
 Name:           mupdf
 Version:        0.9
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 
 Group:          Applications/Publishing
@@ -84,6 +84,9 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/libmuxps.a
 
 %changelog
+* Thu Feb 09 2012 Rex Dieter <rdieter@fedoraproject.org> 0.9-3
+- rebuild (openjpeg)
+
 * Fri Jan 13 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.9-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
 
