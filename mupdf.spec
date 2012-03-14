@@ -8,6 +8,7 @@ License:        GPLv3
 URL:            http://mupdf.com/
 Source0:        http://mupdf.com/download/%{name}-%{version}-source.tar.gz
 Source1:        %{name}.desktop
+Patch0:         %{name}-buffer_overflow.patch
 BuildRequires:  openjpeg-devel jbig2dec-devel desktop-file-utils
 BuildRequires:  libjpeg-devel freetype-devel libXext-devel
 
@@ -38,6 +39,7 @@ applications that use mupdf and static libraries
 
 %prep
 %setup -q
+%patch0 -p1 
 
 %build
 export CFLAGS="%{optflags}"
@@ -84,8 +86,8 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/libmuxps.a
 
 %changelog
-* Thu Feb 09 2012 Rex Dieter <rdieter@fedoraproject.org> 0.9-3
-- rebuild (openjpeg)
+* Wed Mar 14 2012  Pavel Zhukov <landgraf@fedoraproject.org> - 0.9-2
+- Fix buffer overflow (#752388)
 
 * Fri Jan 13 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.9-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
