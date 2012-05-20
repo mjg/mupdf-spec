@@ -1,14 +1,14 @@
 Name:           mupdf
-Version:        0.9
-Release:        4%{?dist}
+Version:        1.0
+Release:        1%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
-
 Group:          Applications/Publishing
 License:        GPLv3
 URL:            http://mupdf.com/
 Source0:        http://mupdf.com/download/%{name}-%{version}-source.tar.gz
 Source1:        %{name}.desktop
-Patch0:         %{name}-buffer_overflow.patch
+## http://bugs.ghostscript.com/show_bug.cgi?format=multiple&id=693010
+Patch0:         %{name}-upstream.patch
 BuildRequires:  openjpeg-devel jbig2dec-devel desktop-file-utils
 BuildRequires:  libjpeg-devel freetype-devel libXext-devel
 
@@ -38,19 +38,20 @@ The mupdf-devel package contains header files for developing
 applications that use mupdf and static libraries
 
 %prep
-%setup -q
+%setup -q -n %{name}-%{version}-source
 %patch0 -p1 
 
 %build
 export CFLAGS="%{optflags}"
-make %{?_smp_mflags} verbose=1 
+make  -j1 
+## %{?_smp_mflags} verbose=1 
 
 %install
 make DESTDIR=%{buildroot} install prefix=%{buildroot}/usr libdir=%{buildroot}%{_libdir}
 desktop-file-install --dir=%{buildroot}%{_datadir}/applications %{SOURCE1}
 install -D -m644 debian/%{name}.xpm %{buildroot}/%{_datadir}/pixmaps/%{name}.xpm
 ## filename conflict with poppler
-mv %{buildroot}%{_bindir}/pdfinfo %{buildroot}%{_bindir}/pdfinfo-mupdf
+### mv %{buildroot}%{_bindir}/pdfinfo %{buildroot}%{_bindir}/pdfinfo-mupdf
 ## fix strange permissons
 chmod 0644 %{buildroot}/%{_includedir}/*.h
 chmod 0644 %{buildroot}%{_libdir}/*.a
@@ -65,33 +66,36 @@ update-desktop-database &> /dev/null || :
 %files
 %defattr(-,root,root,-)
 %doc COPYING README
-%{_bindir}/%{name}
-%{_bindir}/pdfclean
-%{_bindir}/pdfdraw
-%{_bindir}/pdfextract
-%{_bindir}/pdfshow
-%{_bindir}/pdfinfo-mupdf
-%{_datadir}/applications/%{name}.desktop
-%{_datadir}/pixmaps/%{name}.xpm
-%{_mandir}/man?/*.1*
-%{_bindir}/xpsdraw
+%{_bindir}/mudraw
+%{_bindir}/mupdf
+%{_bindir}/mupdfclean
+%{_bindir}/mupdfextract
+%{_bindir}/mupdfinfo
+%{_bindir}/mupdfshow
+%{_datadir}/applications/mupdf.desktop
+%{_mandir}/man1/mudraw.1.gz
+%{_mandir}/man1/mupdf.1.gz
+%{_mandir}/man1/mupdfclean.1.gz
+%{_mandir}/man1/mupdfshow.1.gz
+%{_datadir}/pixmaps/mupdf.xpm
+
+
 
 %files devel
 %defattr(-,root,root,-)
 %{_includedir}/fitz.h
-%{_includedir}/%{name}.h
+%{_includedir}/memento.h
+%{_includedir}/mucbz.h
+%{_includedir}/mupdf.h
 %{_includedir}/muxps.h
 %{_libdir}/libfitz.a
-%{_libdir}/libmupdf.a
-%{_libdir}/libmuxps.a
 
 %changelog
-* Wed Mar 14 2012  Pavel Zhukov <landgraf@fedoraproject.org> - 0.9-4
+* Sun May 20 2012  Pavel Zhukov <landgraf@fedoraproject.org> - 1.0-1
+- New release
+
+* Wed Mar 14 2012  Pavel Zhukov <landgraf@fedoraproject.org> - 0.9-2
 - Fix buffer overflow (#752388)
-
-* Thu Feb 09 2012 Rex Dieter <rdieter@fedoraproject.org> 0.9-3
-- rebuild (openjpeg)
-
 
 * Fri Jan 13 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.9-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
