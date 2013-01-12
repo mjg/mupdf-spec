@@ -1,6 +1,6 @@
 Name:           mupdf
-Version:        1.0
-Release:        3%{?dist}
+Version:        1.1
+Release:        1%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
@@ -66,17 +66,13 @@ update-desktop-database &> /dev/null || :
 %files
 %defattr(-,root,root,-)
 %doc COPYING README
-%{_bindir}/mudraw
 %{_bindir}/mupdf
-%{_bindir}/mupdfclean
-%{_bindir}/mupdfextract
-%{_bindir}/mupdfinfo
-%{_bindir}/mupdfshow
+%{_bindir}/mudraw
+%{_bindir}/mubusy
 %{_datadir}/applications/mupdf.desktop
 %{_mandir}/man1/mudraw.1.gz
+%{_mandir}/man1/mubusy.1.gz
 %{_mandir}/man1/mupdf.1.gz
-%{_mandir}/man1/mupdfclean.1.gz
-%{_mandir}/man1/mupdfshow.1.gz
 %{_datadir}/pixmaps/mupdf.xpm
 
 
@@ -91,11 +87,8 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/libfitz.a
 
 %changelog
-* Fri Dec 21 2012 Adam Tkac <atkac redhat com> - 1.0-3
-- rebuild against new libjpeg
-
-* Fri Jul 20 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.0-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
+* Wed Jan 09 2013 Pavel Zhukov <landgraf@fedoraproject.org> - 1.1-1
+- New release
 
 * Sun May 20 2012  Pavel Zhukov <landgraf@fedoraproject.org> - 1.0-1
 - New release
