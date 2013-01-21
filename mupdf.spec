@@ -1,6 +1,6 @@
 Name:           mupdf
 Version:        1.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
@@ -87,6 +87,9 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/libfitz.a
 
 %changelog
+* Mon Jan 21 2013 Adam Tkac <atkac redhat com> - 1.1-2
+- rebuild due to "jpeg8-ABI" feature drop
+
 * Wed Jan 09 2013 Pavel Zhukov <landgraf@fedoraproject.org> - 1.1-1
 - New release
 
