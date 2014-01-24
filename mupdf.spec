@@ -1,6 +1,6 @@
 Name:           mupdf
 Version:        1.1
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
@@ -9,6 +9,7 @@ Source0:        http://mupdf.com/download/%{name}-%{version}-source.tar.gz
 Source1:        %{name}.desktop
 ## http://bugs.ghostscript.com/show_bug.cgi?format=multiple&id=693010
 Patch0:         %{name}-upstream.patch
+Patch1:         %{name}-xps_fix.patch
 BuildRequires:  openjpeg-devel jbig2dec-devel desktop-file-utils
 BuildRequires:  libjpeg-devel freetype-devel libXext-devel
 
@@ -40,6 +41,7 @@ applications that use mupdf and static libraries
 %prep
 %setup -q -n %{name}-%{version}-source
 %patch0 -p1 
+%patch1 -p1
 
 %build
 export CFLAGS="%{optflags}"
@@ -87,6 +89,9 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/libfitz.a
 
 %changelog
+* Fri Jan 24 2014 Pavel Zhukov <landgraf@fedoraproject.org> - 1.1-5
+- Fix stack overflow (#1056699)
+
 * Sat Aug 03 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.1-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
 
@@ -108,34 +113,3 @@ update-desktop-database &> /dev/null || :
 * Fri Jan 13 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.9-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
 
-* Wed Oct 27 2011 Pavel Zhukov <landgraf@fedoraproject.org> - 0.9-1
-- New release
-
-* Tue May 03 2011 Pavel Zhukov <landgraf@fedoraproject.org> - 0.8.165-2
-- New upstream release
-- Fix *.a and *.h permissions
-
-* Sun Mar 27 2011 Pavel Zhukov <landgraf@fedoraproject.org> - 0.8.15-1
-- New upstream release
-
-* Tue Feb 9 2011 Pavel Zhukov <landgraf@fedoraproject.org> - 0.7-7
-- Fix dependency for F13
-
-* Sun Feb 7 2011 Pavel Zhukov <landgraf@fedoraproject.org> - 0.7-6
-- roll back to static libraries  patch for shared libs has been rejected
-- Fix spec errors 
-
-* Fri Jan 14 2011 Pavel Zhukov <landgraf@fedoraproject.org> - 0.7-4
-- replac poitless macros to command names
-
-* Fri Jan 14 2011 Pavel Zhukov <landgraf@fedoraproject.org> - 0.7-3
-- Create patch for optflags
-- Change Summary
-- Fix Require for devel package
-
-* Thu Jan 13 2011 Pavel Zhukov <landgraf@fedoraproject.org> -0.7-2
-- add Fedora CFLAGS
-- create patch for use shared library
-
-* Wed Jan 12 2011 Pavel Zhukov <landgraf@fedoraproject.org>  - 0.7-1
-- Initial package
