@@ -1,16 +1,13 @@
 Name:           mupdf
-Version:        1.1
-Release:        5%{?dist}
+Version:        1.4
+Release:        1%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
 URL:            http://mupdf.com/
 Source0:        http://mupdf.com/download/%{name}-%{version}-source.tar.gz
 Source1:        %{name}.desktop
-## http://bugs.ghostscript.com/show_bug.cgi?format=multiple&id=693010
-Patch0:         %{name}-upstream.patch
-Patch1:         %{name}-xps_fix.patch
-BuildRequires:  openjpeg-devel jbig2dec-devel desktop-file-utils
+BuildRequires:  openjpeg2-devel jbig2dec-devel desktop-file-utils
 BuildRequires:  libjpeg-devel freetype-devel libXext-devel
 
 %description
@@ -40,25 +37,20 @@ applications that use mupdf and static libraries
 
 %prep
 %setup -q -n %{name}-%{version}-source
-%patch0 -p1 
-%patch1 -p1
 
 %build
 export CFLAGS="%{optflags}"
-make  -j1 
-## %{?_smp_mflags} verbose=1 
+make  %{?_smp_mflags} verbose=1 
 
 %install
-make DESTDIR=%{buildroot} install prefix=%{buildroot}/usr libdir=%{buildroot}%{_libdir}
+make DESTDIR=%{buildroot} install prefix=%{_prefix} libdir=%{_libdir}
 desktop-file-install --dir=%{buildroot}%{_datadir}/applications %{SOURCE1}
-install -D -m644 debian/%{name}.xpm %{buildroot}/%{_datadir}/pixmaps/%{name}.xpm
-## filename conflict with poppler
-### mv %{buildroot}%{_bindir}/pdfinfo %{buildroot}%{_bindir}/pdfinfo-mupdf
+install -D -m644 platform/debian/%{name}.xpm %{buildroot}/%{_datadir}/pixmaps/%{name}.xpm
 ## fix strange permissons
-chmod 0644 %{buildroot}/%{_includedir}/*.h
 chmod 0644 %{buildroot}%{_libdir}/*.a
 find %{buildroot}/%{_mandir} -type f -exec chmod 0644 {} \;
-
+find %{buildroot}/%{_docdir} -type f -exec chmod 0644 {} \;
+find %{buildroot}/%{_includedir} -type f -exec chmod 0644 {} \;
 %post
 update-desktop-database &> /dev/null || :
 
@@ -68,27 +60,22 @@ update-desktop-database &> /dev/null || :
 %files
 %defattr(-,root,root,-)
 %doc COPYING README
-%{_bindir}/mupdf
-%{_bindir}/mudraw
-%{_bindir}/mubusy
+%{_bindir}/*
 %{_datadir}/applications/mupdf.desktop
-%{_mandir}/man1/mudraw.1.gz
-%{_mandir}/man1/mubusy.1.gz
-%{_mandir}/man1/mupdf.1.gz
+%{_mandir}/man1/*.1.gz
 %{_datadir}/pixmaps/mupdf.xpm
 
 
 
 %files devel
 %defattr(-,root,root,-)
-%{_includedir}/fitz.h
-%{_includedir}/memento.h
-%{_includedir}/mucbz.h
-%{_includedir}/mupdf.h
-%{_includedir}/muxps.h
-%{_libdir}/libfitz.a
+%{_includedir}/%{name}
+%{_libdir}/lib%{name}.a
 
-%changelog
+%Changelog
+* Tue May  6 2014 Pavel Zhukov <pavel@landgraf-desktop.zhukoff.net> - 1.4-1
+- New release 1.4 (#1087287)
+
 * Fri Jan 24 2014 Pavel Zhukov <landgraf@fedoraproject.org> - 1.1-5
 - Fix stack overflow (#1056699)
 
