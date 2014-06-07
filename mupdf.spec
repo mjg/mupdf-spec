@@ -1,6 +1,6 @@
 Name:           mupdf
 Version:        1.4
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
@@ -73,6 +73,9 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}.a
 
 %Changelog
+* Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.4-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
+
 * Tue May  6 2014 Pavel Zhukov <pavel@landgraf-desktop.zhukoff.net> - 1.4-1
 - New release 1.4 (#1087287)
 
