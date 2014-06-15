@@ -1,12 +1,13 @@
 Name:           mupdf
 Version:        1.5
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
 URL:            http://mupdf.com/
 Source0:        http://mupdf.com/download/%{name}-%{version}-source.tar.gz
 Source1:        %{name}.desktop
+Patch0:         %{name}-%{version}-openjpeg.patch
 BuildRequires:  openjpeg2-devel jbig2dec-devel desktop-file-utils
 BuildRequires:  libjpeg-devel freetype-devel libXext-devel
 
@@ -38,6 +39,7 @@ applications that use mupdf and static libraries
 %prep
 %setup -q -n %{name}-%{version}-source
 rm -rf thirdparty
+%patch0 -p1
 
 %build
 export CFLAGS="%{optflags}"
@@ -72,6 +74,9 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}.a
 
 %Changelog
+* Sun Jun 15 2014 Pavel Zhukov <landgraf@fedoraproject.org> - 1.5-2
+- Add fix for new openjpeg2
+
 * Sun Jun 15 2014 Pavel Zhukov <landgraf@fedoraproject.org> - 1.5-1
 - New release 1.5 (#1108710)
 
