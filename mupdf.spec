@@ -1,6 +1,6 @@
 Name:           mupdf
-Version:        1.4
-Release:        2%{?dist}
+Version:        1.5
+Release:        1%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
@@ -37,6 +37,7 @@ applications that use mupdf and static libraries
 
 %prep
 %setup -q -n %{name}-%{version}-source
+rm -rf thirdparty
 
 %build
 export CFLAGS="%{optflags}"
@@ -45,7 +46,6 @@ make  %{?_smp_mflags} verbose=1
 %install
 make DESTDIR=%{buildroot} install prefix=%{_prefix} libdir=%{_libdir}
 desktop-file-install --dir=%{buildroot}%{_datadir}/applications %{SOURCE1}
-install -D -m644 platform/debian/%{name}.xpm %{buildroot}/%{_datadir}/pixmaps/%{name}.xpm
 ## fix strange permissons
 chmod 0644 %{buildroot}%{_libdir}/*.a
 find %{buildroot}/%{_mandir} -type f -exec chmod 0644 {} \;
@@ -63,7 +63,6 @@ update-desktop-database &> /dev/null || :
 %{_bindir}/*
 %{_datadir}/applications/mupdf.desktop
 %{_mandir}/man1/*.1.gz
-%{_datadir}/pixmaps/mupdf.xpm
 
 
 
@@ -73,10 +72,13 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}.a
 
 %Changelog
+* Sun Jun 15 2014 Pavel Zhukov <landgraf@fedoraproject.org> - 1.5-1
+- New release 1.5 (#1108710)
+
 * Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.4-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
 
-* Tue May  6 2014 Pavel Zhukov <pavel@landgraf-desktop.zhukoff.net> - 1.4-1
+* Tue May  6 2014 Pavel Zhukov <landgraf@fedoraproject.org> - 1.4-1
 - New release 1.4 (#1087287)
 
 * Fri Jan 24 2014 Pavel Zhukov <landgraf@fedoraproject.org> - 1.1-5
