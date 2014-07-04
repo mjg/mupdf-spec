@@ -1,6 +1,6 @@
 Name:           mupdf
 Version:        1.5
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
@@ -42,7 +42,7 @@ rm -rf thirdparty
 %patch0 -p1
 
 %build
-export CFLAGS="%{optflags}"
+export CFLAGS="%{optflags} -fPIC"
 make  %{?_smp_mflags} verbose=1 
 
 %install
@@ -74,6 +74,9 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}.a
 
 %Changelog
+* Fri Jul 04 2014 Pavel Zhukov <landgraf@fedoraproject.org> - 1.5-3
+- Add fPIC flag (#1109589)
+- Add curl-devel to BR (#1114566)
 * Sun Jun 15 2014 Pavel Zhukov <landgraf@fedoraproject.org> - 1.5-2
 - Add fix for new openjpeg2
 
