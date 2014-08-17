@@ -1,6 +1,6 @@
 Name:           mupdf
 Version:        1.5
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
