@@ -1,6 +1,6 @@
 Name:           mupdf
 Version:        1.5
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
@@ -9,7 +9,7 @@ Source0:        http://mupdf.com/download/%{name}-%{version}-source.tar.gz
 Source1:        %{name}.desktop
 Patch0:         %{name}-%{version}-openjpeg.patch
 BuildRequires:  openjpeg2-devel jbig2dec-devel desktop-file-utils
-BuildRequires:  libjpeg-devel freetype-devel libXext-devel
+BuildRequires:  libjpeg-devel freetype-devel libXext-devel curl-devel
 
 %description
 MuPDF is a lightweight PDF viewer and toolkit written in portable C.
@@ -74,9 +74,13 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}.a
 
 %Changelog
+* Sat Oct 11 2014 Pavel Zhukov <landgraf@fedoraproject.org> - 1.5-5
+- Add missed curl-devel
+
 * Fri Jul 04 2014 Pavel Zhukov <landgraf@fedoraproject.org> - 1.5-3
 - Add fPIC flag (#1109589)
 - Add curl-devel to BR (#1114566)
+
 * Sun Jun 15 2014 Pavel Zhukov <landgraf@fedoraproject.org> - 1.5-2
 - Add fix for new openjpeg2
 
