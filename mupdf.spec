@@ -1,6 +1,6 @@
 Name:           mupdf
-Version:        1.5
-Release:        6%{?dist}
+Version:        1.7
+Release:        1%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
@@ -53,6 +53,7 @@ chmod 0644 %{buildroot}%{_libdir}/*.a
 find %{buildroot}/%{_mandir} -type f -exec chmod 0644 {} \;
 find %{buildroot}/%{_docdir} -type f -exec chmod 0644 {} \;
 find %{buildroot}/%{_includedir} -type f -exec chmod 0644 {} \;
+
 %post
 update-desktop-database &> /dev/null || :
 
@@ -74,6 +75,9 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}.a
 
 %Changelog
+* Wed May 06 2015  Pavel Zhukov <landgraf@fedoraproject.org> - 1.7-1
+- New release 1.7 (#1210318)
+
 * Wed May 06 2015 Pavel Zhukov <landgraf@fedoraproject.org> - 1.5-6
 - Fix executable name in desktop file
 
