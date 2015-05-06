@@ -1,6 +1,6 @@
 Name:           mupdf
 Version:        1.5
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
@@ -74,6 +74,9 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}.a
 
 %Changelog
+* Wed May 06 2015 Pavel Zhukov <landgraf@fedoraproject.org> - 1.5-6
+- Fix executable name in desktop file
+
 * Sat Oct 11 2014 Pavel Zhukov <landgraf@fedoraproject.org> - 1.5-5
 - Add missed curl-devel
 

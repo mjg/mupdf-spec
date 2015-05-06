@@ -2,7 +2,7 @@
 Name=Mupdf
 GenericName=PDF file viewer
 Comment=Lightweight PDF file viewer written on portable C
-Exec=mupdf %f
+Exec=mupdf-x11 %f
 Icon=mupdf
 Terminal=false
 Type=Application
