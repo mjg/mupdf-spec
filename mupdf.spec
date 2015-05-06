@@ -1,6 +1,6 @@
 Name:           mupdf
 Version:        1.7
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
@@ -77,6 +77,7 @@ update-desktop-database &> /dev/null || :
 %Changelog
 * Wed May 06 2015  Pavel Zhukov <landgraf@fedoraproject.org> - 1.7-1
 - New release 1.7 (#1210318)
+- Fix segfault in obj_close routine (#1202137, #1215752)
 
 * Wed May 06 2015 Pavel Zhukov <landgraf@fedoraproject.org> - 1.5-6
 - Fix executable name in desktop file
