@@ -1,6 +1,6 @@
 Name:           mupdf
-Version:        1.7
-Release:        2%{?dist}
+Version:        1.7a
+Release:        1%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
@@ -53,6 +53,7 @@ chmod 0644 %{buildroot}%{_libdir}/*.a
 find %{buildroot}/%{_mandir} -type f -exec chmod 0644 {} \;
 find %{buildroot}/%{_docdir} -type f -exec chmod 0644 {} \;
 find %{buildroot}/%{_includedir} -type f -exec chmod 0644 {} \;
+cd %{buildroot}/%{_bindir} && ln -s %{name}-x11 %{name}
 
 %post
 update-desktop-database &> /dev/null || :
@@ -75,6 +76,8 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}.a
 
 %Changelog
+* Mon Jun 01 2015  Pavel Zhukov <landgraf@fedoraproject.org> - 1.7a-1
+- New release 1.7a (#1219482)
 * Wed May 06 2015  Pavel Zhukov <landgraf@fedoraproject.org> - 1.7-1
 - New release 1.7 (#1210318)
 - Fix segfault in obj_close routine (#1202137, #1215752)
