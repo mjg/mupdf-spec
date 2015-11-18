@@ -1,13 +1,13 @@
 Name:           mupdf
 Version:        1.7a
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
 URL:            http://mupdf.com/
 Source0:        http://mupdf.com/download/%{name}-%{version}-source.tar.gz
 Source1:        %{name}.desktop
-Patch0:         %{name}-%{version}-openjpeg.patch
+Patch0:         %{name}-1.7a-openjpeg.patch
 BuildRequires:  openjpeg2-devel jbig2dec-devel desktop-file-utils
 BuildRequires:  libjpeg-devel freetype-devel libXext-devel curl-devel
 
@@ -47,11 +47,12 @@ make  %{?_smp_mflags} verbose=1
 
 %install
 make DESTDIR=%{buildroot} install prefix=%{_prefix} libdir=%{_libdir}
+## handle docs on our own
+rm -rf %{buildroot}/%{_docdir}
 desktop-file-install --dir=%{buildroot}%{_datadir}/applications %{SOURCE1}
 ## fix strange permissons
 chmod 0644 %{buildroot}%{_libdir}/*.a
 find %{buildroot}/%{_mandir} -type f -exec chmod 0644 {} \;
-find %{buildroot}/%{_docdir} -type f -exec chmod 0644 {} \;
 find %{buildroot}/%{_includedir} -type f -exec chmod 0644 {} \;
 cd %{buildroot}/%{_bindir} && ln -s %{name}-x11 %{name}
 
@@ -63,7 +64,8 @@ update-desktop-database &> /dev/null || :
 
 %files
 %defattr(-,root,root,-)
-%doc COPYING README
+%license COPYING
+%doc README CHANGES docs/*
 %{_bindir}/*
 %{_datadir}/applications/mupdf.desktop
 %{_mandir}/man1/*.1.gz
@@ -75,7 +77,13 @@ update-desktop-database &> /dev/null || :
 %{_includedir}/%{name}
 %{_libdir}/lib%{name}.a
 
-%Changelog
+%changelog
+* Wed Nov 18 2015 Petr Šabata <contyk@redhat.com> - 1.7a-3
+- Package the license text with the %%license macro
+- Don't use the %%version macro in filenames, it's not helpful
+- Added extra handling for the docs; %%_docdir is no longer autopackaged,
+  plus we want to install the license text elsewhere
+
 * Wed Jun 17 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.7a-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
 
@@ -130,4 +138,3 @@ update-desktop-database &> /dev/null || :
 
 * Fri Jan 13 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.9-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
-
