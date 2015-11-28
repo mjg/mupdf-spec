@@ -1,6 +1,6 @@
 Name:           mupdf
-Version:        1.7a
-Release:        4%{?dist}
+Version:        1.8
+Release:        1%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
@@ -8,6 +8,7 @@ URL:            http://mupdf.com/
 Source0:        http://mupdf.com/download/%{name}-%{version}-source.tar.gz
 Source1:        %{name}.desktop
 Patch0:         %{name}-1.7a-openjpeg.patch
+BuildRequires:  gcc make binutils desktop-file-utils coreutils
 BuildRequires:  openjpeg2-devel jbig2dec-devel desktop-file-utils
 BuildRequires:  libjpeg-devel freetype-devel libXext-devel curl-devel
 
@@ -78,6 +79,9 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}.a
 
 %changelog
+* Sat Nov 28 2015 Pavel Zhukov <landgraf@fedoraproject.org> -1.8-1
+- New release (#1280518)
+
 * Sat Nov 28 2015 Pavel Zhukov <landgraf@fedoraproject.org> -1.7a-4
 - Disable memento
 
