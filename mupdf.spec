@@ -1,6 +1,6 @@
 Name:           mupdf
 Version:        1.7a
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
@@ -42,7 +42,7 @@ rm -rf thirdparty
 %patch0 -p1
 
 %build
-export CFLAGS="%{optflags} -fPIC"
+export CFLAGS="%{optflags} -fPIC -DJBIG_NO_MEMENTO"
 make  %{?_smp_mflags} verbose=1 
 
 %install
@@ -78,6 +78,9 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}.a
 
 %changelog
+* Sat Nov 28 2015 Pavel Zhukov <landgraf@fedoraproject.org> -1.7a-4
+- Disable memento
+
 * Wed Nov 18 2015 Petr Šabata <contyk@redhat.com> - 1.7a-3
 - Package the license text with the %%license macro
 - Don't use the %%version macro in filenames, it's not helpful
