@@ -1,7 +1,7 @@
 Name:           mupdf
 Version:        1.11rc1
 %global origversion 1.11-rc1
-Release:        1%{?dist}
+Release:        1GL%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
@@ -12,6 +12,8 @@ BuildRequires:  gcc make binutils desktop-file-utils coreutils
 BuildRequires:  openjpeg2-devel jbig2dec-devel desktop-file-utils
 BuildRequires:  libjpeg-devel freetype-devel libXext-devel curl-devel
 BuildRequires:  harfbuzz-devel
+BuildRequires:	glfw-devel
+BuildRequires:  mesa-libGL-devel
 Patch0:         %{name}-1.11rc1-openjpeg.patch
 
 %description
@@ -46,10 +48,10 @@ rm -rf thirdparty
 
 %build
 export CFLAGS="%{optflags} -fPIC -DJBIG_NO_MEMENTO -DTOFU -DTOFU_CJK"
-make  %{?_smp_mflags} build=debug verbose=yes
+make  %{?_smp_mflags} build=debug verbose=yes HAVE_GLFW="yes" GLFW_LIBS="-lglfw -lGL"
 
 %install
-make DESTDIR=%{buildroot} install prefix=%{_prefix} libdir=%{_libdir} build=debug verbose=yes
+make DESTDIR=%{buildroot} install prefix=%{_prefix} libdir=%{_libdir} build=debug verbose=yes HAVE_GLFW="yes" GLFW_LIBS="-lglfw -lGL"
 ## handle docs on our own
 rm -rf %{buildroot}/%{_docdir}
 desktop-file-install --dir=%{buildroot}%{_datadir}/applications %{SOURCE1}
@@ -80,6 +82,9 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Wed Apr 05 2017 Michael J Gruber <mjg@fedoraproject.org> - 1.11rc1-1GL
+- rebase Open-GL build
+
 * Wed Apr 05 2017 Michael J Gruber <mjg@fedoraproject.org> - 1.11rc1-1
 - rebase with upstream
 
@@ -98,6 +103,9 @@ update-desktop-database &> /dev/null || :
 
 * Fri Feb 10 2017 Fedora Release Engineering <releng@fedoraproject.org> - 1.8-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
+
+* Thu Mar 24 2016 Michael J. Gruber <mjg@fedoraproject.org> - 1.8-2GL
+- enable Open-GL build
 
 * Thu Feb 04 2016 Fedora Release Engineering <releng@fedoraproject.org> - 1.8-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
