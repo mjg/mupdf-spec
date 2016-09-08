@@ -64,7 +64,6 @@ update-desktop-database &> /dev/null || :
 update-desktop-database &> /dev/null || :
 
 %files
-%defattr(-,root,root,-)
 %license COPYING
 %doc README CHANGES docs/*
 %{_bindir}/*
@@ -74,7 +73,6 @@ update-desktop-database &> /dev/null || :
 
 
 %files devel
-%defattr(-,root,root,-)
 %{_includedir}/%{name}
 %{_libdir}/lib%{name}.a
 
