@@ -1,16 +1,19 @@
+%global debug_package %{nil}
+
 Name:           mupdf
-Version:        1.8
-Release:        3%{?dist}
+Version:        1.10a
+Release:        1%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
 URL:            http://mupdf.com/
 Source0:        http://mupdf.com/download/%{name}-%{version}-source.tar.gz
 Source1:        %{name}.desktop
-Patch0:         %{name}-1.7a-openjpeg.patch
 BuildRequires:  gcc make binutils desktop-file-utils coreutils
 BuildRequires:  openjpeg2-devel jbig2dec-devel desktop-file-utils
 BuildRequires:  libjpeg-devel freetype-devel libXext-devel curl-devel
+BuildRequires:  xulrunner-devel
+Patch0:         %{name}-1.10a-openjpeg.patch
 
 %description
 MuPDF is a lightweight PDF viewer and toolkit written in portable C.
@@ -39,7 +42,6 @@ applications that use mupdf and static libraries
 
 %prep
 %setup -q -n %{name}-%{version}-source
-rm -rf thirdparty
 %patch0 -p1
 
 %build
@@ -74,9 +76,12 @@ update-desktop-database &> /dev/null || :
 
 %files devel
 %{_includedir}/%{name}
-%{_libdir}/lib%{name}.a
+%{_libdir}/lib%{name}*.a
 
 %changelog
+* Sat Feb 11 2017 Pavel Zhukov <pzhukov@redhat.com> - 1.10a-1
+- New release (1.10a)
+
 * Fri Feb 10 2017 Fedora Release Engineering <releng@fedoraproject.org> - 1.8-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
 
