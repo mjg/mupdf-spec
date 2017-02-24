@@ -1,8 +1,11 @@
+## rpmbuild is not able to produce debuginfo package
+## for mupdf because of the way how it's built now.
+## Disabling until it fixed upstream
 %global debug_package %{nil}
 
 Name:           mupdf
 Version:        1.10a
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
@@ -42,11 +45,12 @@ applications that use mupdf and static libraries
 
 %prep
 %setup -q -n %{name}-%{version}-source
+rm -rf thirdparty
 %patch0 -p1
 
 %build
 export CFLAGS="%{optflags} -fPIC -DJBIG_NO_MEMENTO"
-make  %{?_smp_mflags} verbose=1 
+make  %{?_smp_mflags} verbose=yes
 
 %install
 make DESTDIR=%{buildroot} install prefix=%{_prefix} libdir=%{_libdir}
@@ -79,6 +83,10 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Thu Feb 23 2017 Pavel Zhukov <landgraf@fedoraproject.org> - 1.10a-2
+- Add comment with explanation of disabled debuginfo
+- Fix make verbose output
+
 * Sat Feb 11 2017 Pavel Zhukov <pzhukov@redhat.com> - 1.10a-1
 - New release (1.10a)
 
