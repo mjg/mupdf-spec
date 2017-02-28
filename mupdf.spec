@@ -1,11 +1,6 @@
-## rpmbuild is not able to produce debuginfo package
-## for mupdf because of the way how it's built now.
-## Disabling until it fixed upstream
-%global debug_package %{nil}
-
 Name:           mupdf
 Version:        1.10a
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
@@ -50,10 +45,10 @@ rm -rf thirdparty
 
 %build
 export CFLAGS="%{optflags} -fPIC -DJBIG_NO_MEMENTO"
-make  %{?_smp_mflags} verbose=yes
+make  %{?_smp_mflags} verbose=yes build=debug
 
 %install
-make DESTDIR=%{buildroot} install prefix=%{_prefix} libdir=%{_libdir}
+make DESTDIR=%{buildroot} install build=debug prefix=%{_prefix} libdir=%{_libdir}
 ## handle docs on our own
 rm -rf %{buildroot}/%{_docdir}
 desktop-file-install --dir=%{buildroot}%{_datadir}/applications %{SOURCE1}
@@ -83,6 +78,9 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Tue Feb 28 2017 Michael J Gruber <mjg@fedoraproject.org> - 1.10a-4
+- reenable debug build
+
 * Tue Feb 28 2017 Michael J Gruber <mjg@fedoraproject.org> - 1.10a-3
 - Correct unnecessary BR xulrunner-devel
 
