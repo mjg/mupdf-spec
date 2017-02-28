@@ -5,7 +5,7 @@
 
 Name:           mupdf
 Version:        1.10a
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
@@ -15,7 +15,7 @@ Source1:        %{name}.desktop
 BuildRequires:  gcc make binutils desktop-file-utils coreutils
 BuildRequires:  openjpeg2-devel jbig2dec-devel desktop-file-utils
 BuildRequires:  libjpeg-devel freetype-devel libXext-devel curl-devel
-BuildRequires:  xulrunner-devel
+BuildRequires:  harfbuzz-devel
 Patch0:         %{name}-1.10a-openjpeg.patch
 
 %description
@@ -83,6 +83,9 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Tue Feb 28 2017 Michael J Gruber <mjg@fedoraproject.org> - 1.10a-3
+- Correct unnecessary BR xulrunner-devel
+
 * Thu Feb 23 2017 Pavel Zhukov <landgraf@fedoraproject.org> - 1.10a-2
 - Add comment with explanation of disabled debuginfo
 - Fix make verbose output
