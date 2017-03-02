@@ -1,6 +1,6 @@
 Name:           mupdf
 Version:        1.10a
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
@@ -12,6 +12,9 @@ BuildRequires:  openjpeg2-devel jbig2dec-devel desktop-file-utils
 BuildRequires:  libjpeg-devel freetype-devel libXext-devel curl-devel
 BuildRequires:  harfbuzz-devel
 Patch0:         %{name}-1.10a-openjpeg.patch
+## https://bugzilla.redhat.com/show_bug.cgi?id=1425338
+Patch1:         %{name}-Bug-697500-Fix-NULL-ptr-access.patch
+Patch2:         %{name}-bug-697515-Fix-out-of-bounds-read-in-fz_subsample_pi.patch
 
 %description
 MuPDF is a lightweight PDF viewer and toolkit written in portable C.
@@ -42,6 +45,8 @@ applications that use mupdf and static libraries
 %setup -q -n %{name}-%{version}-source
 rm -rf thirdparty
 %patch0 -p1
+%patch1 -p1
+%patch2 -p1
 
 %build
 export CFLAGS="%{optflags} -fPIC -DJBIG_NO_MEMENTO -DTOFU -DTOFU_CJK"
@@ -79,6 +84,9 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Thu Mar  2 2017 Pavel Zhukov <landgraf@fedoraproject.org> - 1.10a-4
+- fix buffer overflow (#1425338)
+
 * Thu Mar 02 2017 Michael J Gruber <mjg@fedoraproject.org> - 1.10a-3
 - Several packaging fixes
 
