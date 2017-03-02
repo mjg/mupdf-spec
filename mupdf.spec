@@ -1,21 +1,16 @@
-## rpmbuild is not able to produce debuginfo package
-## for mupdf because of the way how it's built now.
-## Disabling until it fixed upstream
-%global debug_package %{nil}
-
 Name:           mupdf
 Version:        1.10a
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
 URL:            http://mupdf.com/
-Source0:        http://mupdf.com/download/%{name}-%{version}-source.tar.gz
+Source0:        http://mupdf.com/downloads/%{name}-%{version}-source.tar.gz
 Source1:        %{name}.desktop
 BuildRequires:  gcc make binutils desktop-file-utils coreutils
 BuildRequires:  openjpeg2-devel jbig2dec-devel desktop-file-utils
 BuildRequires:  libjpeg-devel freetype-devel libXext-devel curl-devel
-BuildRequires:  xulrunner-devel
+BuildRequires:  harfbuzz-devel
 Patch0:         %{name}-1.10a-openjpeg.patch
 
 %description
@@ -49,11 +44,11 @@ rm -rf thirdparty
 %patch0 -p1
 
 %build
-export CFLAGS="%{optflags} -fPIC -DJBIG_NO_MEMENTO"
-make  %{?_smp_mflags} verbose=yes
+export CFLAGS="%{optflags} -fPIC -DJBIG_NO_MEMENTO -DTOFU -DTOFU_CJK"
+make  %{?_smp_mflags} build=debug verbose=yes
 
 %install
-make DESTDIR=%{buildroot} install prefix=%{_prefix} libdir=%{_libdir}
+make DESTDIR=%{buildroot} install prefix=%{_prefix} libdir=%{_libdir} build=debug verbose=yes
 ## handle docs on our own
 rm -rf %{buildroot}/%{_docdir}
 desktop-file-install --dir=%{buildroot}%{_datadir}/applications %{SOURCE1}
@@ -62,6 +57,9 @@ chmod 0644 %{buildroot}%{_libdir}/*.a
 find %{buildroot}/%{_mandir} -type f -exec chmod 0644 {} \;
 find %{buildroot}/%{_includedir} -type f -exec chmod 0644 {} \;
 cd %{buildroot}/%{_bindir} && ln -s %{name}-x11 %{name}
+## Removing empty library as rpmlint complains about and we don't have thirdparty
+rm -f %{buildroot}/%{_libdir}/libmupdfthird.a
+
 
 %post
 update-desktop-database &> /dev/null || :
@@ -76,13 +74,14 @@ update-desktop-database &> /dev/null || :
 %{_datadir}/applications/mupdf.desktop
 %{_mandir}/man1/*.1.gz
 
-
-
 %files devel
 %{_includedir}/%{name}
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Thu Mar 02 2017 Michael J Gruber <mjg@fedoraproject.org> - 1.10a-3
+- Several packaging fixes
+
 * Thu Feb 23 2017 Pavel Zhukov <landgraf@fedoraproject.org> - 1.10a-2
 - Add comment with explanation of disabled debuginfo
 - Fix make verbose output
