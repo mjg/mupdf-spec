@@ -1,11 +1,11 @@
 Name:           mupdf
 Version:        1.10a
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
 URL:            http://mupdf.com/
-Source0:        http://mupdf.com/download/%{name}-%{version}-source.tar.gz
+Source0:        http://mupdf.com/downloads/%{name}-%{version}-source.tar.gz
 Source1:        %{name}.desktop
 BuildRequires:  gcc make binutils desktop-file-utils coreutils
 BuildRequires:  openjpeg2-devel jbig2dec-devel desktop-file-utils
@@ -44,7 +44,7 @@ rm -rf thirdparty
 %patch0 -p1
 
 %build
-export CFLAGS="%{optflags} -fPIC -DJBIG_NO_MEMENTO"
+export CFLAGS="%{optflags} -fPIC -DJBIG_NO_MEMENTO -DTOFU -DTOFU_CJK"
 make  %{?_smp_mflags} verbose=yes build=debug
 
 %install
@@ -78,6 +78,10 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Thu Mar 02 2017 Michael J Gruber <mjg@fedoraproject.org> - 1.10a-5
+- do not embed extra fonts
+- correct source URL
+
 * Tue Feb 28 2017 Michael J Gruber <mjg@fedoraproject.org> - 1.10a-4
 - reenable debug build
 
