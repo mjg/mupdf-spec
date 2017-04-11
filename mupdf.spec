@@ -1,6 +1,6 @@
 Name:           mupdf
-Version:        1.10a
-Release:        5%{?dist}
+Version:        1.11
+Release:        1%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
@@ -11,11 +11,7 @@ BuildRequires:  gcc make binutils desktop-file-utils coreutils
 BuildRequires:  openjpeg2-devel jbig2dec-devel desktop-file-utils
 BuildRequires:  libjpeg-devel freetype-devel libXext-devel curl-devel
 BuildRequires:  harfbuzz-devel
-Patch0:         %{name}-1.10a-openjpeg.patch
-## https://bugzilla.redhat.com/show_bug.cgi?id=1425338
-Patch1:         %{name}-Bug-697500-Fix-NULL-ptr-access.patch
-Patch2:         %{name}-bug-697515-Fix-out-of-bounds-read-in-fz_subsample_pi.patch
-Patch3:         %{name}-bz1439643.patch
+Patch0:         %{name}-1.11-openjpeg.patch
 
 
 %description
@@ -47,9 +43,6 @@ applications that use mupdf and static libraries
 %setup -q -n %{name}-%{version}-source
 rm -rf thirdparty
 %patch0 -p1
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
 
 %build
 export CFLAGS="%{optflags} -fPIC -DJBIG_NO_MEMENTO -DTOFU -DTOFU_CJK"
@@ -87,6 +80,9 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Tue Apr 11 2017 Pavel Zhukov <landgraf@fedoraproject.org> - 1.11-1
+- New release 1.11 (#1441186)
+
 * Thu Apr  6 2017 Pavel Zhukov <landgraf@fedoraproject.org> - 1.10a-5
 - Fix stack consumption CVE (#1439643)
 
