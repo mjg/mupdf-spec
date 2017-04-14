@@ -1,6 +1,6 @@
 Name:           mupdf
 Version:        1.11
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
@@ -11,6 +11,7 @@ BuildRequires:  gcc make binutils desktop-file-utils coreutils
 BuildRequires:  openjpeg2-devel jbig2dec-devel desktop-file-utils
 BuildRequires:  libjpeg-devel freetype-devel libXext-devel curl-devel
 BuildRequires:  harfbuzz-devel
+BuildRequires:  glfw-devel mesa-libGL-devel
 Patch0:         %{name}-1.11-openjpeg.patch
 
 
@@ -45,9 +46,9 @@ rm -rf thirdparty
 %patch0 -p1
 
 %build
-export CFLAGS="%{optflags} -fPIC -DJBIG_NO_MEMENTO -DTOFU -DTOFU_CJK"
-make  %{?_smp_mflags} build=debug verbose=yes
+export XCFLAGS="%{optflags} -fPIC -DJBIG_NO_MEMENTO -DTOFU -DTOFU_CJK"
 
+make  %{?_smp_mflags}  build=debug verbose=yes HAVE_GLFW=yes SYS_GLFW_CFLAGS="-I%{_includedir}/GL -I%{_includedir}/GLFW" GLFW_LIBS="-lGL -lglfw"
 %install
 make DESTDIR=%{buildroot} install prefix=%{_prefix} libdir=%{_libdir} build=debug verbose=yes
 ## handle docs on our own
@@ -80,6 +81,9 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Fri Apr 14 2017 Pavel Zhukov <landgraf@fedoraproject.org> - 1.11-2
+- Fix mupdf-gl build (#1442384)
+
 * Tue Apr 11 2017 Pavel Zhukov <landgraf@fedoraproject.org> - 1.11-1
 - New release 1.11 (#1441186)
 
