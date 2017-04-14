@@ -1,6 +1,6 @@
 Name:           mupdf
 Version:        1.11
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
@@ -50,7 +50,7 @@ export XCFLAGS="%{optflags} -fPIC -DJBIG_NO_MEMENTO -DTOFU -DTOFU_CJK"
 
 make  %{?_smp_mflags}  build=debug verbose=yes HAVE_GLFW=yes SYS_GLFW_CFLAGS="-I%{_includedir}/GL -I%{_includedir}/GLFW" GLFW_LIBS="-lGL -lglfw"
 %install
-make DESTDIR=%{buildroot} install prefix=%{_prefix} libdir=%{_libdir} build=debug verbose=yes
+make DESTDIR=%{buildroot} install prefix=%{_prefix} libdir=%{_libdir} build=debug verbose=yes HAVE_GLFW=yes
 ## handle docs on our own
 rm -rf %{buildroot}/%{_docdir}
 desktop-file-install --dir=%{buildroot}%{_datadir}/applications %{SOURCE1}
@@ -81,7 +81,7 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}*.a
 
 %changelog
-* Fri Apr 14 2017 Pavel Zhukov <landgraf@fedoraproject.org> - 1.11-2
+* Fri Apr 14 2017 Pavel Zhukov <landgraf@fedoraproject.org> - 1.11-3
 - Fix mupdf-gl build (#1442384)
 
 * Tue Apr 11 2017 Pavel Zhukov <landgraf@fedoraproject.org> - 1.11-1
