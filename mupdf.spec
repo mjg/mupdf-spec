@@ -1,6 +1,6 @@
 Name:           mupdf
 Version:        1.10a
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
@@ -87,6 +87,9 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Wed May 10  2017 Pavel Zhukov <landgraf@fedoraproject.org> - 1.10a-6
+- Rebuild with new jbig2dec
+
 * Thu Apr  6 2017 Pavel Zhukov <landgraf@fedoraproject.org> - 1.10a-5
 - Fix stack consumption CVE (#1439643)
 
