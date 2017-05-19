@@ -1,6 +1,6 @@
 Name:           mupdf
 Version:        1.10a
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
@@ -16,6 +16,7 @@ Patch0:         %{name}-1.10a-openjpeg.patch
 Patch1:         %{name}-Bug-697500-Fix-NULL-ptr-access.patch
 Patch2:         %{name}-bug-697515-Fix-out-of-bounds-read-in-fz_subsample_pi.patch
 Patch3:         %{name}-bz1439643.patch
+Patch4:         %{name}-1452545_scale_underflow.patch
 
 
 %description
@@ -44,12 +45,9 @@ The mupdf-devel package contains header files for developing
 applications that use mupdf and static libraries
 
 %prep
-%setup -q -n %{name}-%{version}-source
+##%setup -q 
+%autosetup -n %{name}-%{version}-source -p1
 rm -rf thirdparty
-%patch0 -p1
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
 
 %build
 export CFLAGS="%{optflags} -fPIC -DJBIG_NO_MEMENTO -DTOFU -DTOFU_CJK"
@@ -87,6 +85,9 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Fri May 19 2017 Pavel Zhukov <landgraf@fedoraproject.org> - 1.10a-7
+- Fix for CVE-2016-8728 CVE-2016-8729
+
 * Wed May 10  2017 Pavel Zhukov <landgraf@fedoraproject.org> - 1.10a-6
 - Rebuild with new jbig2dec
 
