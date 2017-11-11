@@ -1,6 +1,6 @@
 Name:           mupdf
 Version:        1.11
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
@@ -81,6 +81,9 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Sat Nov 11 2017 Michael J Gruber <mjg@fedoraproject.org> - 1.11-8
+* repair FTBFS from version specific patch in 412e729 ("New release 1.11", 2017-04-11)
+
 * Sat Nov 11 2017 Michael J Gruber <mjg@fedoraproject.org> - 1.11-7
 - rebuild with jbig2dec 0.14 (#1456731)
 

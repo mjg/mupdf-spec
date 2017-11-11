@@ -1,8 +1,8 @@
-diff --git a/source/fitz/load-jpx.c b/source/fitz/load-jpx.c
-index d01de58..a07dbb5 100644
---- a/source/fitz/load-jpx.c
-+++ b/source/fitz/load-jpx.c
-@@ -443,15 +443,19 @@ fz_load_jpx_info(fz_context *ctx, unsigned char *data, size_t size, int *wp, int
+diff --git i/source/fitz/load-jpx.c w/source/fitz/load-jpx.c
+index d01de585..9934e47a 100644
+--- i/source/fitz/load-jpx.c
++++ w/source/fitz/load-jpx.c
+@@ -443,12 +443,15 @@ fz_load_jpx_info(fz_context *ctx, unsigned char *data, size_t size, int *wp, int
  }
  
  #else /* HAVE_LURATECH */
@@ -18,13 +18,8 @@ index d01de58..a07dbb5 100644
 +#endif
  #define USE_JPIP
  
--#include <openjpeg.h>
-+#include <openjpeg-2.1/openjpeg.h>
-+
- 
- struct fz_jpxd_s
- {
-@@ -920,6 +924,9 @@ fz_load_jpx_info(fz_context *ctx, unsigned char *data, size_t size, int *wp, int
+ #include <openjpeg.h>
+@@ -920,6 +923,9 @@ fz_load_jpx_info(fz_context *ctx, unsigned char *data, size_t size, int *wp, int
  }
  
  #endif /* HAVE_LURATECH */
