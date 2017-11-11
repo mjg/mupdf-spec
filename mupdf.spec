@@ -86,11 +86,11 @@ update-desktop-database &> /dev/null || :
 
 %changelog
 * Sat Nov 11 2017 Michael J Gruber <mjg@fedoraproject.org> - 1.11-9
-* CVE-2017-15369
-* CVE-2017-15587
+- CVE-2017-15369
+- CVE-2017-15587
 
 * Sat Nov 11 2017 Michael J Gruber <mjg@fedoraproject.org> - 1.11-8
-* repair FTBFS from version specific patch in 412e729 ("New release 1.11", 2017-04-11)
+- repair FTBFS from version specific patch in 412e729 ("New release 1.11", 2017-04-11)
 
 * Sat Nov 11 2017 Michael J Gruber <mjg@fedoraproject.org> - 1.11-7
 - rebuild with jbig2dec 0.14 (#1456731)
