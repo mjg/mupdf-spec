@@ -1,6 +1,6 @@
 Name:           mupdf
 Version:        1.11
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
@@ -13,6 +13,8 @@ BuildRequires:  libjpeg-devel freetype-devel libXext-devel curl-devel
 BuildRequires:  harfbuzz-devel
 BuildRequires:  glfw-devel mesa-libGL-devel
 Patch0:         %{name}-1.11-openjpeg.patch
+Patch1:         %{name}-1.11-CVE-2017-15369.patch
+Patch2:         %{name}-1.11-CVE-2017-15587.patch
 
 
 %description
@@ -44,6 +46,8 @@ applications that use mupdf and static libraries
 %setup -q -n %{name}-%{version}-source
 rm -rf thirdparty
 %patch0 -p1
+%patch1 -p1
+%patch2 -p1
 
 %build
 export XCFLAGS="%{optflags} -fPIC -DJBIG_NO_MEMENTO -DTOFU -DTOFU_CJK"
@@ -81,6 +85,10 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Sat Nov 11 2017 Michael J Gruber <mjg@fedoraproject.org> - 1.11-9
+* CVE-2017-15369
+* CVE-2017-15587
+
 * Sat Nov 11 2017 Michael J Gruber <mjg@fedoraproject.org> - 1.11-8
 * repair FTBFS from version specific patch in 412e729 ("New release 1.11", 2017-04-11)
 
