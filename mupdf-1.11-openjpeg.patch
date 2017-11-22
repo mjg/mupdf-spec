@@ -1,0 +1,31 @@
+diff --git i/source/fitz/load-jpx.c w/source/fitz/load-jpx.c
+index d01de585..9934e47a 100644
+--- i/source/fitz/load-jpx.c
++++ w/source/fitz/load-jpx.c
+@@ -443,12 +443,15 @@ fz_load_jpx_info(fz_context *ctx, unsigned char *data, size_t size, int *wp, int
+ }
+ 
+ #else /* HAVE_LURATECH */
+-
++#ifdef __cplusplus
++extern "C"
++{
+ #define OPJ_STATIC
+ #define OPJ_HAVE_INTTYPES_H
+ #if !defined(_WIN32) && !defined(_WIN64)
+ #define OPJ_HAVE_STDINT_H
+ #endif
++#endif
+ #define USE_JPIP
+ 
+ #include <openjpeg.h>
+@@ -920,6 +923,9 @@ fz_load_jpx_info(fz_context *ctx, unsigned char *data, size_t size, int *wp, int
+ }
+ 
+ #endif /* HAVE_LURATECH */
++#ifdef __cplusplus
++}
++#endif
+ 
+ #else /* FZ_ENABLE_JPX */
+ 

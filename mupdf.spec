@@ -1,6 +1,6 @@
 Name:           mupdf
-Version:        1.10a
-Release:        7%{?dist}
+Version:        1.11
+Release:        9%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
@@ -11,12 +11,10 @@ BuildRequires:  gcc make binutils desktop-file-utils coreutils
 BuildRequires:  openjpeg2-devel jbig2dec-devel desktop-file-utils
 BuildRequires:  libjpeg-devel freetype-devel libXext-devel curl-devel
 BuildRequires:  harfbuzz-devel
-Patch0:         %{name}-1.10a-openjpeg.patch
-## https://bugzilla.redhat.com/show_bug.cgi?id=1425338
-Patch1:         %{name}-Bug-697500-Fix-NULL-ptr-access.patch
-Patch2:         %{name}-bug-697515-Fix-out-of-bounds-read-in-fz_subsample_pi.patch
-Patch3:         %{name}-bz1439643.patch
-Patch4:         %{name}-1452545_scale_underflow.patch
+BuildRequires:  glfw-devel mesa-libGL-devel
+Patch0:         %{name}-1.11-openjpeg.patch
+Patch1:         %{name}-1.11-CVE-2017-15369.patch
+Patch2:         %{name}-1.11-CVE-2017-15587.patch
 
 
 %description
@@ -45,16 +43,18 @@ The mupdf-devel package contains header files for developing
 applications that use mupdf and static libraries
 
 %prep
-##%setup -q 
-%autosetup -n %{name}-%{version}-source -p1
+%setup -q -n %{name}-%{version}-source
 rm -rf thirdparty
+%patch0 -p1
+%patch1 -p1
+%patch2 -p1
 
 %build
-export CFLAGS="%{optflags} -fPIC -DJBIG_NO_MEMENTO -DTOFU -DTOFU_CJK"
-make  %{?_smp_mflags} build=debug verbose=yes
+export XCFLAGS="%{optflags} -fPIC -DJBIG_NO_MEMENTO -DTOFU -DTOFU_CJK"
 
+make  %{?_smp_mflags}  build=debug verbose=yes HAVE_GLFW=yes SYS_GLFW_CFLAGS="-I%{_includedir}/GL -I%{_includedir}/GLFW" GLFW_LIBS="-lGL -lglfw"
 %install
-make DESTDIR=%{buildroot} install prefix=%{_prefix} libdir=%{_libdir} build=debug verbose=yes
+make DESTDIR=%{buildroot} install prefix=%{_prefix} libdir=%{_libdir} build=debug verbose=yes HAVE_GLFW=yes
 ## handle docs on our own
 rm -rf %{buildroot}/%{_docdir}
 desktop-file-install --dir=%{buildroot}%{_datadir}/applications %{SOURCE1}
@@ -85,6 +85,22 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Sat Nov 11 2017 Michael J Gruber <mjg@fedoraproject.org> - 1.11-9
+- CVE-2017-15369
+- CVE-2017-15587
+
+* Sat Nov 11 2017 Michael J Gruber <mjg@fedoraproject.org> - 1.11-8
+- repair FTBFS from version specific patch in 412e729 ("New release 1.11", 2017-04-11)
+
+* Sat Nov 11 2017 Michael J Gruber <mjg@fedoraproject.org> - 1.11-7
+- rebuild with jbig2dec 0.14 (#1456731)
+
+* Thu Aug 03 2017 Fedora Release Engineering <releng@fedoraproject.org> - 1.11-6
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Binutils_Mass_Rebuild
+
+* Wed Jul 26 2017 Fedora Release Engineering <releng@fedoraproject.org> - 1.11-5
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
+
 * Fri May 19 2017 Pavel Zhukov <landgraf@fedoraproject.org> - 1.10a-7
 - Fix for CVE-2016-8728 CVE-2016-8729
 
