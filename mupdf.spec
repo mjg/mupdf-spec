@@ -1,18 +1,17 @@
 Name:           mupdf
-Version:        1.12rc1
-%global origversion        1.12-rc1
+Version:        1.12.0
 Release:        1%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
 URL:            http://mupdf.com/
-Source0:        http://mupdf.com/downloads/%{name}-%{origversion}-source.tar.gz
+Source0:        http://mupdf.com/downloads/%{name}-%{version}-source.tar.gz
 Source1:        %{name}.desktop
 BuildRequires:  gcc make binutils desktop-file-utils coreutils
 BuildRequires:  openjpeg2-devel jbig2dec-devel desktop-file-utils
 BuildRequires:  libjpeg-devel freetype-devel libXext-devel curl-devel
 BuildRequires:  harfbuzz-devel
-BuildRequires:  glfw-devel mesa-libGL-devel freeglut-devel
+BuildRequires:  mesa-libGL-devel freeglut-devel
 Patch0:         %{name}-1.12-openjpeg.patch
 
 
@@ -42,16 +41,16 @@ The mupdf-devel package contains header files for developing
 applications that use mupdf and static libraries
 
 %prep
-%setup -q -n %{name}-%{origversion}-source
+%setup -q -n %{name}-%{version}-source
 rm -rf thirdparty
 %patch0 -p1
 
 %build
 export XCFLAGS="%{optflags} -fPIC -DJBIG_NO_MEMENTO -DTOFU -DTOFU_CJK"
 
-make  %{?_smp_mflags}  build=debug verbose=yes HAVE_GLFW=yes SYS_GLFW_CFLAGS="-I%{_includedir}/GL -I%{_includedir}/GLFW" GLFW_LIBS="-lGL -lglfw"
+make  %{?_smp_mflags}  build=debug verbose=yes HAVE_GLUT=yes SYS_GLUT_CFLAGS="-I%{_includedir}/GL" GLUT_LIBS="-lGL -lglut"
 %install
-make DESTDIR=%{buildroot} install prefix=%{_prefix} libdir=%{_libdir} build=debug verbose=yes HAVE_GLFW=yes
+make DESTDIR=%{buildroot} install prefix=%{_prefix} libdir=%{_libdir} build=debug verbose=yes HAVE_GLUT=yes
 ## handle docs on our own
 rm -rf %{buildroot}/%{_docdir}
 desktop-file-install --dir=%{buildroot}%{_datadir}/applications %{SOURCE1}
@@ -82,6 +81,11 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Thu Dec 14 2017 Michael J Gruber <mjg@fedoraproject.org> - 1.12.0-1
+- rebase to 1.12
+- follow switch from GLFW to GLUT
+- follow switch to new version scheme
+
 * Sun Nov 26 2017 Michael J Gruber <mjg@fedoraproject.org> - 1.12rc1-1
 - rc test
 
