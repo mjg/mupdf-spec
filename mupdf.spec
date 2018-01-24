@@ -1,6 +1,6 @@
 Name:           mupdf
 Version:        1.12.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
@@ -13,7 +13,8 @@ BuildRequires:  libjpeg-devel freetype-devel libXext-devel curl-devel
 BuildRequires:  harfbuzz-devel
 BuildRequires:  mesa-libGL-devel freeglut-devel
 Patch0:         %{name}-1.12-openjpeg.patch
-
+Patch1:         %{name}-1.12-CVE-2017-17858.patch
+Patch2:         %{name}-1.12-CVE-2018-5686.patch
 
 %description
 MuPDF is a lightweight PDF viewer and toolkit written in portable C.
@@ -44,6 +45,8 @@ applications that use mupdf and static libraries
 %setup -q -n %{name}-%{version}-source
 rm -rf thirdparty
 %patch0 -p1
+%patch1 -p1
+%patch2 -p1
 
 %build
 export XCFLAGS="%{optflags} -fPIC -DJBIG_NO_MEMENTO -DTOFU -DTOFU_CJK"
@@ -81,6 +84,10 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Wed Jan 24 2018 Michael J Gruber <mjg@fedoraproject.org> - 1.12.0-2
+- CVE-2017-17858 (rh bz #1537952) (gs bz #698819)
+- CVE-2018-5686 (gs bz #698860)
+
 * Thu Dec 14 2017 Michael J Gruber <mjg@fedoraproject.org> - 1.12.0-1
 - rebase to 1.12
 - follow switch from GLFW to GLUT
