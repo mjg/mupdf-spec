@@ -17,6 +17,9 @@ Patch1:         %{name}-1.12-CVE-2017-17858.patch
 Patch2:         %{name}-1.12-CVE-2018-5686.patch
 Patch3:         %{name}-1.12-CVE-2018-6187.patch
 Patch4:         %{name}-1.12-CVE-2018-6192.patch
+Patch5:         %{name}-1.12-CVE-2018-6544-1.patch
+Patch6:         %{name}-1.12-CVE-2018-6544-2.patch
+Patch7:         %{name}-1.12-CVE-2018-1000051.patch
 
 %description
 MuPDF is a lightweight PDF viewer and toolkit written in portable C.
@@ -51,6 +54,9 @@ rm -rf thirdparty
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
+%patch6 -p1
+%patch7 -p1
 
 %build
 export XCFLAGS="%{optflags} -fPIC -DJBIG_NO_MEMENTO -DTOFU -DTOFU_CJK"
@@ -90,6 +96,8 @@ update-desktop-database &> /dev/null || :
 %changelog
 * Wed Feb 14 2018 Michael J Gruber <mjg@fedoraproject.org> - 1.12.0-5
 - CVE-2018-6192 (rh bz #1539845 #1539846) (gs bz #698916)
+- CVE-2018-6544 (rh bz #1542264 #1542265) (gs bz #698830 #698965)
+- CVE-2018-1000051 (rh bz #1544847 #1544848) (gs bz #698825 #698873)
 
 * Thu Feb 08 2018 Fedora Release Engineering <releng@fedoraproject.org> - 1.12.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
