@@ -1,6 +1,6 @@
 Name:           mupdf
 Version:        1.12.0
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
@@ -16,6 +16,7 @@ Patch0:         %{name}-1.12-openjpeg.patch
 Patch1:         %{name}-1.12-CVE-2017-17858.patch
 Patch2:         %{name}-1.12-CVE-2018-5686.patch
 Patch3:         %{name}-1.12-CVE-2018-6187.patch
+Patch4:         %{name}-1.12-CVE-2018-6192.patch
 
 %description
 MuPDF is a lightweight PDF viewer and toolkit written in portable C.
@@ -49,6 +50,7 @@ rm -rf thirdparty
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 %build
 export XCFLAGS="%{optflags} -fPIC -DJBIG_NO_MEMENTO -DTOFU -DTOFU_CJK"
@@ -86,6 +88,9 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Wed Feb 14 2018 Michael J Gruber <mjg@fedoraproject.org> - 1.12.0-5
+- CVE-2018-6192 (rh bz #1539845 #1539846) (gs bz #698916)
+
 * Thu Feb 08 2018 Fedora Release Engineering <releng@fedoraproject.org> - 1.12.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
 
