@@ -1,6 +1,6 @@
 Name:           mupdf
 Version:        1.12.0
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
@@ -67,6 +67,8 @@ make DESTDIR=%{buildroot} install prefix=%{_prefix} libdir=%{_libdir} build=debu
 ## handle docs on our own
 rm -rf %{buildroot}/%{_docdir}
 desktop-file-install --dir=%{buildroot}%{_datadir}/applications %{SOURCE1}
+mkdir -p %{buildroot}%{_datadir}/icons/hicolor/scalable/apps
+install -p -m644 docs/logo/mupdf-logo.svg %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/mupdf.svg
 ## fix strange permissons
 chmod 0644 %{buildroot}%{_libdir}/*.a
 find %{buildroot}/%{_mandir} -type f -exec chmod 0644 {} \;
@@ -87,6 +89,7 @@ update-desktop-database &> /dev/null || :
 %doc README CHANGES docs/*
 %{_bindir}/*
 %{_datadir}/applications/mupdf.desktop
+%{_datadir}/icons/hicolor/*/apps/*
 %{_mandir}/man1/*.1.gz
 
 %files devel
@@ -94,6 +97,9 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Fri Apr 13 2018 Michael J Gruber <mjg@fedoraproject.org> - 1.12.0-6
+- install svg icon
+
 * Wed Feb 14 2018 Michael J Gruber <mjg@fedoraproject.org> - 1.12.0-5
 - CVE-2018-6192 (rh bz #1539845 #1539846) (gs bz #698916)
 - CVE-2018-6544 (rh bz #1542264 #1542265) (gs bz #698830 #698965)
