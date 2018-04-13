@@ -1,25 +1,19 @@
 Name:           mupdf
-Version:        1.12.0
-Release:        6%{?dist}
+Version:        1.13.0rc1
+%global origversion 1.13.0-rc1
+Release:        1%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
 URL:            http://mupdf.com/
-Source0:        http://mupdf.com/downloads/%{name}-%{version}-source.tar.gz
+Source0:        http://mupdf.com/downloads/%{name}-%{origversion}-source.tar.gz
 Source1:        %{name}.desktop
 BuildRequires:  gcc make binutils desktop-file-utils coreutils
 BuildRequires:  openjpeg2-devel jbig2dec-devel desktop-file-utils
 BuildRequires:  libjpeg-devel freetype-devel libXext-devel curl-devel
 BuildRequires:  harfbuzz-devel
 BuildRequires:  mesa-libGL-devel freeglut-devel
-Patch0:         %{name}-1.12-openjpeg.patch
-Patch1:         %{name}-1.12-CVE-2017-17858.patch
-Patch2:         %{name}-1.12-CVE-2018-5686.patch
-Patch3:         %{name}-1.12-CVE-2018-6187.patch
-Patch4:         %{name}-1.12-CVE-2018-6192.patch
-Patch5:         %{name}-1.12-CVE-2018-6544-1.patch
-Patch6:         %{name}-1.12-CVE-2018-6544-2.patch
-Patch7:         %{name}-1.12-CVE-2018-1000051.patch
+Patch0:         %{name}-1.13-openjpeg.patch
 
 %description
 MuPDF is a lightweight PDF viewer and toolkit written in portable C.
@@ -47,16 +41,9 @@ The mupdf-devel package contains header files for developing
 applications that use mupdf and static libraries
 
 %prep
-%setup -q -n %{name}-%{version}-source
+%setup -q -n %{name}-%{origversion}-source
 rm -rf thirdparty
 %patch0 -p1
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
-%patch5 -p1
-%patch6 -p1
-%patch7 -p1
 
 %build
 export XCFLAGS="%{optflags} -fPIC -DJBIG_NO_MEMENTO -DTOFU -DTOFU_CJK"
@@ -97,6 +84,9 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Fri Apr 13 2018 Michael J Gruber <mjg@fedoraproject.org> - 1.13.0rc1-1
+- rc1 test
+
 * Fri Apr 13 2018 Michael J Gruber <mjg@fedoraproject.org> - 1.12.0-6
 - install svg icon
 
