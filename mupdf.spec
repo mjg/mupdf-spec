@@ -1,17 +1,16 @@
 Name:           mupdf
-Version:        1.13.0rc1
-%global origversion 1.13.0-rc1
+Version:        1.13.0
 Release:        1%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
 URL:            http://mupdf.com/
-Source0:        http://mupdf.com/downloads/%{name}-%{origversion}-source.tar.gz
+Source0:        http://mupdf.com/downloads/%{name}-%{version}-source.tar.gz
 Source1:        %{name}.desktop
 BuildRequires:  gcc make binutils desktop-file-utils coreutils
 BuildRequires:  openjpeg2-devel jbig2dec-devel desktop-file-utils
 BuildRequires:  libjpeg-devel freetype-devel libXext-devel curl-devel
-BuildRequires:  harfbuzz-devel
+BuildRequires:  harfbuzz-devel lcms2-devel
 BuildRequires:  mesa-libGL-devel freeglut-devel
 Patch0:         %{name}-1.13-openjpeg.patch
 
@@ -41,7 +40,7 @@ The mupdf-devel package contains header files for developing
 applications that use mupdf and static libraries
 
 %prep
-%setup -q -n %{name}-%{origversion}-source
+%setup -q -n %{name}-%{version}-source
 rm -rf thirdparty
 %patch0 -p1
 
@@ -54,6 +53,8 @@ make DESTDIR=%{buildroot} install prefix=%{_prefix} libdir=%{_libdir} build=debu
 ## handle docs on our own
 rm -rf %{buildroot}/%{_docdir}
 desktop-file-install --dir=%{buildroot}%{_datadir}/applications %{SOURCE1}
+mkdir -p %{buildroot}%{_datadir}/icons/hicolor/scalable/apps
+install -p -m644 docs/logo/mupdf-logo.svg %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/mupdf.svg
 ## fix strange permissons
 chmod 0644 %{buildroot}%{_libdir}/*.a
 find %{buildroot}/%{_mandir} -type f -exec chmod 0644 {} \;
@@ -74,6 +75,7 @@ update-desktop-database &> /dev/null || :
 %doc README CHANGES docs/*
 %{_bindir}/*
 %{_datadir}/applications/mupdf.desktop
+%{_datadir}/icons/hicolor/*/apps/*
 %{_mandir}/man1/*.1.gz
 
 %files devel
@@ -81,8 +83,11 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}*.a
 
 %changelog
-* Fri Apr 13 2018 Michael J Gruber <mjg@fedoraproject.org> - 1.13.0rc1-1
-- rc1 test
+* Fri Apr 20 2018 Michael J Gruber <mjg@fedoraproject.org> - 1.13.0-1
+- rebase to 1.13.0
+
+* Fri Apr 13 2018 Michael J Gruber <mjg@fedoraproject.org> - 1.12.0-6
+- install svg icon
 
 * Wed Feb 14 2018 Michael J Gruber <mjg@fedoraproject.org> - 1.12.0-5
 - CVE-2018-6192 (rh bz #1539845 #1539846) (gs bz #698916)
