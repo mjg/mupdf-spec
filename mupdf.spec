@@ -1,6 +1,6 @@
 Name:           mupdf
 Version:        1.13.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
@@ -10,8 +10,12 @@ Source1:        %{name}.desktop
 BuildRequires:  gcc make binutils desktop-file-utils coreutils
 BuildRequires:  openjpeg2-devel jbig2dec-devel desktop-file-utils
 BuildRequires:  libjpeg-devel freetype-devel libXext-devel curl-devel
-BuildRequires:  harfbuzz-devel lcms2-devel
+BuildRequires:  harfbuzz-devel
 BuildRequires:  mesa-libGL-devel freeglut-devel
+# We need to build against the Artifex fork of lcms2 so that we are thread safe
+# (see bug #1553915). Artifex make sure to rebase against upstream, who refuse
+# to integrate Artifex's changes. 
+Provides:       bundled(lcms2-devel) = 2.9
 Patch0:         %{name}-1.13-openjpeg.patch
 
 %description
@@ -41,7 +45,10 @@ applications that use mupdf and static libraries
 
 %prep
 %setup -q -n %{name}-%{version}-source
-rm -rf thirdparty
+for d in $(ls thirdparty | grep -v lcms2)
+do
+  rm -rf thirdparty/$d
+done
 %patch0 -p1
 
 %build
@@ -83,6 +90,9 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Fri Apr 20 2018 Michael J Gruber <mjg@fedoraproject.org> - 1.13.0-2
+- bundle thread-safe lcms2 (fixes bug #1553915)
+
 * Fri Apr 20 2018 Michael J Gruber <mjg@fedoraproject.org> - 1.13.0-1
 - rebase to 1.13.0 (rh bz #1569993)
 
