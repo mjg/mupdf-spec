@@ -1,6 +1,6 @@
 Name:           mupdf
 Version:        1.13.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
@@ -67,8 +67,6 @@ chmod 0644 %{buildroot}%{_libdir}/*.a
 find %{buildroot}/%{_mandir} -type f -exec chmod 0644 {} \;
 find %{buildroot}/%{_includedir} -type f -exec chmod 0644 {} \;
 cd %{buildroot}/%{_bindir} && ln -s %{name}-x11 %{name}
-## Removing empty library as rpmlint complains about and we don't have thirdparty
-rm -f %{buildroot}/%{_libdir}/libmupdfthird.a
 
 
 %post
@@ -90,6 +88,9 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Mon Apr 23 2018 Michael J Gruber <mjg@fedoraproject.org> - 1.13.0-3
+- include (now non-empty) libmupdfthird.a again (fixes bug #1553915 for zathura-pdf-mupdf)
+
 * Fri Apr 20 2018 Michael J Gruber <mjg@fedoraproject.org> - 1.13.0-2
 - bundle thread-safe lcms2 (fixes bug #1553915)
 
