@@ -1,6 +1,6 @@
 Name:           mupdf
 Version:        1.13.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
@@ -11,11 +11,13 @@ BuildRequires:  gcc make binutils desktop-file-utils coreutils
 BuildRequires:  openjpeg2-devel jbig2dec-devel desktop-file-utils
 BuildRequires:  libjpeg-devel freetype-devel libXext-devel curl-devel
 BuildRequires:  harfbuzz-devel
-BuildRequires:  mesa-libGL-devel freeglut-devel
+BuildRequires:  mesa-libGL-devel
 # We need to build against the Artifex fork of lcms2 so that we are thread safe
 # (see bug #1553915). Artifex make sure to rebase against upstream, who refuse
 # to integrate Artifex's changes. 
 Provides:       bundled(lcms2-devel) = 2.9
+# We need to build against the Artifex fork of freeglut so that we are unicode safe.
+Provides:	bundled(freeglut)-devel) = 3.0.0
 Patch0:         %{name}-1.13-openjpeg.patch
 
 %description
@@ -45,7 +47,7 @@ applications that use mupdf and static libraries
 
 %prep
 %setup -q -n %{name}-%{version}-source
-for d in $(ls thirdparty | grep -v lcms2)
+for d in $(ls thirdparty | grep -v -e freeglut -e lcms2)
 do
   rm -rf thirdparty/$d
 done
@@ -54,7 +56,7 @@ done
 %build
 export XCFLAGS="%{optflags} -fPIC -DJBIG_NO_MEMENTO -DTOFU -DTOFU_CJK"
 
-make  %{?_smp_mflags}  build=debug verbose=yes HAVE_GLUT=yes SYS_GLUT_CFLAGS="-I%{_includedir}/GL" GLUT_LIBS="-lGL -lglut"
+make  %{?_smp_mflags}  build=debug verbose=yes
 %install
 make DESTDIR=%{buildroot} install prefix=%{_prefix} libdir=%{_libdir} build=debug verbose=yes HAVE_GLUT=yes
 ## handle docs on our own
@@ -88,6 +90,9 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Mon Apr 23 2018 Michael J Gruber <mjg@fedoraproject.org> - 1.13.0-4
+- bundle unicode safe freeglut
+
 * Mon Apr 23 2018 Michael J Gruber <mjg@fedoraproject.org> - 1.13.0-3
 - include (now non-empty) libmupdfthird.a again (fixes bug #1553915 for zathura-pdf-mupdf)
 
