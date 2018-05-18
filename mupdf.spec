@@ -1,6 +1,6 @@
 Name:           mupdf
 Version:        1.13.0
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
@@ -11,7 +11,7 @@ BuildRequires:  gcc make binutils desktop-file-utils coreutils
 BuildRequires:  openjpeg2-devel jbig2dec-devel desktop-file-utils
 BuildRequires:  libjpeg-devel freetype-devel libXext-devel curl-devel
 BuildRequires:  harfbuzz-devel
-BuildRequires:  mesa-libGL-devel
+BuildRequires:  mesa-libGL-devel mesa-libGLU-devel libXi-devel libXrandr-devel
 # We need to build against the Artifex fork of lcms2 so that we are thread safe
 # (see bug #1553915). Artifex make sure to rebase against upstream, who refuse
 # to integrate Artifex's changes. 
@@ -90,6 +90,9 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Fri May 18 2018 Michael J Gruber <mjg@fedoraproject.org> - 1.13.0-5
+- fix BR (pulled in by freeglut-devel before)
+
 * Mon Apr 23 2018 Michael J Gruber <mjg@fedoraproject.org> - 1.13.0-4
 - bundle unicode safe freeglut
 
