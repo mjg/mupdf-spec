@@ -1,6 +1,6 @@
 Name:           mupdf
 Version:        1.13.0
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        GPLv3
@@ -17,8 +17,9 @@ BuildRequires:  mesa-libGL-devel mesa-libGLU-devel libXi-devel libXrandr-devel
 # to integrate Artifex's changes. 
 Provides:       bundled(lcms2-devel) = 2.9
 # We need to build against the Artifex fork of freeglut so that we are unicode safe.
-Provides:	bundled(freeglut)-devel) = 3.0.0
+Provides:       bundled(freeglut)-devel) = 3.0.0
 Patch0:         %{name}-1.13-openjpeg.patch
+Patch1:         0001-fix-build-on-big-endian.patch
 
 %description
 MuPDF is a lightweight PDF viewer and toolkit written in portable C.
@@ -52,6 +53,7 @@ do
   rm -rf thirdparty/$d
 done
 %patch0 -p1
+%patch1 -p1 -d thirdparty/lcms2
 
 %build
 export XCFLAGS="%{optflags} -fPIC -DJBIG_NO_MEMENTO -DTOFU -DTOFU_CJK"
@@ -90,6 +92,9 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Sun Jun 03 2018 Michael J Gruber <mjg@fedoraproject.org> - 1.13.0-6
+- fix lcms2art build on big endian
+
 * Fri May 18 2018 Michael J Gruber <mjg@fedoraproject.org> - 1.13.0-5
 - fix BR (pulled in by freeglut-devel before)
 
