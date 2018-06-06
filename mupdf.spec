@@ -1,9 +1,9 @@
 Name:           mupdf
 Version:        1.13.0
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
-License:        GPLv3
+License:        AGPLv3+
 URL:            http://mupdf.com/
 Source0:        http://mupdf.com/downloads/%{name}-%{version}-source.tar.gz
 Source1:        %{name}.desktop
@@ -92,6 +92,9 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Wed Jun 06 2018 Michael J Gruber <mjg@fedoraproject.org> - 1.13.0-7
+- fix license field (bug #1586328)
+
 * Sun Jun 03 2018 Michael J Gruber <mjg@fedoraproject.org> - 1.13.0-6
 - fix lcms2art build on big endian
 
