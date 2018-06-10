@@ -1,6 +1,6 @@
 Name:           mupdf
 Version:        1.13.0
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        AGPLv3+
@@ -20,6 +20,7 @@ Provides:       bundled(lcms2-devel) = 2.9
 Provides:       bundled(freeglut)-devel) = 3.0.0
 Patch0:         %{name}-1.13-openjpeg.patch
 Patch1:         0001-fix-build-on-big-endian.patch
+Patch2:         0001-Fix-699271-skip-space-correctly.patch
 
 %description
 MuPDF is a lightweight PDF viewer and toolkit written in portable C.
@@ -54,6 +55,7 @@ do
 done
 %patch0 -p1
 %patch1 -p1 -d thirdparty/lcms2
+%patch2 -p1
 
 %build
 export XCFLAGS="%{optflags} -fPIC -DJBIG_NO_MEMENTO -DTOFU -DTOFU_CJK"
@@ -92,6 +94,9 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Sun Jun 10 2018 Michael J Gruber <mjg@fedoraproject.org> - 1.13.0-8
+- CVE-2018-10289 (rh bz #1573050) (gs bz #699271)
+
 * Wed Jun 06 2018 Michael J Gruber <mjg@fedoraproject.org> - 1.13.0-7
 - fix license field (bug #1586328)
 
