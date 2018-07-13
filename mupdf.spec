@@ -1,6 +1,6 @@
 Name:           mupdf
 Version:        1.13.0
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        AGPLv3+
@@ -94,6 +94,9 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Fri Jul 13 2018 Fedora Release Engineering <releng@fedoraproject.org> - 1.13.0-9
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
+
 * Sun Jun 10 2018 Michael J Gruber <mjg@fedoraproject.org> - 1.13.0-8
 - CVE-2018-10289 (rh bz #1573050) (gs bz #699271)
 
