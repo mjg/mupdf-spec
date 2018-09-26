@@ -1,13 +1,14 @@
 Name:           mupdf
-Version:        1.13.0
-Release:        9%{?dist}
+Version:        1.14.0rc1
+%global origversion 1.14.0-rc1
+Release:        1%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        AGPLv3+
 URL:            http://mupdf.com/
-Source0:        http://mupdf.com/downloads/%{name}-%{version}-source.tar.gz
+Source0:        http://mupdf.com/downloads/archive/%{name}-%{origversion}-source.tar.gz
 Source1:        %{name}.desktop
-BuildRequires:  gcc make binutils desktop-file-utils coreutils
+BuildRequires:  gcc make binutils desktop-file-utils coreutils pkgconfig
 BuildRequires:  openjpeg2-devel jbig2dec-devel desktop-file-utils
 BuildRequires:  libjpeg-devel freetype-devel libXext-devel curl-devel
 BuildRequires:  harfbuzz-devel
@@ -17,10 +18,11 @@ BuildRequires:  mesa-libGL-devel mesa-libGLU-devel libXi-devel libXrandr-devel
 # to integrate Artifex's changes. 
 Provides:       bundled(lcms2-devel) = 2.9
 # We need to build against the Artifex fork of freeglut so that we are unicode safe.
-Provides:       bundled(freeglut)-devel) = 3.0.0
-Patch0:         %{name}-1.13-openjpeg.patch
-Patch1:         0001-fix-build-on-big-endian.patch
-Patch2:         0001-Fix-699271-skip-space-correctly.patch
+Provides:       bundled(freeglut-devel) = 3.0.0
+# muPDF needs the muJS sources for the build even if we build against the system
+# version so bundling them is the safer choice.
+Provides:       bundled(mujs-devel) = 1.0.5
+Patch0:         0001-fix-build-on-big-endian.patch
 
 %description
 MuPDF is a lightweight PDF viewer and toolkit written in portable C.
@@ -48,14 +50,25 @@ The mupdf-devel package contains header files for developing
 applications that use mupdf and static libraries
 
 %prep
-%setup -q -n %{name}-%{version}-source
-for d in $(ls thirdparty | grep -v -e freeglut -e lcms2)
+%setup -q -n %{name}-%{origversion}-source
+for d in $(ls thirdparty | grep -v -e freeglut -e lcms2 -e mujs)
 do
   rm -rf thirdparty/$d
 done
-%patch0 -p1
-%patch1 -p1 -d thirdparty/lcms2
-%patch2 -p1
+%patch0 -p1 -d thirdparty/lcms2
+echo > user.make "\
+  USE_SYSTEM_FREETYPE := yes
+  USE_SYSTEM_HARFBUZZ := yes
+  USE_SYSTEM_JBIG2DEC := yes
+  USE_SYSTEM_JPEGXR := yes # not used without HAVE_JPEGXR
+  USE_SYSTEM_LCMS2 := no # need lcms2-art fork
+  USE_SYSTEM_LIBJPEG := yes
+  USE_SYSTEM_MUJS := no # build needs source anyways
+  USE_SYSTEM_OPENJPEG := yes
+  USE_SYSTEM_ZLIB := yes
+  USE_SYSTEM_GLUT := no # need freeglut2-art frok
+  USE_SYSTEM_CURL := yes
+"
 
 %build
 export XCFLAGS="%{optflags} -fPIC -DJBIG_NO_MEMENTO -DTOFU -DTOFU_CJK"
@@ -94,6 +107,10 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Wed Sep 26 2018 Michael J Gruber <mjg@fedoraproject.org> - 1.14rc1-1
+- rc test
+- adjust to new build system setup
+
 * Fri Jul 13 2018 Fedora Release Engineering <releng@fedoraproject.org> - 1.13.0-9
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
 
