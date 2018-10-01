@@ -1,13 +1,14 @@
 Name:           mupdf
 Version:        1.14.0rc1
 %global origversion 1.14.0-rc1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        AGPLv3+
 URL:            http://mupdf.com/
 Source0:        http://mupdf.com/downloads/archive/%{name}-%{origversion}-source.tar.gz
 Source1:        %{name}.desktop
+Source2:        %{name}-gl.desktop
 BuildRequires:  gcc make binutils desktop-file-utils coreutils pkgconfig
 BuildRequires:  openjpeg2-devel jbig2dec-devel desktop-file-utils
 BuildRequires:  libjpeg-devel freetype-devel libXext-devel curl-devel
@@ -79,8 +80,10 @@ make DESTDIR=%{buildroot} install prefix=%{_prefix} libdir=%{_libdir} build=debu
 ## handle docs on our own
 rm -rf %{buildroot}/%{_docdir}
 desktop-file-install --dir=%{buildroot}%{_datadir}/applications %{SOURCE1}
+desktop-file-install --dir=%{buildroot}%{_datadir}/applications %{SOURCE2}
 mkdir -p %{buildroot}%{_datadir}/icons/hicolor/scalable/apps
 install -p -m644 docs/logo/mupdf-logo.svg %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/mupdf.svg
+install -p -m644 docs/logo/mupdf-logo.svg %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/mupdf-gl.svg
 ## fix strange permissons
 chmod 0644 %{buildroot}%{_libdir}/*.a
 find %{buildroot}/%{_mandir} -type f -exec chmod 0644 {} \;
@@ -98,7 +101,7 @@ update-desktop-database &> /dev/null || :
 %license COPYING
 %doc README CHANGES docs/*
 %{_bindir}/*
-%{_datadir}/applications/mupdf.desktop
+%{_datadir}/applications/mupdf*.desktop
 %{_datadir}/icons/hicolor/*/apps/*
 %{_mandir}/man1/*.1.gz
 
@@ -107,6 +110,9 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Mon Oct 01 2018 Michael J Gruber <mjg@fedoraproject.org> - 1.14rc1-3
+- mupdf-gl desktop entry
+
 * Mon Oct 01 2018 Michael J Gruber <mjg@fedoraproject.org> - 1.14rc1-2
 - enable libcrypto
 
