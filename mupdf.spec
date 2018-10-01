@@ -1,7 +1,7 @@
 Name:           mupdf
 Version:        1.14.0rc1
 %global origversion 1.14.0-rc1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        AGPLv3+
@@ -11,7 +11,7 @@ Source1:        %{name}.desktop
 BuildRequires:  gcc make binutils desktop-file-utils coreutils pkgconfig
 BuildRequires:  openjpeg2-devel jbig2dec-devel desktop-file-utils
 BuildRequires:  libjpeg-devel freetype-devel libXext-devel curl-devel
-BuildRequires:  harfbuzz-devel
+BuildRequires:  harfbuzz-devel openssl-devel
 BuildRequires:  mesa-libGL-devel mesa-libGLU-devel libXi-devel libXrandr-devel
 # We need to build against the Artifex fork of lcms2 so that we are thread safe
 # (see bug #1553915). Artifex make sure to rebase against upstream, who refuse
@@ -75,7 +75,7 @@ export XCFLAGS="%{optflags} -fPIC -DJBIG_NO_MEMENTO -DTOFU -DTOFU_CJK"
 
 make  %{?_smp_mflags}  build=debug verbose=yes
 %install
-make DESTDIR=%{buildroot} install prefix=%{_prefix} libdir=%{_libdir} build=debug verbose=yes HAVE_GLUT=yes
+make DESTDIR=%{buildroot} install prefix=%{_prefix} libdir=%{_libdir} build=debug verbose=yes
 ## handle docs on our own
 rm -rf %{buildroot}/%{_docdir}
 desktop-file-install --dir=%{buildroot}%{_datadir}/applications %{SOURCE1}
@@ -107,6 +107,9 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Mon Oct 01 2018 Michael J Gruber <mjg@fedoraproject.org> - 1.14rc1-2
+- enable libcrypto
+
 * Wed Sep 26 2018 Michael J Gruber <mjg@fedoraproject.org> - 1.14rc1-1
 - rc test
 - adjust to new build system setup
