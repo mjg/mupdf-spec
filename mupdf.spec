@@ -1,6 +1,6 @@
 Name:           mupdf
 Version:        1.14.0
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        AGPLv3+
@@ -27,6 +27,7 @@ Patch1:         mupdf-CVE-2018-16647.patch
 Patch2:         mupdf-CVE-2018-16648.patch
 Patch3:         mupdf-CVE-2018-18662.patch
 Patch4:         0001-Fix-699840-Use-saved-sig_widget-pointer-to-sign-sign.patch
+Patch5:         0001-Write-placeholder-appearance-streams-for-digital-sig.patch
 
 %description
 MuPDF is a lightweight PDF viewer and toolkit written in portable C.
@@ -64,6 +65,7 @@ done
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
 echo > user.make "\
   USE_SYSTEM_FREETYPE := yes
   USE_SYSTEM_HARFBUZZ := yes
@@ -117,6 +119,9 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Thu Nov 15 2018 Michael J Gruber <mjg@fedoraproject.org> - 1.14.0-6
+- signature handling fix needs more patches than claimed
+
 * Thu Nov 15 2018 Michael J Gruber <mjg@fedoraproject.org> - 1.14.0-5
 - fix signature handling
 
