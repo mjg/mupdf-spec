@@ -1,6 +1,6 @@
 Name:           mupdf
 Version:        1.14.0
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        AGPLv3+
@@ -11,7 +11,7 @@ Source2:        %{name}-gl.desktop
 BuildRequires:  gcc make binutils desktop-file-utils coreutils pkgconfig
 BuildRequires:  openjpeg2-devel jbig2dec-devel desktop-file-utils
 BuildRequires:  libjpeg-devel freetype-devel libXext-devel curl-devel
-BuildRequires:  harfbuzz-devel openssl-devel
+BuildRequires:  harfbuzz-devel openssl-devel mesa-libEGL-devel
 BuildRequires:  mesa-libGL-devel mesa-libGLU-devel libXi-devel libXrandr-devel
 # We need to build against the Artifex fork of lcms2 so that we are thread safe
 # (see bug #1553915). Artifex make sure to rebase against upstream, who refuse
@@ -119,6 +119,9 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Thu Nov 15 2018 Michael J Gruber <mjg@fedoraproject.org> - 1.14.0-7
+- work around missing mesa EGl dependency
+
 * Thu Nov 15 2018 Michael J Gruber <mjg@fedoraproject.org> - 1.14.0-6
 - signature handling fix needs more patches than claimed
 
