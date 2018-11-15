@@ -1,6 +1,6 @@
 Name:           mupdf
 Version:        1.14.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        AGPLv3+
@@ -25,6 +25,7 @@ Provides:       bundled(mujs-devel) = 1.0.5
 Patch0:         0001-fix-build-on-big-endian.patch
 Patch1:         mupdf-CVE-2018-16647.patch
 Patch2:         mupdf-CVE-2018-16648.patch
+Patch3:         mupdf-CVE-2018-18662.patch
 
 %description
 MuPDF is a lightweight PDF viewer and toolkit written in portable C.
@@ -60,6 +61,7 @@ done
 %patch0 -p1 -d thirdparty/lcms2
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 echo > user.make "\
   USE_SYSTEM_FREETYPE := yes
   USE_SYSTEM_HARFBUZZ := yes
@@ -113,6 +115,9 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Thu Nov 15 2018 Michael J Gruber <mjg@fedoraproject.org> - 1.14.0-4
+- bz #1644444 #1644445
+
 * Thu Nov 15 2018 Michael J Gruber <mjg@fedoraproject.org> - 1.14.0-3
 - bz #1626481 #1626484
 
