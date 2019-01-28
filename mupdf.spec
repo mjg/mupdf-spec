@@ -2,7 +2,6 @@ Name:           mupdf
 Version:        1.14.0
 Release:        7%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
-Group:          Applications/Publishing
 License:        AGPLv3+
 URL:            http://mupdf.com/
 Source0:        http://mupdf.com/downloads/archive/%{name}-%{version}-source.tar.gz
@@ -46,7 +45,6 @@ searchable text, and rendering pages to image files is provided.
 
 %package devel
 Summary:        Development files for %{name}
-Group:            Development/Libraries
 Requires:         %{name} = %{version}-%{release}
 Provides:         %{name}-static = %{version}-%{release}
 
