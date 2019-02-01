@@ -1,6 +1,6 @@
 Name:           mupdf
 Version:        1.14.0
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 License:        AGPLv3+
 URL:            http://mupdf.com/
@@ -110,6 +110,9 @@ cd %{buildroot}/%{_bindir} && ln -s %{name}-x11 %{name}
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Fri Feb 01 2019 Fedora Release Engineering <releng@fedoraproject.org> - 1.14.0-8
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
+
 * Thu Nov 15 2018 Michael J Gruber <mjg@fedoraproject.org> - 1.14.0-7
 - work around missing mesa EGl dependency
 
