@@ -1,10 +1,11 @@
 Name:           mupdf
-Version:        1.14.0
-Release:        8%{?dist}
+Version:        1.15.0rc1
+%global origversion 1.15.0-rc1
+Release:        1%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 License:        AGPLv3+
 URL:            http://mupdf.com/
-Source0:        http://mupdf.com/downloads/archive/%{name}-%{version}-source.tar.gz
+Source0:        http://mupdf.com/downloads/archive/%{name}-%{origversion}-source.tar.gz
 Source1:        %{name}.desktop
 Source2:        %{name}-gl.desktop
 BuildRequires:  gcc make binutils desktop-file-utils coreutils pkgconfig
@@ -22,11 +23,6 @@ Provides:       bundled(freeglut-devel) = 3.0.0
 # version so bundling them is the safer choice.
 Provides:       bundled(mujs-devel) = 1.0.5
 Patch0:         0001-fix-build-on-big-endian.patch
-Patch1:         mupdf-CVE-2018-16647.patch
-Patch2:         mupdf-CVE-2018-16648.patch
-Patch3:         mupdf-CVE-2018-18662.patch
-Patch4:         0001-Fix-699840-Use-saved-sig_widget-pointer-to-sign-sign.patch
-Patch5:         0001-Write-placeholder-appearance-streams-for-digital-sig.patch
 
 %description
 MuPDF is a lightweight PDF viewer and toolkit written in portable C.
@@ -53,17 +49,12 @@ The mupdf-devel package contains header files for developing
 applications that use mupdf and static libraries
 
 %prep
-%setup -q -n %{name}-%{version}-source
+%setup -q -n %{name}-%{origversion}-source
 for d in $(ls thirdparty | grep -v -e freeglut -e lcms2 -e mujs)
 do
   rm -rf thirdparty/$d
 done
 %patch0 -p1 -d thirdparty/lcms2
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
-%patch5 -p1
 echo > user.make "\
   USE_SYSTEM_FREETYPE := yes
   USE_SYSTEM_HARFBUZZ := yes
@@ -110,6 +101,9 @@ cd %{buildroot}/%{_bindir} && ln -s %{name}-x11 %{name}
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Mon Apr 29 2019 Michael J Gruber <mjg@fedoraproject.org> - 1.15rc1-1
+- rc1 test
+
 * Fri Feb 01 2019 Fedora Release Engineering <releng@fedoraproject.org> - 1.14.0-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
 
