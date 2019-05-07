@@ -1,12 +1,11 @@
 Name:           mupdf
-Version:        1.15.0rc1
-%global origversion 1.15.0-rc1
+Version:        1.15.0
 Release:        1%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 Group:          Applications/Publishing
 License:        AGPLv3+
 URL:            http://mupdf.com/
-Source0:        http://mupdf.com/downloads/archive/%{name}-%{origversion}-source.tar.gz
+Source0:        http://mupdf.com/downloads/archive/%{name}-%{version}-source.tar.gz
 Source1:        %{name}.desktop
 Source2:        %{name}-gl.desktop
 BuildRequires:  gcc make binutils desktop-file-utils coreutils pkgconfig
@@ -51,7 +50,7 @@ The mupdf-devel package contains header files for developing
 applications that use mupdf and static libraries
 
 %prep
-%setup -q -n %{name}-%{origversion}-source
+%setup -q -n %{name}-%{version}-source
 for d in $(ls thirdparty | grep -v -e freeglut -e lcms2 -e mujs)
 do
   rm -rf thirdparty/$d
@@ -110,6 +109,9 @@ update-desktop-database &> /dev/null || :
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Tue May 07 2019 Michael J Gruber <mjg@fedoraproject.org> - 1.15.0-1
+- rebase to 1.15.0
+
 * Mon Apr 29 2019 Michael J Gruber <mjg@fedoraproject.org> - 1.15rc1-1
 - rc1 test
 
