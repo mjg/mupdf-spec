@@ -1,6 +1,6 @@
 Name:           mupdf
 Version:        1.16.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 License:        AGPLv3+
 URL:            http://mupdf.com/
@@ -100,6 +100,9 @@ cd %{buildroot}/%{_bindir} && ln -s %{name}-x11 %{name}
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Wed Jan 29 2020 Fedora Release Engineering <releng@fedoraproject.org> - 1.16.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
+
 * Fri Aug 16 2019 Michael J Gruber <mjg@fedoraproject.org> - 1.16.1-1
 - rebase to 1.16.1
 
