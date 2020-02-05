@@ -1,6 +1,6 @@
 Name:           mupdf
 Version:        1.16.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 License:        AGPLv3+
 URL:            http://mupdf.com/
@@ -22,6 +22,7 @@ Provides:       bundled(freeglut-devel) = 3.0.0
 # version so bundling them is the safer choice.
 Provides:       bundled(mujs-devel) = 1.0.5
 Patch0:         0001-fix-build-on-big-endian.patch
+Patch1:         0001-fix-build-with-gcc-10.patch
 
 %description
 MuPDF is a lightweight PDF viewer and toolkit written in portable C.
@@ -54,6 +55,7 @@ do
   rm -rf thirdparty/$d
 done
 %patch0 -p1 -d thirdparty/lcms2
+%patch1 -p1 -d thirdparty/freeglut
 echo > user.make "\
   USE_SYSTEM_FREETYPE := yes
   USE_SYSTEM_HARFBUZZ := yes
@@ -64,7 +66,7 @@ echo > user.make "\
   USE_SYSTEM_MUJS := no # build needs source anyways
   USE_SYSTEM_OPENJPEG := yes
   USE_SYSTEM_ZLIB := yes
-  USE_SYSTEM_GLUT := no # need freeglut2-art frok
+  USE_SYSTEM_GLUT := no # need freeglut2-art fork
   USE_SYSTEM_CURL := yes
 "
 
@@ -100,6 +102,9 @@ cd %{buildroot}/%{_bindir} && ln -s %{name}-x11 %{name}
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Wed Feb 05 2020 Michael J Gruber <mjg@fedoraproject.org> - 1.16.1-3
+- fix build with gcc 10
+
 * Wed Jan 29 2020 Fedora Release Engineering <releng@fedoraproject.org> - 1.16.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
 
