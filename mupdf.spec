@@ -1,6 +1,6 @@
 Name:           mupdf
 Version:        1.17.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 License:        AGPLv3+
 URL:            http://mupdf.com/
@@ -23,6 +23,7 @@ Provides:       bundled(freeglut-devel) = 3.0.0
 Provides:       bundled(mujs-devel) = 1.0.5
 Patch0:         0001-fix-build-on-big-endian.patch
 Patch1:         0001-fix-build-with-gcc-10.patch
+Patch2:         0001-Fix-possible-crash-when-using-openssl-for-digital-si.patch
 
 %description
 MuPDF is a lightweight PDF viewer and toolkit written in portable C.
@@ -56,6 +57,7 @@ do
 done
 %patch0 -p1 -d thirdparty/lcms2
 %patch1 -p1 -d thirdparty/freeglut
+%patch2 -p1
 echo > user.make "\
   USE_SYSTEM_FREETYPE := yes
   USE_SYSTEM_HARFBUZZ := yes
@@ -102,6 +104,9 @@ cd %{buildroot}/%{_bindir} && ln -s %{name}-x11 %{name}
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Sun May 31 2020 Michael J Gruber <mjg@fedoraproject.org> - 1.17.0-2
+- fix signature check crash
+
 * Mon May 11 2020 Michael J Gruber <mjg@fedoraproject.org> - 1.17.0-1
 - rebase to 1.17.0 (bz #1831652)
 
