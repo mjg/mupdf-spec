@@ -1,6 +1,11 @@
+# Desired jbig2dec header files and library version
+# Apparantly, jbig2dec complains even about newer versions.
+# Please update if needed.
+%global jbig2dec_version 0.18
+
 Name:           mupdf
 Version:        1.17.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 License:        AGPLv3+
 URL:            http://mupdf.com/
@@ -8,10 +13,13 @@ Source0:        http://mupdf.com/downloads/archive/%{name}-%{version}-source.tar
 Source1:        %{name}.desktop
 Source2:        %{name}-gl.desktop
 BuildRequires:  gcc make binutils desktop-file-utils coreutils pkgconfig
-BuildRequires:  openjpeg2-devel jbig2dec-devel desktop-file-utils
+BuildRequires:  openjpeg2-devel desktop-file-utils
 BuildRequires:  libjpeg-devel freetype-devel libXext-devel curl-devel
 BuildRequires:  harfbuzz-devel openssl-devel mesa-libEGL-devel
 BuildRequires:  mesa-libGL-devel mesa-libGLU-devel libXi-devel libXrandr-devel
+BuildRequires:  jbig2dec-devel = %{jbig2dec_version}
+BuildRequires:  jbig2dec-libs = %{jbig2dec_version}
+Requires:       jbig2dec-libs = %{jbig2dec_version}
 # We need to build against the Artifex fork of lcms2 so that we are thread safe
 # (see bug #1553915). Artifex make sure to rebase against upstream, who refuse
 # to integrate Artifex's changes. 
@@ -104,6 +112,9 @@ cd %{buildroot}/%{_bindir} && ln -s %{name}-x11 %{name}
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Mon Jul 27 2020 Michael J Gruber <mjg@fedoraproject.org> - 1.17.0-3
+- depend on exact jbig2dec version (bz 1861103)
+
 * Sun May 31 2020 Michael J Gruber <mjg@fedoraproject.org> - 1.17.0-2
 - fix signature check crash
 
