@@ -1,11 +1,11 @@
 # Desired jbig2dec header files and library version
 # Apparantly, jbig2dec complains even about newer versions.
 # Please update if needed.
-%global jbig2dec_version 0.18
+%global jbig2dec_version 0.19
 
 Name:           mupdf
 Version:        1.17.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 License:        AGPLv3+
 URL:            http://mupdf.com/
@@ -112,6 +112,9 @@ cd %{buildroot}/%{_bindir} && ln -s %{name}-x11 %{name}
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Fri Sep 18 2020 Michael J Gruber <mjg@fedoraproject.org> - 1.17.0-4
+- rebuild with jbig2dec 0.19
+
 * Mon Jul 27 2020 Michael J Gruber <mjg@fedoraproject.org> - 1.17.0-3
 - depend on exact jbig2dec version (bz 1861103)
 
