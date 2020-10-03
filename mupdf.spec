@@ -4,19 +4,21 @@
 %global jbig2dec_version 0.19
 
 Name:           mupdf
-Version:        1.17.0
-Release:        4%{?dist}
+Version:        1.18.0rc1
+%global origversion 1.18.0-rc1
+Release:        1%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 License:        AGPLv3+
 URL:            http://mupdf.com/
-Source0:        http://mupdf.com/downloads/archive/%{name}-%{version}-source.tar.gz
+Source0:        http://mupdf.com/downloads/archive/%{name}-%{origversion}-source.tar.gz
 Source1:        %{name}.desktop
 Source2:        %{name}-gl.desktop
-BuildRequires:  gcc make binutils desktop-file-utils coreutils pkgconfig
+BuildRequires:  gcc gcc-c++ make binutils desktop-file-utils coreutils pkgconfig
 BuildRequires:  openjpeg2-devel desktop-file-utils
 BuildRequires:  libjpeg-devel freetype-devel libXext-devel curl-devel
 BuildRequires:  harfbuzz-devel openssl-devel mesa-libEGL-devel
 BuildRequires:  mesa-libGL-devel mesa-libGLU-devel libXi-devel libXrandr-devel
+BuildRequires:  gumbo-parser-devel
 BuildRequires:  jbig2dec-devel = %{jbig2dec_version}
 BuildRequires:  jbig2dec-libs = %{jbig2dec_version}
 Requires:       jbig2dec-libs = %{jbig2dec_version}
@@ -30,8 +32,6 @@ Provides:       bundled(freeglut-devel) = 3.0.0
 # version so bundling them is the safer choice.
 Provides:       bundled(mujs-devel) = 1.0.5
 Patch0:         0001-fix-build-on-big-endian.patch
-Patch1:         0001-fix-build-with-gcc-10.patch
-Patch2:         0001-Fix-possible-crash-when-using-openssl-for-digital-si.patch
 
 %description
 MuPDF is a lightweight PDF viewer and toolkit written in portable C.
@@ -58,14 +58,12 @@ The mupdf-devel package contains header files for developing
 applications that use mupdf and static libraries
 
 %prep
-%setup -q -n %{name}-%{version}-source
+%setup -q -n %{name}-%{origversion}-source
 for d in $(ls thirdparty | grep -v -e freeglut -e lcms2 -e mujs)
 do
   rm -rf thirdparty/$d
 done
 %patch0 -p1 -d thirdparty/lcms2
-%patch1 -p1 -d thirdparty/freeglut
-%patch2 -p1
 echo > user.make "\
   USE_SYSTEM_FREETYPE := yes
   USE_SYSTEM_HARFBUZZ := yes
@@ -78,6 +76,7 @@ echo > user.make "\
   USE_SYSTEM_ZLIB := yes
   USE_SYSTEM_GLUT := no # need freeglut2-art fork
   USE_SYSTEM_CURL := yes
+  USE_SYSTEM_GUMBO := yes
 "
 
 %build
@@ -112,6 +111,9 @@ cd %{buildroot}/%{_bindir} && ln -s %{name}-x11 %{name}
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Sat Oct 03 2020 Michael J Gruber <mjg@fedoraproject.org> - 1.18.0-rc1
+- mupdf 1.18.0-rc1 test
+
 * Fri Sep 18 2020 Michael J Gruber <mjg@fedoraproject.org> - 1.17.0-4
 - rebuild with jbig2dec 0.19
 
