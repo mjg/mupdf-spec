@@ -4,9 +4,9 @@
 %global jbig2dec_version 0.19
 
 Name:           mupdf
-Version:        1.18.0rc1
+Version:        1.18.0
 %global origversion 1.18.0-rc1
-Release:        1%{?dist}
+Release:        0.1.rc1%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 License:        AGPLv3+
 URL:            http://mupdf.com/
@@ -25,12 +25,12 @@ Requires:       jbig2dec-libs = %{jbig2dec_version}
 # We need to build against the Artifex fork of lcms2 so that we are thread safe
 # (see bug #1553915). Artifex make sure to rebase against upstream, who refuse
 # to integrate Artifex's changes. 
-Provides:       bundled(lcms2-devel) = 2.9
+Provides:       bundled(lcms2-devel) = 2.10art
 # We need to build against the Artifex fork of freeglut so that we are unicode safe.
 Provides:       bundled(freeglut-devel) = 3.0.0
 # muPDF needs the muJS sources for the build even if we build against the system
 # version so bundling them is the safer choice.
-Provides:       bundled(mujs-devel) = 1.0.5
+Provides:       bundled(mujs-devel) = 1.0.9
 Patch0:         0001-fix-build-on-big-endian.patch
 
 %description
@@ -111,6 +111,10 @@ cd %{buildroot}/%{_bindir} && ln -s %{name}-x11 %{name}
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Sun Oct 04 2020 Michael J Gruber <mjg@fedoraproject.org> - 1.18.0-0.1.rc1
+- properly name the rc prerelease
+- update versions of bundled libs
+
 * Sat Oct 03 2020 Michael J Gruber <mjg@fedoraproject.org> - 1.18.0-rc1
 - mupdf 1.18.0-rc1 test
 
