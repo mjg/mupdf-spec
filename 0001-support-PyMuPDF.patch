@@ -1,0 +1,42 @@
+From c8e13f6b200ca086085f8318409bd324ef498852 Mon Sep 17 00:00:00 2001
+Message-Id: <c8e13f6b200ca086085f8318409bd324ef498852.1602190618.git.mjg@fedoraproject.org>
+From: Michael J Gruber <mjg@fedoraproject.org>
+Date: Thu, 8 Oct 2020 22:55:36 +0200
+Subject: [PATCH] support PyMuPDF
+
+PyMuPDF patches mupdf sources to build. Support this by including the
+desired function.
+
+Originally-by: Jorj X. McKie <jorj.x.mckie@outlook.de>
+---
+ source/pdf/pdf-font-add.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
+diff --git a/source/pdf/pdf-font-add.c b/source/pdf/pdf-font-add.c
+index f68b74c02..2ff11efe1 100644
+--- a/source/pdf/pdf-font-add.c
++++ b/source/pdf/pdf-font-add.c
+@@ -778,3 +778,20 @@ pdf_add_cjk_font(fz_context *ctx, pdf_document *doc, fz_font *fzfont, int script
+ 
+ 	return fref;
+ }
++void jm_valid_chars(fz_context *ctx, fz_font *font, void *arr)
++{
++	FT_Face face = font->ft_face;
++	FT_ULong ucs;
++	FT_UInt gid;
++	long *table = (long *)arr;
++	fz_lock(ctx, FZ_LOCK_FREETYPE);
++	ucs = FT_Get_First_Char(face, &gid);
++	while (gid > 0)
++	{
++		if (gid < (FT_ULong)face->num_glyphs && face->num_glyphs > 0)
++			table[gid] = (long)ucs;
++		ucs = FT_Get_Next_Char(face, ucs, &gid);
++	}
++	fz_unlock(ctx, FZ_LOCK_FREETYPE);
++	return;
++}
+-- 
+2.28.0.945.gedc4c61efd
+
