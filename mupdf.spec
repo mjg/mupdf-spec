@@ -5,12 +5,11 @@
 
 Name:           mupdf
 Version:        1.18.0
-%global origversion 1.18.0-rc1
-Release:        0.1.rc1%{?dist}
+Release:        1%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 License:        AGPLv3+
 URL:            http://mupdf.com/
-Source0:        http://mupdf.com/downloads/archive/%{name}-%{origversion}-source.tar.gz
+Source0:        http://mupdf.com/downloads/archive/%{name}-%{version}-source.tar.gz
 Source1:        %{name}.desktop
 Source2:        %{name}-gl.desktop
 BuildRequires:  gcc gcc-c++ make binutils desktop-file-utils coreutils pkgconfig
@@ -58,7 +57,7 @@ The mupdf-devel package contains header files for developing
 applications that use mupdf and static libraries
 
 %prep
-%setup -q -n %{name}-%{origversion}-source
+%setup -q -n %{name}-%{version}-source
 for d in $(ls thirdparty | grep -v -e freeglut -e lcms2 -e mujs)
 do
   rm -rf thirdparty/$d
@@ -111,6 +110,10 @@ cd %{buildroot}/%{_bindir} && ln -s %{name}-x11 %{name}
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Thu Oct 08 2020 Michael J Gruber <mjg@fedoraproject.org> - 1.18.0-1
+- bugfix and feature release
+- bz #1886338 #1886339 #1886083
+
 * Sun Oct 04 2020 Michael J Gruber <mjg@fedoraproject.org> - 1.18.0-0.1.rc1
 - properly name the rc prerelease
 - update versions of bundled libs
