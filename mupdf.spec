@@ -5,7 +5,7 @@
 
 Name:           mupdf
 Version:        1.18.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 License:        AGPLv3+
 URL:            http://mupdf.com/
@@ -30,7 +30,6 @@ Provides:       bundled(freeglut-devel) = 3.0.0
 # muPDF needs the muJS sources for the build even if we build against the system
 # version so bundling them is the safer choice.
 Provides:       bundled(mujs-devel) = 1.0.9
-Patch0:         0001-fix-build-on-big-endian.patch
 Patch1:		0001-support-PyMuPDF.patch
 
 %description
@@ -63,7 +62,6 @@ for d in $(ls thirdparty | grep -v -e freeglut -e lcms2 -e mujs)
 do
   rm -rf thirdparty/$d
 done
-%patch0 -p1 -d thirdparty/lcms2
 %patch1 -p1
 echo > user.make "\
   USE_SYSTEM_FREETYPE := yes
@@ -112,6 +110,10 @@ cd %{buildroot}/%{_bindir} && ln -s %{name}-x11 %{name}
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Tue Jan 26 2021 Michael J Gruber <mjg@fedoraproject.org> - 1.18.0-4
+- (original date: Thu Oct 29 2020)
+- remove obsolete patch
+
 * Tue Jan 26 2021 Fedora Release Engineering <releng@fedoraproject.org> - 1.18.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
 
