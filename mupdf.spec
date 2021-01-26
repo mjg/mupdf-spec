@@ -5,7 +5,7 @@
 
 Name:           mupdf
 Version:        1.18.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 License:        AGPLv3+
 URL:            http://mupdf.com/
@@ -112,6 +112,9 @@ cd %{buildroot}/%{_bindir} && ln -s %{name}-x11 %{name}
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Tue Jan 26 2021 Fedora Release Engineering <releng@fedoraproject.org> - 1.18.0-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
+
 * Thu Oct 08 2020 Michael J Gruber <mjg@fedoraproject.org> - 1.18.0-2
 - support PyMuPDF
 
