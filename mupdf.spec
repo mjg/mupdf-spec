@@ -5,7 +5,7 @@
 
 Name:           mupdf
 Version:        1.18.0
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 License:        AGPLv3+
 URL:            http://mupdf.com/
@@ -31,6 +31,7 @@ Provides:       bundled(freeglut-devel) = 3.0.0
 # version so bundling them is the safer choice.
 Provides:       bundled(mujs-devel) = 1.0.9
 Patch1:		0001-support-PyMuPDF.patch
+Patch2:		0001-Bug-703366-Fix-double-free-of-object-during-lineariz.patch
 
 %description
 MuPDF is a lightweight PDF viewer and toolkit written in portable C.
@@ -63,6 +64,8 @@ do
   rm -rf thirdparty/$d
 done
 %patch1 -p1
+%patch2 -p1
+
 echo > user.make "\
   USE_SYSTEM_FREETYPE := yes
   USE_SYSTEM_HARFBUZZ := yes
@@ -110,6 +113,9 @@ cd %{buildroot}/%{_bindir} && ln -s %{name}-x11 %{name}
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Tue Feb 23 2021 Michael J Gruber <mjg@fedoraproject.org> - 1.18.0-5
+- CVE-2021-3407 (bz #1931964, bz#1931965)
+
 * Tue Jan 26 2021 Michael J Gruber <mjg@fedoraproject.org> - 1.18.0-4
 - (original date: Thu Oct 29 2020)
 - remove obsolete patch
