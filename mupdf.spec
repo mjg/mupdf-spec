@@ -5,7 +5,7 @@
 
 Name:           mupdf
 Version:        1.18.0
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 License:        AGPLv3+
 URL:            http://mupdf.com/
@@ -80,7 +80,7 @@ echo > user.make "\
 "
 
 %build
-export XCFLAGS="%{optflags} -fPIC -DJBIG_NO_MEMENTO -DTOFU -DTOFU_CJK"
+export XCFLAGS="%{optflags} -fPIC -DJBIG_NO_MEMENTO -DTOFU -DTOFU_CJK_EXT"
 
 make  %{?_smp_mflags}  build=debug verbose=yes
 %install
@@ -111,6 +111,9 @@ cd %{buildroot}/%{_bindir} && ln -s %{name}-x11 %{name}
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Wed Jul 14 2021 Scott Talbert <swt@techie.net> - 1.18.0-7
+- Enable DroidSansFallback font
+
 * Wed Feb 24 2021 Michael J Gruber <mjg@fedoraproject.org> - 1.18.0-6
 - remove obsolete PyMuPDF support
 
