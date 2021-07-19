@@ -40,7 +40,7 @@ within fractions of a pixel for the highest fidelity in reproducing
 the look of a printed page on screen.
 MuPDF has a small footprint.  A binary that includes the standard
 Roman fonts is only one megabyte.  A build with full CJK support
-(including an Asian font) is approximately five megabytes.
+(including an Asian font) is approximately seven megabytes.
 MuPDF has support for all non-interactive PDF 1.7 features, and the
 toolkit provides a simple API for accessing the internal structures of
 the PDF document.  Example code for navigating interactive links and
