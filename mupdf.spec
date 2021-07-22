@@ -5,7 +5,7 @@
 
 Name:           mupdf
 Version:        1.18.0
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        A lightweight PDF viewer and toolkit
 License:        AGPLv3+
 URL:            http://mupdf.com/
@@ -111,6 +111,9 @@ cd %{buildroot}/%{_bindir} && ln -s %{name}-x11 %{name}
 %{_libdir}/lib%{name}*.a
 
 %changelog
+* Thu Jul 22 2021 Fedora Release Engineering <releng@fedoraproject.org> - 1.18.0-8
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
+
 * Wed Jul 14 2021 Scott Talbert <swt@techie.net> - 1.18.0-7
 - Enable DroidSansFallback font
 
