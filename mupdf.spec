@@ -17,7 +17,7 @@ BuildRequires:  openjpeg2-devel desktop-file-utils
 BuildRequires:  libjpeg-devel freetype-devel libXext-devel curl-devel
 BuildRequires:  harfbuzz-devel openssl-devel mesa-libEGL-devel
 BuildRequires:  mesa-libGL-devel mesa-libGLU-devel libXi-devel libXrandr-devel
-BuildRequires:  gumbo-parser-devel
+BuildRequires:  gumbo-parser-devel leptonica-devel tesseract-devel
 BuildRequires:  jbig2dec-devel = %{jbig2dec_version}
 BuildRequires:  jbig2dec-libs = %{jbig2dec_version}
 Requires:       jbig2dec-libs = %{jbig2dec_version}
@@ -77,6 +77,9 @@ echo > user.make "\
   USE_SYSTEM_GLUT := no # need freeglut2-art fork
   USE_SYSTEM_CURL := yes
   USE_SYSTEM_GUMBO := yes
+  USE_TESSERACT := yes
+  USE_SYSTEM_LEPTONICA := yes
+  USE_SYSTEM_TESSERACT := yes
 "
 
 %build
