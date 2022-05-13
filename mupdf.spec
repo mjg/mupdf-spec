@@ -4,12 +4,13 @@
 %global jbig2dec_version 0.19
 
 Name:           mupdf
-Version:        1.19.0
+Version:        1.20.0~rc1
+%global upversion 1.20.0-rc1
 Release:        %autorelease
 Summary:        A lightweight PDF viewer and toolkit
 License:        AGPLv3+
 URL:            http://mupdf.com/
-Source0:        http://mupdf.com/downloads/archive/%{name}-%{version}-source.tar.gz
+Source0:        http://mupdf.com/downloads/archive/%{name}-%{upversion}-source.tar.gz
 Source1:        %{name}.desktop
 Source2:        %{name}-gl.desktop
 BuildRequires:  gcc gcc-c++ make binutils desktop-file-utils coreutils pkgconfig
@@ -24,14 +25,14 @@ Requires:       jbig2dec-libs = %{jbig2dec_version}
 # We need to build against the Artifex fork of lcms2 so that we are thread safe
 # (see bug #1553915). Artifex make sure to rebase against upstream, who refuse
 # to integrate Artifex's changes. 
-Provides:       bundled(lcms2-devel) = 2.12mt
+Provides:       bundled(lcms2-devel) = 2.12^85.g558b336
 # We need to build against the Artifex fork of freeglut so that we are unicode safe.
-Provides:       bundled(freeglut-devel) = 3.0.0
+Provides:       bundled(freeglut-devel) = 3.0.0^11.g13ae6aa
 # muPDF needs the muJS sources for the build even if we build against the system
 # version so bundling them is the safer choice.
-Provides:       bundled(mujs-devel) = 1.1.3
+Provides:       bundled(mujs-devel) = 1.2.0
 # muPDF builds only against in-tree extract which is versioned along with ghostpdl.
-Provides:       bundled(extract) = 9.55.0
+Provides:       bundled(extract) = 9.56.0~rc1^4.g10c442d
 
 %description
 MuPDF is a lightweight PDF viewer and toolkit written in portable C.
@@ -58,7 +59,7 @@ The mupdf-devel package contains header files for developing
 applications that use mupdf and static libraries
 
 %prep
-%setup -q -n %{name}-%{version}-source
+%setup -q -n %{name}-%{upversion}-source
 for d in $(ls thirdparty | grep -v -e extract -e freeglut -e lcms2 -e mujs)
 do
   rm -rf thirdparty/$d
