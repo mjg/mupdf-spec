@@ -4,8 +4,8 @@
 %global jbig2dec_version 0.19
 
 Name:           mupdf
-Version:        1.20.0~rc1
-%global upversion 1.20.0-rc1
+Version:        1.20.0~rc2
+%global upversion 1.20.0-rc2
 Release:        %autorelease
 Summary:        A lightweight PDF viewer and toolkit
 License:        AGPLv3+
