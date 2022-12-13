@@ -4,8 +4,9 @@
 %global jbig2dec_version 0.19
 
 Name:           mupdf
-Version:        1.21.0
-%global upversion 1.21.0
+Version:        1.21.1
+# upstream prerelease versions tags need to be translated to Fedorian
+%global upversion %{version}
 Release:        %autorelease
 Summary:        A lightweight PDF viewer and toolkit
 License:        AGPLv3+
