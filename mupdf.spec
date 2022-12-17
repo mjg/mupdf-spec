@@ -9,7 +9,7 @@ Version:        1.21.1
 %global upversion %{version}
 Release:        %autorelease
 Summary:        A lightweight PDF viewer and toolkit
-License:        AGPLv3+
+License:        AGPL-3.0-or-later
 URL:            http://mupdf.com/
 Source0:        http://mupdf.com/downloads/archive/%{name}-%{upversion}-source.tar.gz
 Source1:        %{name}.desktop
