@@ -24,8 +24,8 @@ Source1:        {{{ GIT_DIRTY=1 git_pack path=source/thirdparty/extract dir_name
 Source2:        {{{ GIT_DIRTY=1 git_pack path=source/thirdparty/freeglut dir_name=thirdparty/freeglut source_name=freeglut.tar.gz }}}
 Source3:        {{{ GIT_DIRTY=1 git_pack path=source/thirdparty/lcms2 dir_name=thirdparty/lcms2 source_name=lcms2.tar.gz }}}
 Source4:        {{{ GIT_DIRTY=1 git_pack path=source/thirdparty/mujs dir_name=thirdparty/mujs source_name=mujs.tar.gz }}}
-Source11:        %{name}.desktop
-Source12:        %{name}-gl.desktop
+Source11:       %{name}.desktop
+Source12:       %{name}-gl.desktop
 Patch:          mupdf-1.21.1-fix-png_write_band.patch
 BuildRequires:  gcc gcc-c++ make binutils desktop-file-utils coreutils pkgconfig
 BuildRequires:  openjpeg2-devel desktop-file-utils
@@ -39,14 +39,14 @@ Requires:       jbig2dec-libs = %{jbig2dec_version}
 # We need to build against the Artifex fork of lcms2 so that we are thread safe
 # (see bug #1553915). Artifex make sure to rebase against upstream, who refuse
 # to integrate Artifex's changes. 
-Provides:       bundled(lcms2-devel) = 2.14~rc1^59-g88b6a72
-# We need to build against the Artifex fork of freeglut so that we are unicode safe.
-Provides:       bundled(freeglut-devel) = 3.0.0^11.g13ae6aa
+Provides:       bundled(lcms2-devel) = {{{ git -C source/thirdparty/lcms2 describe --tags | sed -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1^\2.g\3/' -e ''s/rc/~rc/ }}}
+# We need to build against the Artifex fork of freeglut so that we are unicode safe. {{{ git -C source/thirdparty/freeglut tag -f 3.0.0 583fdf3ac5079ab320e7614af7dbe56ee30b818b }}}
+Provides:       bundled(freeglut-devel) = {{{ git -C source/thirdparty/freeglut describe --tags | sed -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1^\2.g\3/' }}}
 # muPDF needs the muJS sources for the build even if we build against the system
 # version so bundling them is the safer choice.
-Provides:       bundled(mujs-devel) = 1.3.2
+Provides:       bundled(mujs-devel) = {{{ git -C source/thirdparty/mujs describe --tags | sed -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1^\2.g\3/' }}}
 # muPDF builds only against in-tree extract which is versioned along with ghostpdl.
-Provides:       bundled(extract) = 9.56.0^53-gc18d9f3
+Provides:       bundled(extract) = {{{ git -C source/thirdparty/extract describe --tags | sed -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1^\2.g\3/' }}}
 
 %description
 MuPDF is a lightweight PDF viewer and toolkit written in portable C.
