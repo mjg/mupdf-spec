@@ -1,8 +1,9 @@
 ## Pull in upstream source:
 # {{{ git submodule update --init --recursive 1>&2; git submodule }}}
+# {{{ git -C source tag -f 1.22.0-dev f4682b2832ed8eda49baa04955c501c8ab178b9c }}}
 %global gitversion      {{{ git -C source rev-parse HEAD }}}
 %global gitshortversion {{{ git -C source rev-parse --short HEAD }}}
-%global gitdescribefedversion  {{{ git -C source describe --tags | sed -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1^\2.g\3/' }}}
+%global gitdescribefedversion  {{{ git -C source describe --tags | sed -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1^\2.g\3/' -e 's/-\([a-z]\+\)/~\1/' }}}
 
 # Desired jbig2dec header files and library version
 # Apparantly, jbig2dec complains even about newer versions.
@@ -26,7 +27,6 @@ Source3:        {{{ GIT_DIRTY=1 git_pack path=source/thirdparty/lcms2 dir_name=t
 Source4:        {{{ GIT_DIRTY=1 git_pack path=source/thirdparty/mujs dir_name=thirdparty/mujs source_name=mujs.tar.gz }}}
 Source11:       %{name}.desktop
 Source12:       %{name}-gl.desktop
-Patch:          mupdf-1.21.1-fix-png_write_band.patch
 BuildRequires:  gcc gcc-c++ make binutils desktop-file-utils coreutils pkgconfig
 BuildRequires:  openjpeg2-devel desktop-file-utils
 BuildRequires:  libjpeg-devel freetype-devel libXext-devel curl-devel
