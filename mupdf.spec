@@ -1,6 +1,6 @@
 ## Pull in upstream source:
 # {{{ git submodule update --init --recursive 1>&2; git submodule }}}
-# {{{ git -C source tag -f 1.22.0-dev f4682b2832ed8eda49baa04955c501c8ab178b9c }}}
+# {{{ git -C source tag -f 1.23.0-dev 5db96eced63f863bb3d67601e8b81a259738340b }}}
 %global gitversion      {{{ git -C source rev-parse HEAD }}}
 %global gitshortversion {{{ git -C source rev-parse --short HEAD }}}
 %global gitdescribefedversion  {{{ git -C source describe --tags | sed -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1^\2.g\3/' -e 's/-\([a-z]\+\)/~\1/' }}}
