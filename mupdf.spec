@@ -7,7 +7,11 @@
 # Desired jbig2dec header files and library version
 # Apparantly, jbig2dec complains even about newer versions.
 # Please update if needed.
+%if 0%{?fedora} >= 40
+%global jbig2dec_version 0.20
+%else
 %global jbig2dec_version 0.19
+%endif
 
 Name:           mupdf
 Version:        %{gitdescribefedversion}
