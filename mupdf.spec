@@ -16,6 +16,7 @@
 
 Name:		mupdf
 %global libname libmupdf
+%global pypiname mupdf
 Version:	%{gitdescribefedversion}
 # git dev breaks abi without bumping!
 %global soname 24.0
@@ -43,7 +44,7 @@ BuildRequires:	freeglut-devel
 BuildRequires:	jbig2dec-devel = %{jbig2dec_version}
 BuildRequires:	jbig2dec-libs = %{jbig2dec_version}
 Requires:	jbig2dec-libs = %{jbig2dec_version}
-BuildRequires:	swig python3-clang
+BuildRequires:	swig python3-clang python3-devel
 # We need to build against the Artifex fork of lcms2 so that we are thread safe
 # (see bug #1553915). Artifex make sure to rebase against upstream, who refuse
 # to integrate Artifex's changes. 
@@ -98,6 +99,12 @@ Summary:	C++ Library files for %{name}
 %description cpp-libs
 The mupdf-cpp-libs package contains the mupdf C++ library files.
 
+%package -n python3-%{pypiname}
+Summary:	Python bindings for %{name}
+
+%description -n python3-%{pypiname}
+The python3-%{pypiname} package contains low level mupdf python bindings.
+
 %prep
 %setup -a 1 -a 2 -a 3 -n mupdf
 %autopatch -p1
@@ -127,9 +134,9 @@ echo > user.make "\
 %build
 export XCFLAGS="%{optflags} -fPIC -DJBIG_NO_MEMENTO -DTOFU -DTOFU_CJK_EXT"
 
-make %{?_smp_mflags} build=debug shared=yes verbose=yes c++ VENV_FLAG=
+make %{?_smp_mflags} build=debug shared=yes verbose=yes c++ python VENV_FLAG=
 %install
-make DESTDIR=%{buildroot} install install-shared-c install-shared-c++ prefix=%{_prefix} libdir=%{_libdir} build=debug shared=yes verbose=yes VENV_FLAG=
+make DESTDIR=%{buildroot} install install-shared-c install-shared-c++ install-shared-python prefix=%{_prefix} libdir=%{_libdir} build=debug shared=yes verbose=yes VENV_FLAG=
 ## handle docs on our own
 rm -rf %{buildroot}/%{_docdir}
 desktop-file-install --dir=%{buildroot}%{_datadir}/applications %{SOURCE11}
@@ -164,6 +171,10 @@ cd %{buildroot}/%{_bindir} && ln -s %{name}-x11 %{name}
 %files cpp-libs
 %license COPYING
 %{_libdir}/%{libname}cpp.so.%{soname}
+
+%files -n python3-%{pypiname}
+%license COPYING
+%{python3_sitearch}/%{pypiname}/
 
 %changelog
 * Fri Mar 24 2023 Michael J Gruber <mjg@fedoraproject.org> - 1.21.1^8.g861b52d57
