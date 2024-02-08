@@ -1,0 +1,71 @@
+From 3a6f6398e32157badcdf354d62abeef602bd7742 Mon Sep 17 00:00:00 2001
+Message-ID: <3a6f6398e32157badcdf354d62abeef602bd7742.1706899657.git.mjg@fedoraproject.org>
+In-Reply-To: <3df9a9b2194fc075d7d3c798b379020b98081f95.1706899657.git.mjg@fedoraproject.org>
+References: <3df9a9b2194fc075d7d3c798b379020b98081f95.1706899657.git.mjg@fedoraproject.org>
+From: Julian Smith <julian.smith@artifex.com>
+Date: Tue, 9 Jan 2024 18:47:47 +0000
+Subject: [PATCH 2/2] Makefile scripts/wrap/__main__.py: Set SONAME when
+ linking shared libs on Linux.
+
+We add link arg `-Wl,-soname,libmupdf[cpp].so,MAJOR.MINOR`.
+
+Also only create libmupdf[cpp].so softlinks if we are on Linux.
+
+(cherry picked from commit 82db7fcd5bdf59652d03a56b06bf2e853140282b)
+---
+ Makefile                 | 9 +++++++--
+ scripts/wrap/__main__.py | 4 ++++
+ 2 files changed, 11 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index f8a8dfaa9..369127981 100644
+--- a/Makefile
++++ b/Makefile
+@@ -42,6 +42,9 @@ VERSION_PATCH = $(shell grep "define FZ_VERSION_PATCH" include/mupdf/fitz/versio
+ 
+ ifeq ($(LINUX_OR_OPENBSD),yes)
+   SO_VERSION = .$(VERSION_MINOR).$(VERSION_PATCH)
++  ifeq ($(OS),Linux)
++    SO_VERSION_LINUX := yes
++  endif
+ endif
+ 
+ # --- Commands ---
+@@ -93,9 +96,11 @@ $(OUT)/%.exe: %.c
+ 	$(LINK_CMD)
+ 
+ $(OUT)/%.$(SO)$(SO_VERSION):
+-	$(LINK_CMD) $(LIB_LDFLAGS) $(THIRD_LIBS) $(LIBCRYPTO_LIBS)
+-ifneq ($(SO_VERSION),)
++ifeq ($(SO_VERSION_LINUX),yes)
++	$(LINK_CMD) -Wl,-soname,$(notdir $@) $(LIB_LDFLAGS) $(THIRD_LIBS) $(LIBCRYPTO_LIBS)
+ 	ln -sf $(notdir $@) $(patsubst %$(SO_VERSION), %, $@)
++else
++	$(LINK_CMD) $(LIB_LDFLAGS) $(THIRD_LIBS) $(LIBCRYPTO_LIBS)
+ endif
+ 
+ $(OUT)/%.def: $(OUT)/%.$(SO)$(SO_VERSION)
+diff --git a/scripts/wrap/__main__.py b/scripts/wrap/__main__.py
+index a543a689c..52e92dfa4 100644
+--- a/scripts/wrap/__main__.py
++++ b/scripts/wrap/__main__.py
+@@ -1620,12 +1620,16 @@ def build( build_dirs, swig_command, args, vs_upgrade):
+                     for i in cpp_files:
+                         cpp_files_text += ' ' + os.path.relpath(i)
+                     if 'shared' in dir_so_flags:
++                        link_soname_arg = ''
++                        if state.state_.linux:
++                            link_soname_arg = f'-Wl,-soname,{os.path.basename(libmupdfcpp)}'
+                         libmupdfcpp = f'{build_dirs.dir_so}/libmupdfcpp.so'
+                         libmupdf = f'{build_dirs.dir_so}/libmupdf.so'
+                         command = ( textwrap.dedent(
+                                 f'''
+                                 {compiler}
+                                     -o {os.path.relpath(libmupdfcpp)}
++                                    {link_soname_arg}
+                                     {"-sSIDE_MODULE" if wasm else ""}
+                                     {build_dirs.cpp_flags}
+                                     -fPIC -shared
+-- 
+2.43.0.692.g719022bfa2
+

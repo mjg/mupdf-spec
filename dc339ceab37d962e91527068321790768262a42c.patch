@@ -1,0 +1,53 @@
+From dc339ceab37d962e91527068321790768262a42c Mon Sep 17 00:00:00 2001
+From: Mamoru TASAKA <mtasaka@fedoraproject.org>
+Date: Thu, 28 Sep 2023 23:35:51 +0900
+Subject: [PATCH] Bug 707210: fitz: fix assertion on mutool on s390x
+
+template_span_with_mask_3_general attemps to accelerate
+template_span_with_mask_N_general
+by accessing byte sequence dp and sp 4 bytes each,
+reinterpreting them as uint32_t sequence then calculating the result
+sequence 4 bytes each. The value of each 4 byte interpreted as
+uint32_t differs according to endianness,  so fixing
+assertion expression as such.
+
+Fixes https://bugs.ghostscript.com/show_bug.cgi?id=707210 :
+`mutool draw -F png` assertion on s390x.
+---
+ source/fitz/draw-paint.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
+
+diff --git a/source/fitz/draw-paint.c b/source/fitz/draw-paint.c
+index c8e67c8832..84e6490a32 100644
+--- a/source/fitz/draw-paint.c
++++ b/source/fitz/draw-paint.c
+@@ -1203,6 +1203,7 @@ template_span_with_mask_1_general(byte * FZ_RESTRICT dp, const byte * FZ_RESTRIC
+ static fz_forceinline void
+ template_span_with_mask_3_general(byte * FZ_RESTRICT dp, const byte * FZ_RESTRICT sp, int a, const byte * FZ_RESTRICT mp, int w)
+ {
++	int bigendian_p = isbigendian();
+ 	do
+ 	{
+ 		int ma = *mp++;
+@@ -1240,9 +1241,18 @@ template_span_with_mask_3_general(byte * FZ_RESTRICT dp, const byte * FZ_RESTRIC
+ 			d0 = (((d0<<8) + (s0-d0)*ma)>>8) & mask;
+ 			d1 = ((d1<<8) + (s1-d1)*ma) & ~mask;
+ 			d0 |= d1;
+-			assert((d0>>24) >= (d0 & 0xff));
+-			assert((d0>>24) >= ((d0>>8) & 0xff));
+-			assert((d0>>24) >= ((d0>>16) & 0xff));
++			if (bigendian_p)
++			{
++				assert((d0 & 0xff) >= (d0>>24));
++				assert((d0 & 0xff) >= ((d0>>16) & 0xff));
++				assert((d0 & 0xff) >= ((d0>>8) & 0xff));
++			}
++			else
++			{
++				assert((d0>>24) >= (d0 & 0xff));
++				assert((d0>>24) >= ((d0>>8) & 0xff));
++				assert((d0>>24) >= ((d0>>16) & 0xff));
++			}
+ 			*(uint32_t *)dp = d0;
+ 			sp += 4;
+ 			dp += 4;
