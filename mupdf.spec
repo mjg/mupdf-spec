@@ -43,6 +43,7 @@ BuildRequires:	freeglut-devel
 BuildRequires:	jbig2dec-devel = %{jbig2dec_version}
 BuildRequires:	jbig2dec-libs = %{jbig2dec_version}
 Requires:	jbig2dec-libs = %{jbig2dec_version}
+BuildRequires:	swig python3-clang
 # We need to build against the Artifex fork of lcms2 so that we are thread safe
 # (see bug #1553915). Artifex make sure to rebase against upstream, who refuse
 # to integrate Artifex's changes. 
@@ -70,18 +71,32 @@ bookmarks, encrypting PDF files, extracting fonts, images, and
 searchable text, and rendering pages to image files is provided.
 
 %package devel
-Summary:	Development files for %{name}
+Summary:	C Development files for %{name}
 Requires:	%{name}-libs%{_isa} = %{version}-%{release}
 
 %description devel
 The mupdf-devel package contains library and header files for developing
-applications that use the mupdf library.
+C applications that use the mupdf library.
 
 %package libs
-Summary:	Library files for %{name}
+Summary:	C Library files for %{name}
 
 %description libs
-The mupdf-libs package contains the mupdf library files.
+The mupdf-libs package contains the mupdf C library files.
+
+%package cpp-devel
+Summary:	C++ Development files for %{name}
+Requires:	%{name}-cpp-libs%{_isa} = %{version}-%{release}
+
+%description cpp-devel
+The mupdf-cpp-devel package contains library and header files for developing
+C++ applications that use the mupdf library.
+
+%package cpp-libs
+Summary:	C++ Library files for %{name}
+
+%description cpp-libs
+The mupdf-cpp-libs package contains the mupdf C++ library files.
 
 %prep
 %setup -a 1 -a 2 -a 3 -n mupdf
@@ -112,9 +127,9 @@ echo > user.make "\
 %build
 export XCFLAGS="%{optflags} -fPIC -DJBIG_NO_MEMENTO -DTOFU -DTOFU_CJK_EXT"
 
-make %{?_smp_mflags} build=debug shared=yes verbose=yes
+make %{?_smp_mflags} build=debug shared=yes verbose=yes c++ VENV_FLAG=
 %install
-make DESTDIR=%{buildroot} install install-shared-c prefix=%{_prefix} libdir=%{_libdir} build=debug shared=yes verbose=yes
+make DESTDIR=%{buildroot} install install-shared-c install-shared-c++ prefix=%{_prefix} libdir=%{_libdir} build=debug shared=yes verbose=yes VENV_FLAG=
 ## handle docs on our own
 rm -rf %{buildroot}/%{_docdir}
 desktop-file-install --dir=%{buildroot}%{_datadir}/applications %{SOURCE11}
@@ -141,6 +156,14 @@ cd %{buildroot}/%{_bindir} && ln -s %{name}-x11 %{name}
 %files libs
 %license COPYING
 %{_libdir}/%{libname}.so.%{soname}
+
+%files cpp-devel
+%{_includedir}/%{name}
+%{_libdir}/%{libname}cpp.so
+
+%files cpp-libs
+%license COPYING
+%{_libdir}/%{libname}cpp.so.%{soname}
 
 %changelog
 * Fri Mar 24 2023 Michael J Gruber <mjg@fedoraproject.org> - 1.21.1^8.g861b52d57
