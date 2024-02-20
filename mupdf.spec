@@ -4,6 +4,7 @@
 %global gitversion		{{{ git -C source rev-parse HEAD }}}
 %global gitshortversion 	{{{ git -C source rev-parse --short HEAD }}}
 %global gitdescribefedversion	{{{ git -C source describe --tags | sed -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1^\2.g\3/' -e 's/-\([a-z]\+\)/~\1/' }}}
+%global gitdescribepepversion	{{{ git -C source describe --tags | sed -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1_\2/' -e 's/-/_/g' }}}
 
 # Desired jbig2dec header files and library version
 # Apparantly, jbig2dec complains even about newer versions.
@@ -49,7 +50,6 @@ BuildRequires:	swig python3-clang python3-devel
 # (see bug #1553915). Artifex make sure to rebase against upstream, who refuse
 # to integrate Artifex's changes. 
 Provides:	bundled(lcms2-devel) = {{{ git -C source/thirdparty/lcms2 describe --tags | sed -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1^\2.g\3/' -e ''s/rc/~rc/ }}}
-# We need to build against the Artifex fork of freeglut so that we are unicode safe. {{{ git -C source/thirdparty/freeglut tag -f 3.0.0 583fdf3ac5079ab320e7614af7dbe56ee30b818b }}}
 # muPDF needs the muJS sources for the build even if we build against the system
 # version so bundling them is the safer choice.
 Provides:	bundled(mujs-devel) = {{{ git -C source/thirdparty/mujs describe --tags | sed -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1^\2.g\3/' }}}
@@ -115,29 +115,26 @@ done
 
 echo > user.make "\
 	USE_SYSTEM_LIBS := yes
-	USE_SYSTEM_FREETYPE := yes
-	USE_SYSTEM_HARFBUZZ := yes
-	USE_SYSTEM_JBIG2DEC := yes
-	USE_SYSTEM_JPEGXR := yes # not used without HAVE_JPEGXR
-	USE_SYSTEM_LCMS2 := no # need lcms2-art fork
-	USE_SYSTEM_LIBJPEG := yes
 	USE_SYSTEM_MUJS := no # build needs source anyways
-	USE_SYSTEM_OPENJPEG := yes
-	USE_SYSTEM_ZLIB := yes
-	USE_SYSTEM_CURL := yes
-	USE_SYSTEM_GUMBO := yes
 	USE_TESSERACT := yes
-	USE_SYSTEM_LEPTONICA := yes
-	USE_SYSTEM_TESSERACT := yes
+	VENV_FLAG :=
+	build := debug
+	shared := yes
+	verbose := yes
 "
 
 %build
 export XCFLAGS="%{optflags} -fPIC -DJBIG_NO_MEMENTO -DTOFU -DTOFU_CJK_EXT"
+make %{?_smp_mflags} c++ python
 
-make %{?_smp_mflags} build=debug shared=yes verbose=yes c++ python VENV_FLAG=
 %install
-make DESTDIR=%{buildroot} install install-shared-c install-shared-c++ install-shared-python prefix=%{_prefix} libdir=%{_libdir} build=debug shared=yes verbose=yes VENV_FLAG=
-## handle docs on our own
+make DESTDIR=%{buildroot} install install-shared-c install-shared-c++ install-shared-python prefix=%{_prefix} libdir=%{_libdir} SO_INSTALL_MODE=755
+# wheel bundles too much, so build & install with make and generate metadata here:
+%{__python3} setup.py dist_info
+mkdir -p %{buildroot}/%{python3_sitearch}/%{pypiname}-%{gitdescribepepversion}.dist-info
+sed -i -e '/^Version:/s/^Version: .*$/Version: %{gitdescribepepversion}/' mupdf-*.dist-info/METADATA/PKG-INFO
+install -p -m644 mupdf-*.dist-info/METADATA/PKG-INFO %{buildroot}/%{python3_sitearch}/%{pypiname}-%{gitdescribepepversion}.dist-info/METADATA
+# handle docs on our own
 rm -rf %{buildroot}/%{_docdir}
 desktop-file-install --dir=%{buildroot}%{_datadir}/applications %{SOURCE11}
 desktop-file-install --dir=%{buildroot}%{_datadir}/applications %{SOURCE12}
@@ -147,9 +144,6 @@ install -p -m644 docs/logo/mupdf-logo.svg %{buildroot}%{_datadir}/icons/hicolor/
 find %{buildroot}/%{_mandir} -type f -exec chmod 0644 {} \;
 find %{buildroot}/%{_includedir} -type f -exec chmod 0644 {} \;
 cd %{buildroot}/%{_bindir} && ln -s %{name}-x11 %{name}
-
-chmod +x %{buildroot}/%{_libdir}/%{libname}.so.%{soname}
-chmod +x %{buildroot}/%{_libdir}/%{libname}cpp.so.%{soname}
 
 %files
 %license COPYING
@@ -178,6 +172,7 @@ chmod +x %{buildroot}/%{_libdir}/%{libname}cpp.so.%{soname}
 %files -n python3-%{pypiname}
 %license COPYING
 %{python3_sitearch}/%{pypiname}/
+%{python3_sitearch}/%{pypiname}-%{gitdescribepepversion}.dist-info/
 
 %changelog
 * Fri Mar 24 2023 Michael J Gruber <mjg@fedoraproject.org> - 1.21.1^8.g861b52d57
