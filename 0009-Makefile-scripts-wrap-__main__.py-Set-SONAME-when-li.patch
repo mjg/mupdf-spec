@@ -1,10 +1,10 @@
-From 3a6f6398e32157badcdf354d62abeef602bd7742 Mon Sep 17 00:00:00 2001
-Message-ID: <3a6f6398e32157badcdf354d62abeef602bd7742.1706899657.git.mjg@fedoraproject.org>
-In-Reply-To: <3df9a9b2194fc075d7d3c798b379020b98081f95.1706899657.git.mjg@fedoraproject.org>
-References: <3df9a9b2194fc075d7d3c798b379020b98081f95.1706899657.git.mjg@fedoraproject.org>
+From e0730c0a0b9332c66400ce60b6782cd391b67b05 Mon Sep 17 00:00:00 2001
+Message-ID: <e0730c0a0b9332c66400ce60b6782cd391b67b05.1708115863.git.mjg@fedoraproject.org>
+In-Reply-To: <1932a672db047da3204a445880007fcc522fa7d7.1708115863.git.mjg@fedoraproject.org>
+References: <1932a672db047da3204a445880007fcc522fa7d7.1708115863.git.mjg@fedoraproject.org>
 From: Julian Smith <julian.smith@artifex.com>
 Date: Tue, 9 Jan 2024 18:47:47 +0000
-Subject: [PATCH 2/2] Makefile scripts/wrap/__main__.py: Set SONAME when
+Subject: [PATCH 09/11] Makefile scripts/wrap/__main__.py: Set SONAME when
  linking shared libs on Linux.
 
 We add link arg `-Wl,-soname,libmupdf[cpp].so,MAJOR.MINOR`.
@@ -14,8 +14,8 @@ Also only create libmupdf[cpp].so softlinks if we are on Linux.
 (cherry picked from commit 82db7fcd5bdf59652d03a56b06bf2e853140282b)
 ---
  Makefile                 | 9 +++++++--
- scripts/wrap/__main__.py | 4 ++++
- 2 files changed, 11 insertions(+), 2 deletions(-)
+ scripts/wrap/__main__.py | 6 +++++-
+ 2 files changed, 12 insertions(+), 3 deletions(-)
 
 diff --git a/Makefile b/Makefile
 index f8a8dfaa9..369127981 100644
@@ -46,26 +46,33 @@ index f8a8dfaa9..369127981 100644
  
  $(OUT)/%.def: $(OUT)/%.$(SO)$(SO_VERSION)
 diff --git a/scripts/wrap/__main__.py b/scripts/wrap/__main__.py
-index a543a689c..52e92dfa4 100644
+index d7e86c755..80dd2bf1e 100644
 --- a/scripts/wrap/__main__.py
 +++ b/scripts/wrap/__main__.py
-@@ -1620,12 +1620,16 @@ def build( build_dirs, swig_command, args, vs_upgrade):
-                     for i in cpp_files:
-                         cpp_files_text += ' ' + os.path.relpath(i)
-                     if 'shared' in dir_so_flags:
+@@ -1737,10 +1737,14 @@ def build( build_dirs, swig_command, args, vs_upgrade, make_command):
+                                 )
+ 
+                     elif 'shared' in dir_so_flags:
 +                        link_soname_arg = ''
 +                        if state.state_.linux:
 +                            link_soname_arg = f'-Wl,-soname,{os.path.basename(libmupdfcpp)}'
-                         libmupdfcpp = f'{build_dirs.dir_so}/libmupdfcpp.so'
-                         libmupdf = f'{build_dirs.dir_so}/libmupdf.so'
                          command = ( textwrap.dedent(
                                  f'''
                                  {compiler}
                                      -o {os.path.relpath(libmupdfcpp)}
 +                                    {link_soname_arg}
-                                     {"-sSIDE_MODULE" if wasm else ""}
                                      {build_dirs.cpp_flags}
                                      -fPIC -shared
+                                     -I {include1}
+@@ -1757,7 +1761,7 @@ def build( build_dirs, swig_command, args, vs_upgrade, make_command):
+                                 )
+                         if command_was_run:
+                             macos_patch( libmupdfcpp, f'{build_dirs.dir_so}/libmupdf.dylib{so_version}')
+-                        if so_version:
++                        if so_version and state.state_.linux:
+                             jlib.system(f'ln -sf libmupdfcpp.so{so_version} {build_dirs.dir_so}/libmupdfcpp.so')
+ 
+                     elif 'fpic' in dir_so_flags:
 -- 
-2.43.0.692.g719022bfa2
+2.44.0.rc1.222.g52f20dec8d
 

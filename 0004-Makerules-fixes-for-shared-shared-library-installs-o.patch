@@ -1,22 +1,24 @@
-From 3df9a9b2194fc075d7d3c798b379020b98081f95 Mon Sep 17 00:00:00 2001
-Message-ID: <3df9a9b2194fc075d7d3c798b379020b98081f95.1706899657.git.mjg@fedoraproject.org>
+From 95a8976c7d0d55a88caec62f5f5d37ac69806f03 Mon Sep 17 00:00:00 2001
+Message-ID: <95a8976c7d0d55a88caec62f5f5d37ac69806f03.1708115863.git.mjg@fedoraproject.org>
+In-Reply-To: <1932a672db047da3204a445880007fcc522fa7d7.1708115863.git.mjg@fedoraproject.org>
+References: <1932a672db047da3204a445880007fcc522fa7d7.1708115863.git.mjg@fedoraproject.org>
 From: Julian Smith <julian.smith@artifex.com>
 Date: Thu, 14 Sep 2023 18:57:42 +0100
-Subject: [PATCH 1/2] Makerules: fixes for shared shared library installs on
+Subject: [PATCH 04/11] Makerules: fixes for shared shared library installs on
  OpenBSD.
 
 We need to use the same pkg-config calls as Linux.
 
 (cherry picked from commit fbf12be21348aa2ea8977a61d1dac1fcf04c36ed)
 ---
- Makerules | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ Makerules | 23 +++++++++++++++++++----
+ 1 file changed, 19 insertions(+), 4 deletions(-)
 
 diff --git a/Makerules b/Makerules
-index f25a8ce0b..8b2254c4e 100644
+index 916e8581a..49c04f009 100644
 --- a/Makerules
 +++ b/Makerules
-@@ -154,6 +154,13 @@ ifneq "$(CLUSTER)" ""
+@@ -162,6 +162,13 @@ ifneq "$(CLUSTER)" ""
    CFLAGS += -DCLUSTER
  endif
  
@@ -30,16 +32,21 @@ index f25a8ce0b..8b2254c4e 100644
  ifeq ($(OS),MINGW)
    WINDRES := windres
    HAVE_WIN32 := yes
-@@ -180,7 +187,7 @@ else ifeq ($(OS),MACOS)
+@@ -188,8 +195,11 @@ else ifeq ($(OS),MACOS)
      endif
    endif
  
 -else ifeq ($(OS),Linux)
+-  HAVE_OBJCOPY := yes
 +else ifeq ($(LINUX_OR_OPENBSD),yes)
-   ifeq ($(PYODIDE_ROOT),)
-     HAVE_OBJCOPY := yes
-   else
-@@ -239,8 +246,13 @@ else ifeq ($(OS),Linux)
++
++  ifeq ($(OS),Linux)
++    HAVE_OBJCOPY := yes
++  endif
+ 
+   ifeq ($(shell pkg-config --exists freetype2 && echo yes),yes)
+ 	SYS_FREETYPE_CFLAGS := $(shell pkg-config --cflags freetype2)
+@@ -240,8 +250,13 @@ else ifeq ($(OS),Linux)
  
    HAVE_GLUT := yes
    ifeq ($(HAVE_GLUT),yes)
@@ -56,5 +63,5 @@ index f25a8ce0b..8b2254c4e 100644
  
    HAVE_X11 := $(shell pkg-config --exists x11 xext && echo yes)
 -- 
-2.43.0.692.g719022bfa2
+2.44.0.rc1.222.g52f20dec8d
 

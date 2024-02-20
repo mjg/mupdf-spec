@@ -1,0 +1,37 @@
+From 09fd82aaa02f6182bf8ca97998969a19af308660 Mon Sep 17 00:00:00 2001
+Message-ID: <09fd82aaa02f6182bf8ca97998969a19af308660.1708115863.git.mjg@fedoraproject.org>
+In-Reply-To: <1932a672db047da3204a445880007fcc522fa7d7.1708115863.git.mjg@fedoraproject.org>
+References: <1932a672db047da3204a445880007fcc522fa7d7.1708115863.git.mjg@fedoraproject.org>
+From: Robin Watts <Robin.Watts@artifex.com>
+Date: Wed, 31 Jan 2024 17:00:16 +0000
+Subject: [PATCH 10/11] Bug 707503: Make cast from int64_t to time_t explicit.
+
+(cherry picked from commit be277ad92b55a74dac4495c25d2ca29f60b3fa1d)
+---
+ platform/gl/gl-main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/platform/gl/gl-main.c b/platform/gl/gl-main.c
+index b2eb0a48e..d5b02f340 100644
+--- a/platform/gl/gl-main.c
++++ b/platform/gl/gl-main.c
+@@ -2556,7 +2556,7 @@ static char *short_signature_error_desc(pdf_signature_error err)
+ 	}
+ }
+ 
+-const char *format_date(int64_t secs)
++const char *format_date(int64_t secs64)
+ {
+ 	static char buf[100];
+ #ifdef _POSIX_SOURCE
+@@ -2564,6 +2564,7 @@ const char *format_date(int64_t secs)
+ #else
+ 	struct tm *tm;
+ #endif
++	time_t secs = (time_t)secs64;
+ 
+ 	if (secs <= 0)
+ 		return NULL;
+-- 
+2.44.0.rc1.222.g52f20dec8d
+

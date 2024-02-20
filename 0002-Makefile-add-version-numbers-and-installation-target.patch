@@ -1,0 +1,59 @@
+From 06ea458607d54015c39ae42cf6417361e5c4c9f9 Mon Sep 17 00:00:00 2001
+Message-ID: <06ea458607d54015c39ae42cf6417361e5c4c9f9.1708115863.git.mjg@fedoraproject.org>
+In-Reply-To: <1932a672db047da3204a445880007fcc522fa7d7.1708115863.git.mjg@fedoraproject.org>
+References: <1932a672db047da3204a445880007fcc522fa7d7.1708115863.git.mjg@fedoraproject.org>
+From: Julian Smith <julian.smith@artifex.com>
+Date: Tue, 5 Sep 2023 08:43:51 +0100
+Subject: [PATCH 02/11] Makefile: add version numbers and installation targets
+ for shared libraries.
+
+* Installation targets install-shared-* build+install C/C++/Python/C# bindings.
+* On non-MacOS we append .FZ_VERSION_MINOR.FZ_VERSION_PATCH to shared
+  libraries.
+* On Linux we create links such as libmupdf.so -> libmupdf.so.23.1 (not
+  required on OpenBSD).
+
+For install-shared-* targets we require that USE_SYSTEM_LIBS=yes, otherwise we
+fail with a diagnostic.
+
+We install Python mupdf.py and _mupdf.so into location from Python's
+sysconfig.get_path('platlib').
+
+In existing calls of ./scripts/mupdfwrap.py:
+* Add `--venv` so that we automatically get libclang and swig.
+* Use `-d $(OUT)` so we use the right build directory, e.g. if $(build_prefix)
+  is set.
+
+$(OUT) is only set correctly (i.e. contains `shared-`) if Make was run with
+`shared=yes`. So if $(shared) is not 'yes', rules for shared library targets
+that use $(OUT) rerun make with shared=yes.
+
+(cherry picked from commit f32df6f6ebc7ff20224de3350914bb89a5417c54)
+---
+ Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index f8a8dfaa9..55fda4854 100644
+--- a/Makefile
++++ b/Makefile
+@@ -621,14 +621,14 @@ install-shared-c: install-shared-check shared install-headers
+ 	install -d $(DESTDIR)$(libdir)
+ 	install -m 644 $(OUT)/libmupdf.$(SO)$(SO_VERSION) $(DESTDIR)$(libdir)/
+ ifneq ($(OS),OpenBSD)
+-	ln -sf libmupdf.$(SO)$(SO_VERSION) $(DESTDIR)$(libdir)/libmupdf.$(SO)
++	ln -s libmupdf.$(SO)$(SO_VERSION) $(DESTDIR)$(libdir)/libmupdf.$(SO)
+ endif
+ 
+ install-shared-c++: install-shared-c c++
+ 	install -m 644 platform/c++/include/mupdf/*.h $(DESTDIR)$(incdir)/mupdf
+ 	install -m 644 $(OUT)/libmupdfcpp.$(SO)$(SO_VERSION) $(DESTDIR)$(libdir)/
+ ifneq ($(OS),OpenBSD)
+-	ln -sf libmupdfcpp.$(SO)$(SO_VERSION) $(DESTDIR)$(libdir)/libmupdfcpp.$(SO)
++	ln -s libmupdfcpp.$(SO)$(SO_VERSION) $(DESTDIR)$(libdir)/libmupdfcpp.$(SO)
+ endif
+ 
+ install-shared-python: install-shared-c++ python
+-- 
+2.44.0.rc1.222.g52f20dec8d
+
