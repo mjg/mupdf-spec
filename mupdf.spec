@@ -112,6 +112,10 @@ echo > user.make "\
 	verbose := yes
 "
 
+# c++ and python install targets rebuild unconditionally. Avoid multiple rebuilds:
+sed -i -e '/^install-shared-c++:/s/ c++//' Makefile
+sed -i -e '/^install-shared-python:/s/ python//' Makefile
+
 %build
 export XCFLAGS="%{optflags} -fPIC -DJBIG_NO_MEMENTO -DTOFU -DTOFU_CJK_EXT"
 make %{?_smp_mflags} c++ python
