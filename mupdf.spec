@@ -35,6 +35,10 @@ BuildRequires:	gumbo-parser-devel leptonica-devel tesseract-devel
 BuildRequires:	freeglut-devel
 BuildRequires:	jbig2dec-devel
 BuildRequires:	swig python3-clang python3-devel
+# mupdfwrap fails to create bindings with clang 18
+%if 0%{?fedora} >= 41
+BuildRequires:	clang17-devel
+%endif
 # We need to build against the Artifex fork of lcms2 so that we are thread safe
 # (see bug #1553915). Artifex make sure to rebase against upstream, who refuse
 # to integrate Artifex's changes. 
