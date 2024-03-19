@@ -2,9 +2,9 @@
 # {{{ git submodule update --init --recursive 1>&2; git submodule }}}
 # {{{ git -C source tag -f 1.24.0-dev 380c8d27916f16db613168938c538a69f9731e86 }}}
 %global gitversion		{{{ git -C source rev-parse HEAD }}}
-%global gitshortversion 	{{{ git -C source rev-parse --short HEAD }}}
+%global gitshortversion		{{{ git -C source rev-parse --short HEAD }}}
 %global gitdescribefedversion	{{{ git -C source describe --tags | sed -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1^\2.g\3/' -e 's/-\([a-z]\+\)/~\1/' }}}
-%global gitdescribepepversion	{{{ git -C source describe --tags | sed -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1_\2/' -e 's/-/_/g' }}}
+%global gitdescribepepversion	{{{ git -C source describe --tags | sed -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1_\2/' -e 's/rc\([0-9]*_\)/rc\1dev_/g' -e 's/-/_/g' }}}
 
 Name:		mupdf
 %global libname libmupdf
@@ -26,7 +26,6 @@ Source2:	{{{ GIT_DIRTY=1 git_pack path=source/thirdparty/lcms2 dir_name=thirdpar
 Source3:	{{{ GIT_DIRTY=1 git_pack path=source/thirdparty/mujs dir_name=thirdparty/mujs source_name=mujs.tar.gz }}}
 Source11:	%{name}.desktop
 Source12:	%{name}-gl.desktop
-Patch:		0001-Fix-build-with-llvm18.patch
 BuildRequires:	gcc gcc-c++ make binutils desktop-file-utils coreutils pkgconfig
 BuildRequires:	openjpeg2-devel desktop-file-utils
 BuildRequires:	libjpeg-devel freetype-devel libXext-devel curl-devel
