@@ -1,4 +1,4 @@
 [submodule "source"]
 	path = source
 	url = git://git.ghostscript.com/mupdf.git
-	branch = 1.23.x
+	branch = 1.24.x
