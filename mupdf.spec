@@ -1,17 +1,17 @@
 ## Pull in upstream source:
 # {{{ git submodule update --init --recursive 1>&2; git submodule }}}
-# {{{ git -C source tag -f 1.23.11-dev 8166189236a4b9e88f8e3671cee49b08b35c9896 }}}
+# {{{ git -C source tag -f 1.24.1-dev f049e787848b1ae3cc5ec2a72c29fe6889d349f5 }}}
 %global gitversion		{{{ git -C source rev-parse HEAD }}}
-%global gitshortversion 	{{{ git -C source rev-parse --short HEAD }}}
+%global gitshortversion		{{{ git -C source rev-parse --short HEAD }}}
 %global gitdescribefedversion	{{{ git -C source describe --tags | sed -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1^\2.g\3/' -e 's/-\([a-z]\+\)/~\1/' }}}
-%global gitdescribepepversion	{{{ git -C source describe --tags | sed -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1_\2/' -e 's/-/_/g' }}}
+%global gitdescribepepversion	{{{ git -C source describe --tags | sed -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1_\2/' -e 's/rc\([0-9]*_\)/rc\1dev_/g' -e 's/-/_/g' }}}
 
 Name:		mupdf
 %global libname libmupdf
 %global pypiname mupdf
 Version:	%{gitdescribefedversion}
-# git dev breaks abi without bumping
-%global soname 23.11
+# git dev breaks abi without bumping!
+%global soname 24.0
 # upstream prerelease versions tags need to be translated to Fedorian
 %global upversion %{version}
 Release:	1%{?dist}
@@ -26,20 +26,6 @@ Source2:	{{{ GIT_DIRTY=1 git_pack path=source/thirdparty/lcms2 dir_name=thirdpar
 Source3:	{{{ GIT_DIRTY=1 git_pack path=source/thirdparty/mujs dir_name=thirdparty/mujs source_name=mujs.tar.gz }}}
 Source11:	%{name}.desktop
 Source12:	%{name}-gl.desktop
-# https://github.com/ArtifexSoftware/mupdf/pull/42
-Patch:		dc339ceab37d962e91527068321790768262a42c.patch
-# Upstream patches backported from master branch (build system fixes for shared builds)
-Patch:		0001-Makerules-scripts-wrap-__main__.py-fix-for-Pyodide-s.patch
-Patch:		0002-Makefile-add-version-numbers-and-installation-target.patch
-Patch:		0003-scripts-Create-shared-libraries-with-version-numbers.patch
-Patch:		0004-Makerules-fixes-for-shared-shared-library-installs-o.patch
-Patch:		0005-scripts-wrap-__main__.py-fix-Pyodide-builds-of-share.patch
-Patch:		0006-scripts-wrap-__main__.py-Allow-customisation-of-lang.patch
-Patch:		0007-scripts-wrap-cpp.py-avoid-compiler-error-in-debug-di.patch
-Patch:		0008-Makefile-fix-build-failures-with-library-soft-links.patch
-Patch:		0009-Makefile-scripts-wrap-__main__.py-Set-SONAME-when-li.patch
-Patch:		0010-Bug-707503-Make-cast-from-int64_t-to-time_t-explicit.patch
-Patch:		0011-Makefile-allow-control-of-file-modes-and-venv-s.patch
 BuildRequires:	gcc gcc-c++ make binutils desktop-file-utils coreutils pkgconfig
 BuildRequires:	openjpeg2-devel desktop-file-utils
 BuildRequires:	libjpeg-devel freetype-devel libXext-devel curl-devel
@@ -125,6 +111,10 @@ echo > user.make "\
 	shared := yes
 	verbose := yes
 "
+
+# c++ and python install targets rebuild unconditionally. Avoid multiple rebuilds:
+sed -i -e '/^install-shared-c++:/s/ c++//' Makefile
+sed -i -e '/^install-shared-python:/s/ python//' Makefile
 
 %build
 export XCFLAGS="%{optflags} -fPIC -DJBIG_NO_MEMENTO -DTOFU -DTOFU_CJK_EXT"
