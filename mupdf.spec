@@ -121,7 +121,7 @@ export XCFLAGS="%{optflags} -fPIC -DJBIG_NO_MEMENTO -DTOFU -DTOFU_CJK_EXT"
 make %{?_smp_mflags} c++ python
 
 %install
-make DESTDIR=%{buildroot} install install-shared-c install-shared-c++ install-shared-python prefix=%{_prefix} libdir=%{_libdir} SO_INSTALL_MODE=755
+make DESTDIR=%{buildroot} install install-shared-c install-shared-c++ install-shared-python prefix=%{_prefix} libdir=%{_libdir} pydir=%{python3_sitearch} SO_INSTALL_MODE=755
 # wheel bundles too much, so build & install with make and generate metadata here:
 %{__python3} setup.py dist_info
 mkdir -p %{buildroot}/%{python3_sitearch}/%{pypiname}-%{gitdescribepepversion}.dist-info
