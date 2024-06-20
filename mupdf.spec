@@ -126,9 +126,8 @@ make %{?_smp_mflags} c++ python
 %install
 make DESTDIR=%{buildroot} install install-shared-c install-shared-c++ install-shared-python prefix=%{_prefix} libdir=%{_libdir} pydir=%{python3_sitearch} SO_INSTALL_MODE=755
 # wheel bundles too much, so build & install with make and generate metadata here:
-%{__python3} setup.py dist_info
+MUPDF_SETUP_VERSION=%{gitdescribepepversion} %{__python3} setup.py dist_info
 mkdir -p %{buildroot}/%{python3_sitearch}/%{pypiname}-%{gitdescribepepversion}.dist-info
-sed -i -e '/^Version:/s/^Version: .*$/Version: %{gitdescribepepversion}/' mupdf-*.dist-info/METADATA/PKG-INFO
 install -p -m644 mupdf-*.dist-info/METADATA/PKG-INFO %{buildroot}/%{python3_sitearch}/%{pypiname}-%{gitdescribepepversion}.dist-info/METADATA
 # handle docs on our own
 rm -rf %{buildroot}/%{_docdir}
