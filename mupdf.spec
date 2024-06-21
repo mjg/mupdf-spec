@@ -4,7 +4,7 @@
 %global gitversion		{{{ git -C source rev-parse HEAD }}}
 %global gitshortversion		{{{ git -C source rev-parse --short HEAD }}}
 %global gitdescribefedversion	{{{ git -C source describe --tags | sed -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1^\2.g\3/' -e 's/-\([a-z]\+\)/~\1/' }}}
-%global gitdescribepepversion	{{{ git -C source describe --tags | sed -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1_\2/' -e 's/rc\([0-9]*_\)/rc\1dev_/g' -e 's/-/_/g' }}}
+%global gitdescribepepversion	{{{ git -C source describe --tags | sed -e 's/-rc\([0-9]*-\)/rc\1dev-/g' -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1\2/' -e 's/-/./g' }}}
 
 Name:		mupdf
 %global libname libmupdf
