@@ -1,6 +1,6 @@
 ## Pull in upstream source:
 # {{{ git submodule update --init --recursive 1>&2; git submodule }}}
-# {{{ git -C source tag -f 1.24.3-dev 1df0249e94c9ba3f965014a2fad873859a411752 }}}
+# {{{ git -C source tag -f 1.24.4-dev 49c6f4ca5117640567377c7de138e01fc9e66d49 }}}
 %global gitversion		{{{ git -C source rev-parse HEAD }}}
 %global gitshortversion		{{{ git -C source rev-parse --short HEAD }}}
 %global gitdescribefedversion	{{{ git -C source describe --tags | sed -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1^\2.g\3/' -e 's/-\([a-z]\+\)/~\1/' }}}
@@ -11,7 +11,7 @@ Name:		mupdf
 %global pypiname mupdf
 Version:	%{gitdescribefedversion}
 # git dev breaks abi without bumping!
-%global soname 24.3
+%global soname 24.4
 # upstream prerelease versions tags need to be translated to Fedorian
 %global upversion %{version}
 Release:	1%{?dist}
