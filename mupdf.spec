@@ -14,7 +14,7 @@ Version:	%{gitdescribefedversion}
 %global soname 25.0
 # upstream prerelease versions tags need to be translated to Fedorian
 %global upversion %{version}
-Release:	2%{?dist}
+Release:	1%{?dist}
 Summary:	A lightweight PDF viewer and toolkit
 License:	AGPL-3.0-or-later
 URL:		http://mupdf.com/
@@ -26,7 +26,6 @@ Source2:	{{{ GIT_DIRTY=1 git_pack path=source/thirdparty/lcms2 dir_name=thirdpar
 Source3:	{{{ GIT_DIRTY=1 git_pack path=source/thirdparty/mujs dir_name=thirdparty/mujs source_name=mujs.tar.gz }}}
 Source11:	%{name}.desktop
 Source12:	%{name}-gl.desktop
-Patch:		0001-fix-PyMuPDF-segfault-on-RHEL.patch
 # Fedora specific patches:
 # Do not bug me if Artifex relies on local fork
 Patch:		0001-Do-not-complain-to-your-friendly-local-distribution-.patch
