@@ -14,7 +14,7 @@ Version:	%{gitdescribefedversion}
 %global soname 25.0
 # upstream prerelease versions tags need to be translated to Fedorian
 %global upversion %{version}
-Release:	2%{?dist}
+Release:	1%{?dist}
 Summary:	A lightweight PDF viewer and toolkit
 License:	AGPL-3.0-or-later
 URL:		http://mupdf.com/
@@ -29,6 +29,7 @@ Source12:	%{name}-gl.desktop
 # Fedora specific patches:
 # Do not bug me if Artifex relies on local fork
 Patch:		0001-Do-not-complain-to-your-friendly-local-distribution-.patch
+Patch:		0001-fix-pdf-recolor-tool-refactoring.patch
 BuildRequires:	gcc gcc-c++ make binutils desktop-file-utils coreutils pkgconfig
 BuildRequires:	openjpeg2-devel desktop-file-utils
 BuildRequires:	libjpeg-devel freetype-devel libXext-devel curl-devel

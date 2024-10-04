@@ -1,0 +1,40 @@
+From c612e620e6f6ef7328710d519db4f434c590f026 Mon Sep 17 00:00:00 2001
+Message-ID: <c612e620e6f6ef7328710d519db4f434c590f026.1728073640.git.mjg@fedoraproject.org>
+From: Michael J Gruber <mjg@fedoraproject.org>
+Date: Fri, 4 Oct 2024 22:27:16 +0200
+Subject: [PATCH] fix pdf recolor tool refactoring
+
+---
+ include/mupdf/pdf/recolor.h | 2 +-
+ source/pdf/pdf-recolor.c    | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/include/mupdf/pdf/recolor.h b/include/mupdf/pdf/recolor.h
+index 853672d32..f34c16cfd 100644
+--- a/include/mupdf/pdf/recolor.h
++++ b/include/mupdf/pdf/recolor.h
+@@ -39,7 +39,7 @@ typedef struct
+ 
+ 	All other values reserved.
+ */
+-void pdf_recolor_page(fz_context *ctx, pdf_document *doc, int pagenum, const pdf_recolor_options *opts);
++void pdf_recolor_page(fz_context *ctx, fz_document *doc, int pagenum, const pdf_recolor_options *opts);
+ 
+ /*
+ 	Remove output intents from a document.
+diff --git a/source/pdf/pdf-recolor.c b/source/pdf/pdf-recolor.c
+index 50558875c..1dcbe7b92 100644
+--- a/source/pdf/pdf-recolor.c
++++ b/source/pdf/pdf-recolor.c
+@@ -143,7 +143,7 @@ rewrite_page_streams(fz_context *ctx, pdf_document *doc, int page_num, recolor_d
+ }
+ 
+ 
+-void pdf_recolor_page(fz_context *ctx, pdf_document *doc, int pagenum, const pdf_recolor_options *opts)
++void pdf_recolor_page(fz_context *ctx, fz_document *doc, int pagenum, const pdf_recolor_options *opts)
+ {
+ 	recolor_data rd = { 0 };
+ 
+-- 
+2.47.0.rc1.228.g78d37aec9c
+
