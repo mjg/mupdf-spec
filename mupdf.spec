@@ -29,7 +29,6 @@ Source12:	%{name}-gl.desktop
 # Fedora specific patches:
 # Do not bug me if Artifex relies on local fork
 Patch:		0001-Do-not-complain-to-your-friendly-local-distribution-.patch
-Patch:		0001-fix-pdf-recolor-tool-refactoring.patch
 BuildRequires:	gcc gcc-c++ make binutils desktop-file-utils coreutils pkgconfig
 BuildRequires:	openjpeg2-devel desktop-file-utils
 BuildRequires:	libjpeg-devel freetype-devel libXext-devel curl-devel
