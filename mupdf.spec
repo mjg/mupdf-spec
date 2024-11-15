@@ -14,7 +14,7 @@ Version:	%{gitdescribefedversion}
 %global soname 24.10
 # upstream prerelease versions tags need to be translated to Fedorian
 %global upversion %{version}
-Release:	2%{?dist}
+Release:	1%{?dist}
 Summary:	A lightweight PDF viewer and toolkit
 License:	AGPL-3.0-or-later
 URL:		http://mupdf.com/
@@ -29,6 +29,10 @@ Source12:	%{name}-gl.desktop
 # Fedora specific patches:
 # Do not bug me if Artifex relies on local fork
 Patch:		0001-Do-not-complain-to-your-friendly-local-distribution-.patch
+# Do not generate wrong form of dependencies
+Patch:		0001-setup.py-do-not-require-libclang-and-swig.patch
+# Do install shared libraries in the python tree
+Patch:		0001-setup.py-do-not-bundle-c-and-c-libs-in-wheel.patch
 BuildRequires:	gcc gcc-c++ make binutils desktop-file-utils coreutils pkgconfig
 BuildRequires:	openjpeg2-devel desktop-file-utils
 BuildRequires:	libjpeg-devel freetype-devel libXext-devel curl-devel
@@ -119,16 +123,22 @@ echo > user.make "\
 sed -i -e '/^install-shared-c++:/s/ c++//' Makefile
 sed -i -e '/^install-shared-python:/s/ python//' Makefile
 
+%generate_buildrequires
+%pyproject_buildrequires -R
+
 %build
 export XCFLAGS="%{optflags} -fPIC -DJBIG_NO_MEMENTO -DTOFU -DTOFU_CJK_EXT"
-make %{?_smp_mflags} c++ python
+make %{?_smp_mflags} shared c++
+# Use the same build directory which make uses:
+export MUPDF_SETUP_BUILD_DIR=build/shared-debug
+# Use stable python directories:
+export MUPDF_SETUP_VERSION=%{gitdescribepepversion}
+%pyproject_wheel
 
 %install
-make DESTDIR=%{buildroot} install install-shared-c install-shared-c++ install-shared-python prefix=%{_prefix} libdir=%{_libdir} pydir=%{python3_sitearch} SO_INSTALL_MODE=755
-# wheel bundles too much, so build & install with make and generate metadata here:
-MUPDF_SETUP_VERSION=%{gitdescribepepversion} %{__python3} setup.py dist_info
-mkdir -p %{buildroot}/%{python3_sitearch}/%{pypiname}-%{gitdescribepepversion}.dist-info
-install -p -m644 mupdf-*.dist-info/METADATA/PKG-INFO %{buildroot}/%{python3_sitearch}/%{pypiname}-%{gitdescribepepversion}.dist-info/METADATA
+make DESTDIR=%{buildroot} install install-shared-c install-shared-c++ prefix=%{_prefix} libdir=%{_libdir} pydir=%{python3_sitearch} SO_INSTALL_MODE=755
+%pyproject_install
+%pyproject_save_files -L %{pypiname}
 # handle docs on our own
 rm -rf %{buildroot}/%{_docdir}
 desktop-file-install --dir=%{buildroot}%{_datadir}/applications %{SOURCE11}
@@ -164,10 +174,9 @@ cd %{buildroot}/%{_bindir} && ln -s %{name}-x11 %{name}
 %license COPYING
 %{_libdir}/%{libname}cpp.so.%{soname}
 
-%files -n python3-%{pypiname}
+%files -n python3-%{pypiname} -f %{pyproject_files}
 %license COPYING
-%{python3_sitearch}/%{pypiname}/
-%{python3_sitearch}/%{pypiname}-%{gitdescribepepversion}.dist-info/
+%{python3_sitearch}/_%{pypiname}.so
 
 %changelog
 * Fri Mar 24 2023 Michael J Gruber <mjg@fedoraproject.org> - 1.21.1^8.g861b52d57
