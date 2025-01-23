@@ -1,17 +1,17 @@
 ## Pull in upstream source:
 # {{{ git submodule update --init --recursive 1>&2; git submodule }}}
-# {{{ git -C source tag -f 1.25.3-dev 5943066ea49e6a17c54491859fa95c60f4c6bfb0 }}}
+# {{{ git -C source tag -f 1.25.4-dev ac27c6676ff4bd4210c339eb9a041252469b6134 }}}
 %global gitversion		{{{ git -C source rev-parse HEAD }}}
 %global gitshortversion		{{{ git -C source rev-parse --short HEAD }}}
 %global gitdescribefedversion	{{{ git -C source describe --tags | sed -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1^\2.g\3/' -e 's/-\([a-z]\+\)/~\1/' }}}
-%global gitdescribepepversion	{{{ git -C source describe --tags | sed -e 's/-rc\([0-9]*-\)/rc\1dev-/g' -e 's/-rc\([0-9]*\)/rc\1/g' -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1\2/' -e 's/-/./g' }}}
+%global gitdescribepepversion	{{{ git -C source describe --tags | sed -e 's/-rc\([0-9]*-\)/rc\1dev-/g' -e 's/-rc\([0-9]*\)/rc\1/g' -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1\2/' -e 's/dev$/dev0/' -e 's/-/./g' }}}
 
 Name:		mupdf
 %global libname libmupdf
 %global pypiname mupdf
 Version:	%{gitdescribefedversion}
 # git dev breaks abi without bumping!
-%global soname 25.3
+%global soname 25.4
 # upstream prerelease versions tags need to be translated to Fedorian
 %global upversion %{version}
 Release:	1%{?dist}
