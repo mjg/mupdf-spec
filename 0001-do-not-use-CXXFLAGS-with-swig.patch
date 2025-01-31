@@ -1,0 +1,28 @@
+From bf73e83810f2363f0e42d2d9733399e059b0884e Mon Sep 17 00:00:00 2001
+Message-ID: <bf73e83810f2363f0e42d2d9733399e059b0884e.1738357217.git.mjg@fedoraproject.org>
+From: Michael J Gruber <mjg@fedoraproject.org>
+Date: Fri, 31 Jan 2025 21:59:13 +0100
+Subject: [PATCH] do not use CXXFLAGS with swig
+
+swig does not take c++ flags, so dot apply XCXXFLAGS here. Instead,
+allow to use XSWIGFLAGS when needed.
+---
+ scripts/wrap/swig.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/scripts/wrap/swig.py b/scripts/wrap/swig.py
+index adf65832a..eb3cc93cb 100644
+--- a/scripts/wrap/swig.py
++++ b/scripts/wrap/swig.py
+@@ -1809,7 +1809,7 @@ def build_swig(
+                         -outdir {os.path.relpath(build_dirs.dir_mupdf)}/platform/python
+                         -o {cpp}
+                         -includeall
+-                        {os.environ.get('XCXXFLAGS', '')}
++                        {os.environ.get('XSWIGFLAGS', '')}
+                         -I{os.path.relpath(build_dirs.dir_mupdf)}/platform/python/include
+                         -I{os.path.relpath(include1)}
+                         -I{os.path.relpath(include2)}
+-- 
+2.48.1.455.g882ecbb5d4
+
