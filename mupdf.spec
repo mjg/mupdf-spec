@@ -14,7 +14,7 @@ Version:	%{gitdescribefedversion}
 %global soname 25.5
 # upstream prerelease versions tags need to be translated to Fedorian
 %global upversion %{version}
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	A lightweight PDF viewer and toolkit
 License:	AGPL-3.0-or-later
 URL:		http://mupdf.com/
@@ -33,6 +33,10 @@ Patch:		0001-Do-not-complain-to-your-friendly-local-distribution-.patch
 Patch:		0001-setup.py-do-not-require-libclang-and-swig.patch
 # Do install shared libraries in the python tree
 Patch:		0001-setup.py-do-not-bundle-c-and-c-libs-in-wheel.patch
+# Avoid core dump of python bindings with gcc15
+Patch:		0001-pdf_choice_widget_options2-avoid-core-dump-with-_GLI.patch
+# Do not apply CXXFLAGS to swig
+Patch:		0001-do-not-use-CXXFLAGS-with-swig.patch
 BuildRequires:	gcc gcc-c++ make binutils desktop-file-utils coreutils pkgconfig
 BuildRequires:	openjpeg2-devel desktop-file-utils
 BuildRequires:	libjpeg-devel freetype-devel libXext-devel curl-devel
@@ -127,7 +131,8 @@ sed -i -e '/^install-shared-python:/s/ python//' Makefile
 %pyproject_buildrequires -R
 
 %build
-export XCFLAGS="%{optflags} -fPIC -DJBIG_NO_MEMENTO -DTOFU -DTOFU_CJK_EXT"
+export XCFLAGS="%{build_cflags} -fPIC -DJBIG_NO_MEMENTO -DTOFU -DTOFU_CJK_EXT"
+export XCXXFLAGS="%{build_cxxflags} -fPIC -DJBIG_NO_MEMENTO -DTOFU -DTOFU_CJK_EXT"
 make %{?_smp_mflags} shared c++
 # Use the same build directory which make uses:
 export MUPDF_SETUP_BUILD_DIR=build/shared-debug
