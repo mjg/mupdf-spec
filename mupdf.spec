@@ -14,7 +14,7 @@ Version:	%{gitdescribefedversion}
 %global soname 25.5
 # upstream prerelease versions tags need to be translated to Fedorian
 %global upversion %{version}
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	A lightweight PDF viewer and toolkit
 License:	AGPL-3.0-or-later
 URL:		http://mupdf.com/
@@ -118,7 +118,7 @@ echo > user.make "\
 	USE_SYSTEM_MUJS := no # build needs source anyways
 	USE_TESSERACT := yes
 	VENV_FLAG :=
-	build := debug
+	build := release
 	shared := yes
 	verbose := yes
 "
@@ -135,7 +135,7 @@ export XCFLAGS="%{build_cflags} -fPIC -DJBIG_NO_MEMENTO -DTOFU -DTOFU_CJK_EXT"
 export XCXXFLAGS="%{build_cxxflags} -fPIC -DJBIG_NO_MEMENTO -DTOFU -DTOFU_CJK_EXT"
 make %{?_smp_mflags} shared c++
 # Use the same build directory which make uses:
-export MUPDF_SETUP_BUILD_DIR=build/shared-debug
+export MUPDF_SETUP_BUILD_DIR=build/shared-release
 # Use stable python directories:
 export MUPDF_SETUP_VERSION=%{gitdescribepepversion}
 %pyproject_wheel
