@@ -118,6 +118,7 @@ echo > user.make "\
 	USE_SYSTEM_MUJS := no # build needs source anyways
 	USE_TESSERACT := yes
 	VENV_FLAG :=
+	barcode := no
 	build := release
 	shared := yes
 	verbose := yes
