@@ -46,7 +46,7 @@ BuildRequires:	harfbuzz-devel openssl-devel mesa-libEGL-devel
 BuildRequires:	mesa-libGL-devel mesa-libGLU-devel libXi-devel libXrandr-devel
 BuildRequires:	gumbo-parser-devel leptonica-devel tesseract-devel
 BuildRequires:	freeglut-devel
-BuildRequires:	jbig2dec-devel
+BuildRequires:	jbig2dec-devel brotli-devel
 BuildRequires:	swig python3-clang python3-devel
 # We need to build against the Artifex fork of lcms2 so that we are thread safe
 # (see bug #1553915). Artifex make sure to rebase against upstream, who refuse
