@@ -11,7 +11,9 @@ Name:		mupdf
 %global pypiname mupdf
 Version:	%{gitdescribefedversion}
 # git dev breaks abi without bumping!
-%global soname 26.0
+%global somajor 26
+%global sominor 0
+%global soname %{somajor}.%{sominor}
 # upstream prerelease versions tags need to be translated to Fedorian
 %global upversion %{version}
 Release:	1%{?dist}
@@ -127,6 +129,8 @@ echo > user.make "\
 # c++ and python install targets rebuild unconditionally. Avoid multiple rebuilds:
 sed -i -e '/^install-shared-c++:/s/ c++//' Makefile
 sed -i -e '/^install-shared-python:/s/ python//' Makefile
+# enforce same setting as above for py bindings:
+sed -i -e 's/barcode=yes/barcode=no/' scripts/wrap/__main__.py
 
 %generate_buildrequires
 %pyproject_buildrequires -R
@@ -171,6 +175,7 @@ cd %{buildroot}/%{_bindir} && ln -s %{name}-x11 %{name}
 %files libs
 %license COPYING
 %{_libdir}/%{libname}.so.%{soname}
+%{_libdir}/%{libname}.so.%{somajor}
 
 %files cpp-devel
 %{_includedir}/%{name}
@@ -179,6 +184,7 @@ cd %{buildroot}/%{_bindir} && ln -s %{name}-x11 %{name}
 %files cpp-libs
 %license COPYING
 %{_libdir}/%{libname}cpp.so.%{soname}
+%{_libdir}/%{libname}cpp.so.%{somajor}
 
 %files -n python3-%{pypiname} -f %{pyproject_files}
 %license COPYING
