@@ -14,7 +14,7 @@ Version:	%{gitdescribefedversion}
 %global soname 25.5
 # upstream prerelease versions tags need to be translated to Fedorian
 %global upversion %{version}
-Release:	3%{?dist}
+Release:	1%{?dist}
 Summary:	A lightweight PDF viewer and toolkit
 License:	AGPL-3.0-or-later
 URL:		http://mupdf.com/
