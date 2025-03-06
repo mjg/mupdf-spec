@@ -1,0 +1,34 @@
+From 8d29fd0bdbcd73b4638fc79d90838643a515bc66 Mon Sep 17 00:00:00 2001
+Message-ID: <8d29fd0bdbcd73b4638fc79d90838643a515bc66.1741270396.git.mjg@fedoraproject.org>
+From: Michael J Gruber <mjg@fedoraproject.org>
+Date: Thu, 6 Mar 2025 15:10:38 +0100
+Subject: [PATCH] fix mode for shared libs
+
+Among the many different changes squashed into
+97d6e5d93 ("Spring cleaning of makefile.", 2025-02-25),
+obeying SO_INSTALL_MODE got lost for libmupdf.so.
+
+Restore the previous behaviour.
+
+Some automatic dependency generators depend on proper mode bits for
+shared libs, in particular when building on RHEL9 and the like.
+---
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index 79676abd2..d621aa48d 100644
+--- a/Makefile
++++ b/Makefile
+@@ -453,7 +453,7 @@ install-headers:
+ install-libs: libs install-headers
+ 	install -d $(DESTDIR)$(libdir)
+ ifeq ($(shared),yes)
+-	install -m 644 $(OUT)/libmupdf.$(SO)$(SO_VERSION) $(DESTDIR)$(libdir)/libmupdf.$(SO)$(SO_VERSION)
++	install -m $(SO_INSTALL_MODE) $(OUT)/libmupdf.$(SO)$(SO_VERSION) $(DESTDIR)$(libdir)/libmupdf.$(SO)$(SO_VERSION)
+   ifneq ($(OS),OpenBSD)
+ 	ln -sf libmupdf.$(SO)$(SO_VERSION) $(DESTDIR)$(libdir)/libmupdf.$(SO)$(SO_VERSION_MAJOR)
+ 	ln -sf libmupdf.$(SO)$(SO_VERSION) $(DESTDIR)$(libdir)/libmupdf.$(SO)
+-- 
+2.49.0.rc0.432.g866148343a
+
