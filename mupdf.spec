@@ -6,6 +6,8 @@
 %global gitdescribefedversion	{{{ git -C source describe --tags | sed -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1^\2.g\3/' -e 's/-\([a-z]\+\)/~\1/' }}}
 %global gitdescribepepversion	{{{ git -C source describe --tags | sed -e 's/-rc\([0-9]*-\)/rc\1dev-/g' -e 's/-rc\([0-9]*\)/rc\1/g' -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1\2/' -e 's/-/./g' }}}
 
+%bcond barcode 0%{?fedora}
+
 Name:		mupdf
 %global libname libmupdf
 %global pypiname mupdf
@@ -16,7 +18,7 @@ Version:	%{gitdescribefedversion}
 %global soname %{somajor}.%{sominor}
 # upstream prerelease versions tags need to be translated to Fedorian
 %global upversion %{version}
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	A lightweight PDF viewer and toolkit
 License:	AGPL-3.0-or-later
 URL:		http://mupdf.com/
@@ -48,6 +50,10 @@ BuildRequires:	gumbo-parser-devel leptonica-devel tesseract-devel
 BuildRequires:	freeglut-devel
 BuildRequires:	jbig2dec-devel brotli-devel
 BuildRequires:	swig python3-clang python3-devel
+%if %{with barcode}
+BuildRequires:	zxing-cpp-devel zint-devel
+%endif
+
 # We need to build against the Artifex fork of lcms2 so that we are thread safe
 # (see bug #1553915). Artifex make sure to rebase against upstream, who refuse
 # to integrate Artifex's changes. 
@@ -120,7 +126,7 @@ echo > user.make "\
 	USE_SYSTEM_MUJS := no # build needs source anyways
 	USE_TESSERACT := yes
 	VENV_FLAG :=
-	barcode := no
+	barcode := %{?with_barcode:yes}%{!?with_barcode:no}
 	build := release
 	shared := yes
 	verbose := yes
@@ -129,8 +135,12 @@ echo > user.make "\
 # c++ and python install targets rebuild unconditionally. Avoid multiple rebuilds:
 sed -i -e '/^install-shared-c++:/s/ c++//' Makefile
 sed -i -e '/^install-shared-python:/s/ python//' Makefile
+# distribution builds are without experimental API:
+sed -i -e '/DZXING_EXPERIMENTAL_API/ d' Makelists
+%if %{without barcode}
 # enforce same setting as above for py bindings:
 sed -i -e 's/barcode=yes/barcode=no/' scripts/wrap/__main__.py
+%endif
 
 %generate_buildrequires
 %pyproject_buildrequires -R
