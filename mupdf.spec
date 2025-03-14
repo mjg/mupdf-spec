@@ -18,7 +18,7 @@ Version:	%{gitdescribefedversion}
 %global soname %{somajor}.%{sominor}
 # upstream prerelease versions tags need to be translated to Fedorian
 %global upversion %{version}
-Release:	2%{?dist}
+Release:	1%{?dist}
 Summary:	A lightweight PDF viewer and toolkit
 License:	AGPL-3.0-or-later
 URL:		http://mupdf.com/
@@ -169,6 +169,10 @@ install -p -m644 docs/logo/mupdf-logo.svg %{buildroot}%{_datadir}/icons/hicolor/
 find %{buildroot}/%{_mandir} -type f -exec chmod 0644 {} \;
 find %{buildroot}/%{_includedir} -type f -exec chmod 0644 {} \;
 cd %{buildroot}/%{_bindir} && ln -s %{name}-x11 %{name}
+
+%check
+# test import of python module and basic functionality
+LD_LIBRARY_PATH='%{buildroot}%{_libdir}' %{py3_test_envvars} %{python3} scripts/mupdfwrap_test.py thirdparty/lcms2/doc/*.pdf
 
 %files
 %license COPYING
