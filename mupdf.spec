@@ -1,6 +1,6 @@
 ## Pull in upstream source:
 # {{{ git submodule update --init --recursive 1>&2; git submodule }}}
-# {{{ git -C source tag -f 1.25.5-dev 97e00496b004084c7b6fb79ffd46cd9e95eee747 }}}
+# {{{ git -C source tag -f 1.25.6-dev 5c0f69e843ce16031a91791bf4163cb6c3a204df }}}
 %global gitversion		{{{ git -C source rev-parse HEAD }}}
 %global gitshortversion		{{{ git -C source rev-parse --short HEAD }}}
 %global gitdescribefedversion	{{{ git -C source describe --tags | sed -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1^\2.g\3/' -e 's/-\([a-z]\+\)/~\1/' }}}
@@ -11,7 +11,7 @@ Name:		mupdf
 %global pypiname mupdf
 Version:	%{gitdescribefedversion}
 # git dev breaks abi without bumping!
-%global soname 25.5
+%global soname 25.6
 # upstream prerelease versions tags need to be translated to Fedorian
 %global upversion %{version}
 Release:	1%{?dist}
@@ -37,6 +37,8 @@ Patch:		0001-setup.py-do-not-bundle-c-and-c-libs-in-wheel.patch
 Patch:		0001-pdf_choice_widget_options2-avoid-core-dump-with-_GLI.patch
 # Do not apply CXXFLAGS to swig
 Patch:		0001-do-not-use-CXXFLAGS-with-swig.patch
+# https://github.com/ArtifexSoftware/mupdf/pull/68
+Patch:		0001-Work-around-pip-25-pyproject_hooks-1.2.0-path-meddli.patch
 BuildRequires:	gcc gcc-c++ make binutils desktop-file-utils coreutils pkgconfig
 BuildRequires:	openjpeg2-devel desktop-file-utils
 BuildRequires:	libjpeg-devel freetype-devel libXext-devel curl-devel
