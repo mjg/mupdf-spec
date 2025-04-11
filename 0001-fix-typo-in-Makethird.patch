@@ -1,0 +1,28 @@
+From d79283d39c31f4621b7fcb5724e86e9caf80c8d9 Mon Sep 17 00:00:00 2001
+Message-ID: <d79283d39c31f4621b7fcb5724e86e9caf80c8d9.1744358862.git.mjg@fedoraproject.org>
+From: Michael J Gruber <mjg@fedoraproject.org>
+Date: Fri, 11 Apr 2025 10:06:54 +0200
+Subject: [PATCH] fix typo in Makethird
+
+Introduced in 9586102c8 ("Always get GL cflags/libs from the system.",
+2025-04-09).
+---
+ Makethird | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makethird b/Makethird
+index 623a1be77..488cf8fe2 100644
+--- a/Makethird
++++ b/Makethird
+@@ -241,7 +241,7 @@ endif
+ 
+ ifeq ($(USE_SYSTEM_GLUT),yes)
+   THIRD_GLUT_CFLAGS += $(SYS_GLUT_CFLAGS) $(SYS_GL_CFLAGS)
+-  THIRD_GLUT_LIBS += $(SYS_GLUT_LIBS) $(SYS_GL_LIB)S
++  THIRD_GLUT_LIBS += $(SYS_GLUT_LIBS) $(SYS_GL_LIBS)
+ else
+   THIRD_GLUT_CFLAGS += $(GLUT_CFLAGS) $(SYS_GL_CFLAGS)
+   THIRD_GLUT_LIBS += $(GLUT_LIBS) $(SYS_GL_LIBS)
+-- 
+2.49.0.614.g8641cd1fb6
+
