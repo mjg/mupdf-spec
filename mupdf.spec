@@ -18,7 +18,7 @@ Version:	%{gitdescribefedversion}
 %global soname %{somajor}.%{sominor}
 # upstream prerelease versions tags need to be translated to Fedorian
 %global upversion %{version}
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	A lightweight PDF viewer and toolkit
 License:	AGPL-3.0-or-later
 URL:		http://mupdf.com/
@@ -43,6 +43,8 @@ Patch:		0001-pdf_choice_widget_options2-avoid-core-dump-with-_GLI.patch
 Patch:		0001-do-not-use-CXXFLAGS-with-swig.patch
 # https://github.com/ArtifexSoftware/mupdf/pull/68
 Patch:		0001-Work-around-pip-25-pyproject_hooks-1.2.0-path-meddli.patch
+# Cherry picked from upstream/master
+Patch:		0001-Bug-708541-Fix-cycle-detection-in-pdf_rearrange_page.patch
 BuildRequires:	gcc gcc-c++ make binutils desktop-file-utils coreutils pkgconfig
 BuildRequires:	openjpeg2-devel desktop-file-utils
 BuildRequires:	libjpeg-devel freetype-devel libXext-devel curl-devel
