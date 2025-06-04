@@ -37,10 +37,14 @@ Patch:		0001-Do-not-complain-to-your-friendly-local-distribution-.patch
 Patch:		0001-setup.py-do-not-require-libclang-and-swig.patch
 # Do install shared libraries in the python tree
 Patch:		0001-setup.py-do-not-bundle-c-and-c-libs-in-wheel.patch
+# Suggested upstream:
 # Avoid core dump of python bindings with gcc15
+# https://github.com/ArtifexSoftware/mupdf/pull/55
 Patch:		0001-pdf_choice_widget_options2-avoid-core-dump-with-_GLI.patch
 # Do not apply CXXFLAGS to swig
+# https://github.com/ArtifexSoftware/mupdf/pull/56
 Patch:		0001-do-not-use-CXXFLAGS-with-swig.patch
+# Work around pyproject_hooks frpm pip 25 meddling with path
 # https://github.com/ArtifexSoftware/mupdf/pull/68
 Patch:		0001-Work-around-pip-25-pyproject_hooks-1.2.0-path-meddli.patch
 BuildRequires:	gcc gcc-c++ make binutils desktop-file-utils coreutils pkgconfig
