@@ -1,10 +1,10 @@
 ## Pull in upstream source:
 # {{{ git submodule update --init --recursive 1>&2; git submodule }}}
-# {{{ git -C source tag -f 1.26.2-dev 9d1aca6707fa1e4ca48cc6ae47b497aeb9cb3660 }}}
+# {{{ git -C source tag -f 1.26.3-dev 193f71410b0d6add7e9509a9001077077bd55ef4 }}}
 %global gitversion		{{{ git -C source rev-parse HEAD }}}
 %global gitshortversion		{{{ git -C source rev-parse --short HEAD }}}
 %global gitdescribefedversion	{{{ git -C source describe --tags | sed -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1^\2.g\3/' -e 's/-\([a-z]\+\)/~\1/' }}}
-%global gitdescribepepversion	{{{ git -C source describe --tags | sed -e 's/-rc\([0-9]*-\)/rc\1dev-/g' -e 's/-rc\([0-9]*\)/rc\1/g' -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1\2/' -e 's/-/./g' }}}
+%global gitdescribepepversion	{{{ git -C source describe --tags | sed -e 's/-rc\([0-9]*-\)/rc\1dev-/g' -e 's/-rc\([0-9]*\)/rc\1/g' -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1\2/' -e 's/dev$/dev0/' -e 's/-/./g' }}}
 
 %bcond barcode 0%{?fedora}
 
@@ -14,7 +14,7 @@ Name:		mupdf
 Version:	%{gitdescribefedversion}
 # git dev breaks abi without bumping!
 %global somajor 26
-%global sominor 2
+%global sominor 3
 %global soname %{somajor}.%{sominor}
 # upstream prerelease versions tags need to be translated to Fedorian
 %global upversion %{version}
