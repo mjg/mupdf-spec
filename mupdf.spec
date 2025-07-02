@@ -1,6 +1,10 @@
 ## Pull in upstream source:
 # {{{ git submodule update --init --recursive 1>&2; git submodule }}}
 # {{{ git -C source tag -f 1.27.0-dev f51667f123cc95e32fc42f8ac07ac99b2b2e454b }}}
+## Shallow clones do not allow tag computation:
+# {{{ git -C source/thirdparty/extract fetch --unshallow }}}
+# {{{ git -C source/thirdparty/lcms2 fetch --unshallow }}}
+# {{{ git -C source/thirdparty/mujs fetch --unshallow }}}
 %global gitversion		{{{ git -C source rev-parse HEAD }}}
 %global gitshortversion		{{{ git -C source rev-parse --short HEAD }}}
 %global gitdescribefedversion	{{{ git -C source describe --tags | sed -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1^\2.g\3/' -e 's/-\([a-z]\+\)/~\1/' }}}
