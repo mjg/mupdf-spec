@@ -48,9 +48,6 @@ Patch:		0001-pdf_choice_widget_options2-avoid-core-dump-with-_GLI.patch
 # Do not apply CXXFLAGS to swig
 # https://github.com/ArtifexSoftware/mupdf/pull/56
 Patch:		0001-do-not-use-CXXFLAGS-with-swig.patch
-# Work around pyproject_hooks frpm pip 25 meddling with path
-# https://github.com/ArtifexSoftware/mupdf/pull/68
-Patch:		0001-Work-around-pip-25-pyproject_hooks-1.2.0-path-meddli.patch
 # Be more helpful with the new warning in 1.26.x
 # https://github.com/ArtifexSoftware/mupdf/pull/74
 Patch:		0001-pdf_font-report-font-name-in-warning.patch
