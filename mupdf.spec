@@ -22,7 +22,7 @@ Version:	%{gitdescribefedversion}
 %global soname %{somajor}.%{sominor}
 # upstream prerelease versions tags need to be translated to Fedorian
 %global upversion %{version}
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	A lightweight PDF viewer and toolkit
 License:	AGPL-3.0-or-later
 URL:		http://mupdf.com/
@@ -53,6 +53,7 @@ Patch:		0001-do-not-use-CXXFLAGS-with-swig.patch
 Patch:		0001-pdf_font-report-font-name-in-warning.patch
 # Upstreamable:
 Patch:		0001-mupdfwrap_test-adjust-to-mupdf-1.27.x.patch
+Patch:		0001-Revert-Bug-708631-Fix-calculation-of-combined_spun_s.patch
 BuildRequires:	gcc gcc-c++ make binutils desktop-file-utils coreutils pkgconfig
 BuildRequires:	openjpeg2-devel desktop-file-utils
 BuildRequires:	libjpeg-devel freetype-devel libXext-devel curl-devel
