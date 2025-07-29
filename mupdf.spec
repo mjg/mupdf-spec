@@ -1,6 +1,6 @@
 ## Pull in upstream source:
 # {{{ git submodule update --init --recursive 1>&2; git submodule }}}
-# {{{ git -C source tag -f 1.26.4-dev a9b6246a611b702b162b02fa757dad2697f8ff27 }}}
+# {{{ git -C source tag -f 1.26.5-dev d0faba51e199b9863fe2885e81505aed27b35ddd }}}
 
 ## Shallow clones do not allow tag computation:
 # {{{ git -C source/thirdparty/extract fetch --unshallow }}}
@@ -20,7 +20,7 @@ Name:		mupdf
 Version:	%{gitdescribefedversion}
 # git dev breaks abi without bumping!
 %global somajor 26
-%global sominor 4
+%global sominor 5
 %global soname %{somajor}.%{sominor}
 # upstream prerelease versions tags need to be translated to Fedorian
 %global upversion %{version}
