@@ -55,6 +55,8 @@ Patch:		0001-do-not-use-CXXFLAGS-with-swig.patch
 Patch:		0001-pdf_font-report-font-name-in-warning.patch
 # Upstreamable:
 Patch:		0001-mupdfwrap_test-adjust-to-mupdf-1.27.x.patch
+Patch:		0001-parse.py-adjust-to-clang-21.patch
+
 BuildRequires:	gcc gcc-c++ make binutils desktop-file-utils coreutils pkgconfig
 BuildRequires:	openjpeg2-devel desktop-file-utils
 BuildRequires:	libjpeg-devel freetype-devel libXext-devel curl-devel
