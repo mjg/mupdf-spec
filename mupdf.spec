@@ -36,6 +36,10 @@ Source2:	{{{ GIT_DIRTY=1 git_pack path=source/thirdparty/lcms2 dir_name=thirdpar
 Source3:	{{{ GIT_DIRTY=1 git_pack path=source/thirdparty/mujs dir_name=thirdparty/mujs source_name=mujs.tar.gz }}}
 Source11:	%{name}.desktop
 Source12:	%{name}-gl.desktop
+# Upstream patches from master branch:
+# Deal with multiple clang versions
+Patch:		0001-scripts-wrap-parse.py-get_args-improve-caching-of-re.patch
+Patch:		0001-scripts-wrap-parse.py-get_args-fix-for-libclang-20.patch
 # Fedora specific patches:
 # Do not bug me if Artifex relies on local fork
 Patch:		0001-Do-not-complain-to-your-friendly-local-distribution-.patch
@@ -56,8 +60,6 @@ Patch:		0001-Work-around-pip-25-pyproject_hooks-1.2.0-path-meddli.patch
 # Be more helpful with the new warning in 1.26.x
 # https://github.com/ArtifexSoftware/mupdf/pull/74
 Patch:		0001-pdf_font-report-font-name-in-warning.patch
-# Upstreamable:
-Patch:		0001-parse.py-adjust-to-clang-21.patch
 
 BuildRequires:	gcc gcc-c++ make binutils desktop-file-utils coreutils pkgconfig
 BuildRequires:	openjpeg2-devel desktop-file-utils
