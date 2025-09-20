@@ -1,6 +1,6 @@
 ## Pull in upstream source:
 # {{{ git submodule update --init --recursive 1>&2; git submodule }}}
-# {{{ git -C source tag -f 1.26.8-dev 9954dafe389fbdb9bca4847da5773f51afdcca38 }}}
+# {{{ git -C source tag -f 1.26.9-dev 35470284e20b6a9183d0b9aae6b8fdcbfc2dea35 }}}
 
 ## Shallow clones do not allow tag computation:
 # {{{ git -C source/thirdparty/extract fetch --unshallow }}}
@@ -20,7 +20,7 @@ Name:		mupdf
 Version:	%{gitdescribefedversion}
 # git dev breaks abi without bumping!
 %global somajor 26
-%global sominor 8
+%global sominor 9
 %global soname %{somajor}.%{sominor}
 # upstream prerelease versions tags need to be translated to Fedorian
 %global upversion %{version}
@@ -36,6 +36,7 @@ Source2:	{{{ GIT_DIRTY=1 git_pack path=source/thirdparty/lcms2 dir_name=thirdpar
 Source3:	{{{ GIT_DIRTY=1 git_pack path=source/thirdparty/mujs dir_name=thirdparty/mujs source_name=mujs.tar.gz }}}
 Source11:	%{name}.desktop
 Source12:	%{name}-gl.desktop
+
 # Upstream patches from master branch:
 # Deal with multiple clang versions
 Patch:		0001-scripts-wrap-parse.py-get_args-improve-caching-of-re.patch
