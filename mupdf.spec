@@ -1,6 +1,6 @@
 ## Pull in upstream source:
 # {{{ git submodule update --init --recursive 1>&2; git submodule }}}
-# {{{ git -C source tag -f 1.26.9-dev 35470284e20b6a9183d0b9aae6b8fdcbfc2dea35 }}}
+# {{{ git -C source tag -f 1.26.10-dev f486465223b1c492cde769e375740e89715cfd11 }}}
 
 ## Shallow clones do not allow tag computation:
 # {{{ git -C source/thirdparty/extract fetch --unshallow }}}
@@ -20,7 +20,7 @@ Name:		mupdf
 Version:	%{gitdescribefedversion}
 # git dev breaks abi without bumping!
 %global somajor 26
-%global sominor 9
+%global sominor 10
 %global soname %{somajor}.%{sominor}
 # upstream prerelease versions tags need to be translated to Fedorian
 %global upversion %{version}
@@ -141,6 +141,8 @@ for d in $(ls thirdparty | grep -v -e extract -e lcms2 -e mujs)
 do
 	rm -rf thirdparty/$d
 done
+# avoid overwriting the proper README by the doc build instructions
+rm -f docs/README
 
 echo > user.make "\
 	USE_SYSTEM_LIBS := yes
