@@ -61,7 +61,6 @@ Patch:		0001-Work-around-pip-25-pyproject_hooks-1.2.0-path-meddli.patch
 # Be more helpful with the new warning in 1.26.x
 # https://github.com/ArtifexSoftware/mupdf/pull/74
 Patch:		0001-pdf_font-report-font-name-in-warning.patch
-Patch:		0001-Fix-fix-for-Bug-708845.patch
 
 BuildRequires:	gcc gcc-c++ make binutils desktop-file-utils coreutils pkgconfig
 BuildRequires:	openjpeg2-devel desktop-file-utils
