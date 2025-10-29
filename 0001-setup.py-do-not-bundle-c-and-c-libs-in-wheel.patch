@@ -1,5 +1,5 @@
-From 3be6b6703aa0a9431b788d08c4d26d6209be3316 Mon Sep 17 00:00:00 2001
-Message-ID: <3be6b6703aa0a9431b788d08c4d26d6209be3316.1731337861.git.mjg@fedoraproject.org>
+From bf852f7efc7c6461675cf70c8de9f3db28f5a4e1 Mon Sep 17 00:00:00 2001
+Message-ID: <bf852f7efc7c6461675cf70c8de9f3db28f5a4e1.1761772186.git.mjg@fedoraproject.org>
 From: Michael J Gruber <mjg@fedoraproject.org>
 Date: Mon, 11 Nov 2024 16:08:56 +0100
 Subject: [PATCH] setup.py: do not bundle c and c++ libs in wheel
@@ -11,10 +11,10 @@ We want to package libs separately, so do not include them in the wheel
  1 file changed, 2 deletions(-)
 
 diff --git a/setup.py b/setup.py
-index f740931c8..1330da7b5 100755
+index 0462eeaa7..768212a22 100755
 --- a/setup.py
 +++ b/setup.py
-@@ -334,8 +334,6 @@ def build():
+@@ -356,8 +356,6 @@ def build():
                  ]
      else:
          names = [
@@ -24,5 +24,5 @@ index f740931c8..1330da7b5 100755
                  f'{build_dir()}/mupdf.py',                          # Python.
                  ]
 -- 
-2.47.0.346.g8c6d622db9
+2.51.2.1007.g590f8df4db
 

@@ -1,5 +1,5 @@
-From cd8e1d154ab404de84c4102a3ab0de3b6f88d6f5 Mon Sep 17 00:00:00 2001
-Message-ID: <cd8e1d154ab404de84c4102a3ab0de3b6f88d6f5.1748008739.git.mjg@fedoraproject.org>
+From a9b308e75b3dbe20dc8fe502b9a212749433ea92 Mon Sep 17 00:00:00 2001
+Message-ID: <a9b308e75b3dbe20dc8fe502b9a212749433ea92.1761772186.git.mjg@fedoraproject.org>
 From: Michael J Gruber <mjg@fedoraproject.org>
 Date: Fri, 23 May 2025 15:57:30 +0200
 Subject: [PATCH] mupdfwrap_test: adjust to mupdf 1.27.x
@@ -14,10 +14,10 @@ Adjust the script accordingly, catching both "pass" and the expected
  1 file changed, 15 insertions(+), 1 deletion(-)
 
 diff --git a/scripts/mupdfwrap_test.py b/scripts/mupdfwrap_test.py
-index 6b16fdc63..9981bc6bc 100755
+index 7e077981d..4e48ca2c8 100755
 --- a/scripts/mupdfwrap_test.py
 +++ b/scripts/mupdfwrap_test.py
-@@ -143,7 +143,21 @@ def test_filter(path):
+@@ -140,7 +140,21 @@ def test_filter(path):
              document.pdf_end_operation()
  
      if 1:
@@ -41,5 +41,5 @@ index 6b16fdc63..9981bc6bc 100755
  
  def test_install_load_system_font(path):
 -- 
-2.49.0.1214.g20fee5b843
+2.51.2.1007.g590f8df4db
 

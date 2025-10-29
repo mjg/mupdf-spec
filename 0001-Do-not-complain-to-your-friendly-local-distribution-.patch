@@ -1,5 +1,5 @@
-From 2fdf3e160fc2f30324d1ce9eaceedd3f0ea158bd Mon Sep 17 00:00:00 2001
-Message-ID: <2fdf3e160fc2f30324d1ce9eaceedd3f0ea158bd.1717676942.git.mjg@fedoraproject.org>
+From 4232ffdd8bfbc60067f81bf92afba3713209c430 Mon Sep 17 00:00:00 2001
+Message-ID: <4232ffdd8bfbc60067f81bf92afba3713209c430.1761772186.git.mjg@fedoraproject.org>
 From: Michael J Gruber <mjg@fedoraproject.org>
 Date: Thu, 6 Jun 2024 14:27:12 +0200
 Subject: [PATCH] Do not complain to your friendly local distribution manager
@@ -25,5 +25,5 @@ index d3dfb1de6..c0d9d72d7 100644
  #endif
  	glutSpecialFunc(on_special);
 -- 
-2.45.2.607.ge77ae43106
+2.51.2.1007.g590f8df4db
 
