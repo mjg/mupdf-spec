@@ -9,8 +9,8 @@
 
 %global gitversion		{{{ git -C source rev-parse HEAD }}}
 %global gitshortversion		{{{ git -C source rev-parse --short HEAD }}}
-%global gitdescribefedversion	{{{ git -C source describe --tags | sed -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1^\2.g\3/' -e 's/-\([a-z]\+\)/~\1/' }}}
-%global gitdescribepepversion	{{{ git -C source describe --tags | sed -e 's/-rc\([0-9]*\)/rc\1/g' -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1.post\2/' -e 's/dev\.post/dev/' -e 's/dev$/dev0/' -e 's/-/./g' }}}
+%global gitdescribefedversion	{{{ git -C source describe --tags --match '[0-9]*' | sed -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1^\2.g\3/' -e 's/-\([a-z]\+\)/~\1/' }}}
+%global gitdescribepepversion	{{{ git -C source describe --tags --match '[0-9]*' | sed -e 's/-rc\([0-9]*\)/rc\1/g' -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1.post\2/' -e 's/dev\.post/dev/' -e 's/dev$/dev0/' -e 's/-/./g' }}}
 
 %bcond barcode 0%{?fedora}
 
