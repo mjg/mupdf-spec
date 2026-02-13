@@ -22,6 +22,7 @@ Version:	%{gitdescribefedversion}
 %global somajor 27
 %global sominor 2
 %global soname %{somajor}.%{sominor}
+%global pkgconfig %{_libdir}/pkgconfig
 # upstream prerelease versions tags need to be translated to Fedorian
 %global upversion %{version}
 Release:	1%{?dist}
@@ -68,6 +69,8 @@ BuildRequires:	swig python3-clang python3-devel
 %if %{with barcode}
 BuildRequires:	zxing-cpp-devel zint-devel
 %endif
+
+Requires:	%{name}-libs%{_isa} = %{version}-%{release}
 
 # We need to build against the Artifex fork of lcms2 so that we are thread safe
 # (see bug #1553915). Artifex make sure to rebase against upstream, who refuse
@@ -118,12 +121,15 @@ C++ applications that use the mupdf library.
 
 %package cpp-libs
 Summary:	C++ Library files for %{name}
+Requires:	%{name}-libs%{_isa} = %{version}-%{release}
 
 %description cpp-libs
 The mupdf-cpp-libs package contains the mupdf C++ library files.
 
 %package -n python3-%{pypiname}
 Summary:	Python bindings for %{name}
+Requires:	%{name}-libs%{_isa} = %{version}-%{release}
+Requires:	%{name}-cpp-libs%{_isa} = %{version}-%{release}
 
 %description -n python3-%{pypiname}
 The python3-%{pypiname} package contains low level mupdf python bindings.
@@ -135,6 +141,8 @@ for d in $(ls thirdparty | grep -v -e extract -e lcms2 -e mujs)
 do
 	rm -rf thirdparty/$d
 done
+# avoid overwriting the proper README by the doc build instructions
+rm -f docs/README
 
 echo > user.make "\
 	USE_SYSTEM_LIBS := yes
@@ -170,6 +178,22 @@ export MUPDF_SETUP_BUILD_DIR=build/shared-release
 export MUPDF_SETUP_VERSION=%{gitdescribepepversion}
 %pyproject_wheel
 
+# Create pkgconfig file:
+cat > mupdf.pc << EOF
+prefix=%{_prefix}
+exec_prefix=%{_exec_prefix}
+libdir=%{_libdir}
+includedir=%{_includedir}
+
+Name: mupdf
+Description: Library for rendering PDF documents
+Requires.private: freetype2
+Version: %{version}
+Libs: -L${libdir} -lmupdf
+Libs.private: -lmujs -lgumbo -lopenjp2 -ljbig2dec -ljpeg -lz -lm
+Cflags: -I${includedir}
+EOF
+
 %install
 make DESTDIR=%{buildroot} install install-shared-c install-shared-c++ prefix=%{_prefix} libdir=%{_libdir} pydir=%{python3_sitearch} SO_INSTALL_MODE=755
 %pyproject_install
@@ -181,6 +205,8 @@ desktop-file-install --dir=%{buildroot}%{_datadir}/applications %{SOURCE12}
 mkdir -p %{buildroot}%{_datadir}/icons/hicolor/scalable/apps
 install -p -m644 docs/logo/mupdf-logo.svg %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/mupdf.svg
 install -p -m644 docs/logo/mupdf-logo.svg %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/mupdf-gl.svg
+mkdir -p %{buildroot}/%{pkgconfig}
+install -p -m 0644 mupdf.pc %{buildroot}/%{pkgconfig}
 find %{buildroot}/%{_mandir} -type f -exec chmod 0644 {} \;
 find %{buildroot}/%{_includedir} -type f -exec chmod 0644 {} \;
 cd %{buildroot}/%{_bindir} && ln -s %{name}-x11 %{name}
@@ -200,6 +226,7 @@ LD_LIBRARY_PATH='%{buildroot}%{_libdir}' %{py3_test_envvars} %{python3} scripts/
 %files devel
 %{_includedir}/%{name}
 %{_libdir}/%{libname}.so
+%{pkgconfig}/mupdf.pc
 
 %files libs
 %license COPYING
