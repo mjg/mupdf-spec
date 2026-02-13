@@ -51,9 +51,6 @@ Patch:		0001-pdf_choice_widget_options2-avoid-core-dump-with-_GLI.patch
 # Do not apply CXXFLAGS to swig
 # https://github.com/ArtifexSoftware/mupdf/pull/56
 Patch:		0001-do-not-use-CXXFLAGS-with-swig.patch
-# Be more helpful with the new warning in 1.26.x
-# https://github.com/ArtifexSoftware/mupdf/pull/74
-Patch:		0001-pdf_font-report-font-name-in-warning.patch
 # Upstreamable:
 Patch:		0001-mupdfwrap_test-adjust-to-mupdf-1.27.x.patch
 
