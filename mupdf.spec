@@ -15,6 +15,7 @@
 %bcond barcode 0%{?fedora}
 
 Name:		mupdf
+
 %global libname libmupdf
 %global pypiname mupdf
 Version:	%{gitdescribefedversion}
@@ -25,6 +26,9 @@ Version:	%{gitdescribefedversion}
 %global pkgconfig %{_libdir}/pkgconfig
 # upstream prerelease versions tags need to be translated to Fedorian
 %global upversion %{version}
+# upper bound on python-clang version
+%global pyclang_version 21
+
 Release:	1%{?dist}
 Summary:	A lightweight PDF viewer and toolkit
 License:	AGPL-3.0-or-later
@@ -65,7 +69,8 @@ BuildRequires:	mesa-libGL-devel mesa-libGLU-devel libXi-devel libXrandr-devel
 BuildRequires:	gumbo-parser-devel leptonica-devel tesseract-devel
 BuildRequires:	freeglut-devel
 BuildRequires:	jbig2dec-devel brotli-devel
-BuildRequires:	swig python3-clang python3-devel
+BuildRequires:	swig python3-devel
+BuildRequires:	python3-clang(major) <= 21
 %if %{with barcode}
 BuildRequires:	zxing-cpp-devel zint-devel
 %endif
@@ -171,9 +176,11 @@ sed -i -e 's/barcode=yes/barcode=no/' scripts/wrap/__main__.py
 %build
 export XCFLAGS="%{build_cflags} -fPIC -DJBIG_NO_MEMENTO -DTOFU -DTOFU_CJK_EXT"
 export XCXXFLAGS="%{build_cxxflags} -fPIC -DJBIG_NO_MEMENTO -DTOFU -DTOFU_CJK_EXT"
+# In case we use python-clang compat add its version specific path.
+export PYTHONPATH=$(find %{_libdir}/llvm*/ -name site-packages | head -1)
 make %{?_smp_mflags} shared c++
 # Use the same build directory which make uses:
-export MUPDF_SETUP_BUILD_DIR=build/shared-release
+export MUPDF_SETUP_BUILD_DIR=build/shared-release%{?with_barcode:-barcode}
 # Use stable python directories:
 export MUPDF_SETUP_VERSION=%{gitdescribepepversion}
 %pyproject_wheel
