@@ -70,7 +70,13 @@ BuildRequires:	gumbo-parser-devel leptonica-devel tesseract-devel
 BuildRequires:	freeglut-devel
 BuildRequires:	jbig2dec-devel brotli-devel
 BuildRequires:	swig python3-devel
-BuildRequires:	python3-clang(major) <= 21
+# Use python3-clang(major) where available:
+%if 0%{?fedora} >= 42
+BuildRequires:	python3-clang(major) <= %{pyclang_version}
+# Else we assume latest clang works:
+%else
+BuildRequires:	python3-clang
+%endif
 %if %{with barcode}
 BuildRequires:	zxing-cpp-devel zint-devel
 %endif
