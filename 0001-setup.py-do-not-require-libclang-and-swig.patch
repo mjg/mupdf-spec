@@ -1,5 +1,5 @@
-From 89611f9bf7c8d7e3b959cd2fb78571c3e3f1f2aa Mon Sep 17 00:00:00 2001
-Message-ID: <89611f9bf7c8d7e3b959cd2fb78571c3e3f1f2aa.1761772186.git.mjg@fedoraproject.org>
+From b9a23dfcfee1d8247d1f008a374d5227aa38d2d9 Mon Sep 17 00:00:00 2001
+Message-ID: <b9a23dfcfee1d8247d1f008a374d5227aa38d2d9.1779372684.git.mjg@fedoraproject.org>
 From: Michael J Gruber <mjg@fedoraproject.org>
 Date: Thu, 31 Oct 2024 23:53:31 +0100
 Subject: [PATCH] setup.py: do not require libclang and swig
@@ -33,5 +33,5 @@ index 6b2c8b841..0462eeaa7 100755
  
  
 -- 
-2.51.2.1007.g590f8df4db
+2.54.0.939.gf4651ccbf2
 

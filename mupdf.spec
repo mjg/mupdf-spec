@@ -39,6 +39,7 @@ Source0:	{{{ GIT_DIRTY=1 git_pack path=source dir_name=mupdf }}}
 Source1:	{{{ GIT_DIRTY=1 git_pack path=source/thirdparty/extract dir_name=thirdparty/extract source_name=extract.tar.gz }}}
 Source2:	{{{ GIT_DIRTY=1 git_pack path=source/thirdparty/lcms2 dir_name=thirdparty/lcms2 source_name=lcms2.tar.gz }}}
 Source3:	{{{ GIT_DIRTY=1 git_pack path=source/thirdparty/mujs dir_name=thirdparty/mujs source_name=mujs.tar.gz }}}
+Source4:	{{{ GIT_DIRTY=1 git_pack path=source/thirdparty/cmark-gfm dir_name=thirdparty/cmark-gfm source_name=cmark-gfm.tar.gz }}}
 Source11:	%{name}.desktop
 Source12:	%{name}-gl.desktop
 # Fedora specific patches:
@@ -89,7 +90,7 @@ Provides:	bundled(lcms2-devel) = {{{ git -C source/thirdparty/lcms2 describe --t
 Provides:	bundled(mujs-devel) = {{{ git -C source/thirdparty/mujs describe --tags | sed -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1^\2.g\3/' }}}
 # muPDF builds only against in-tree extract which is versioned along with ghostpdl.
 Provides:	bundled(extract) = {{{ git -C source/thirdparty/extract describe --tags | sed -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1^\2.g\3/' }}}
-# cmaek-gfm is not in Fedora.
+# cmark-gfm is not in Fedora.
 Provides:	bundled(cmark-gfm) = {{{ git -C source/thirdparty/cmark-gfm describe --tags --always | sed -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1^\2.g\3/' }}}
 
 %description
@@ -145,9 +146,9 @@ Requires:	%{name}-cpp-libs%{_isa} = %{version}-%{release}
 The python3-%{pypiname} package contains low level mupdf python bindings.
 
 %prep
-%setup -a 1 -a 2 -a 3 -n mupdf
+%setup -a 1 -a 2 -a 3 -a 4 -n mupdf
 %autopatch -p1
-for d in $(ls thirdparty | grep -v -e extract -e lcms2 -e mujs)
+for d in $(ls thirdparty | grep -v -e extract -e lcms2 -e mujs -e cmark-gfm)
 do
 	rm -rf thirdparty/$d
 done

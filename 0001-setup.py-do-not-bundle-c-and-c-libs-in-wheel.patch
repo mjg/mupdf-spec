@@ -1,5 +1,5 @@
-From bf852f7efc7c6461675cf70c8de9f3db28f5a4e1 Mon Sep 17 00:00:00 2001
-Message-ID: <bf852f7efc7c6461675cf70c8de9f3db28f5a4e1.1761772186.git.mjg@fedoraproject.org>
+From b2d2d63380cba57fed837c8fd60c500e5d9b2ad8 Mon Sep 17 00:00:00 2001
+Message-ID: <b2d2d63380cba57fed837c8fd60c500e5d9b2ad8.1779372681.git.mjg@fedoraproject.org>
 From: Michael J Gruber <mjg@fedoraproject.org>
 Date: Mon, 11 Nov 2024 16:08:56 +0100
 Subject: [PATCH] setup.py: do not bundle c and c++ libs in wheel
@@ -24,5 +24,5 @@ index 0462eeaa7..768212a22 100755
                  f'{build_dir()}/mupdf.py',                          # Python.
                  ]
 -- 
-2.51.2.1007.g590f8df4db
+2.54.0.939.gf4651ccbf2
 

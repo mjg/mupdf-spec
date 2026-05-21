@@ -1,5 +1,5 @@
-From a9b308e75b3dbe20dc8fe502b9a212749433ea92 Mon Sep 17 00:00:00 2001
-Message-ID: <a9b308e75b3dbe20dc8fe502b9a212749433ea92.1761772186.git.mjg@fedoraproject.org>
+From fa45b195a295b14a0b948285d8f3aa9ddf44074f Mon Sep 17 00:00:00 2001
+Message-ID: <fa45b195a295b14a0b948285d8f3aa9ddf44074f.1779372672.git.mjg@fedoraproject.org>
 From: Michael J Gruber <mjg@fedoraproject.org>
 Date: Fri, 23 May 2025 15:57:30 +0200
 Subject: [PATCH] mupdfwrap_test: adjust to mupdf 1.27.x
@@ -41,5 +41,5 @@ index 7e077981d..4e48ca2c8 100755
  
  def test_install_load_system_font(path):
 -- 
-2.51.2.1007.g590f8df4db
+2.54.0.939.gf4651ccbf2
 
