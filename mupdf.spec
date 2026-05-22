@@ -91,7 +91,7 @@ Provides:	bundled(mujs-devel) = {{{ git -C source/thirdparty/mujs describe --tag
 # muPDF builds only against in-tree extract which is versioned along with ghostpdl.
 Provides:	bundled(extract) = {{{ git -C source/thirdparty/extract describe --tags | sed -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1^\2.g\3/' }}}
 # cmark-gfm is not in Fedora.
-Provides:	bundled(cmark-gfm) = {{{ git -C source/thirdparty/cmark-gfm describe --tags --always | sed -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1^\2.g\3/' }}}
+Provides:	bundled(cmark-gfm) = {{{ git -C source/thirdparty/cmark-gfm describe --tags | sed -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1^\2.g\3/' }}}
 
 %description
 MuPDF is a lightweight PDF viewer and toolkit written in portable C.
