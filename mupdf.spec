@@ -69,7 +69,7 @@ BuildRequires:	freeglut-devel
 BuildRequires:	jbig2dec-devel brotli-devel
 BuildRequires:	swig python3-devel
 # Use python3-clang(major) where available:
-%if 0%{?fedora} >= 43 || 0%{?rhel} >= 11
+%if 0%{?fedora} >= 44 || 0%{?rhel} >= 11
 BuildRequires:	python3-clang(major) <= %{pyclang_version}
 # Else we assume latest clang works:
 %else
