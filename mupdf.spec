@@ -24,6 +24,9 @@ Version:	%{gitdescribefedversion}
 %global soname %{somajor}.%{sominor}
 # upstream prerelease versions tags need to be translated to Fedorian
 %global upversion %{version}
+# upper bound on python-clang version
+%global pyclang_version 21
+
 Release:	1%{?dist}
 Summary:	A lightweight PDF viewer and toolkit
 License:	AGPL-3.0-or-later
@@ -72,7 +75,14 @@ BuildRequires:	mesa-libGL-devel mesa-libGLU-devel libXi-devel libXrandr-devel
 BuildRequires:	gumbo-parser-devel leptonica-devel tesseract-devel
 BuildRequires:	freeglut-devel
 BuildRequires:	jbig2dec-devel brotli-devel
-BuildRequires:	swig python3-clang python3-devel
+BuildRequires:	swig python3-devel
+# Use python3-clang(major) where available:
+%if 0%{?fedora} >= 44 || 0%{?rhel} >= 11
+BuildRequires:	python3-clang(major) <= %{pyclang_version}
+# Else we assume latest clang works:
+%else
+BuildRequires:	python3-clang
+%endif
 %if %{with barcode}
 BuildRequires:	zxing-cpp-devel zint-devel
 %endif
