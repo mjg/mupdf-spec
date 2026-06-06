@@ -49,6 +49,8 @@ Patch:		0001-Do-not-complain-to-your-friendly-local-distribution-.patch
 Patch:		0001-setup.py-do-not-require-libclang-and-swig.patch
 # Do install shared libraries in the python tree
 Patch:		0001-setup.py-do-not-bundle-c-and-c-libs-in-wheel.patch
+# Stick to options known by our jbig2dec
+Patch:		0001-Revert-Bug-709438-Support-more-JBIG2-images.patch
 # Suggested upstream:
 # Avoid core dump of python bindings with gcc15
 # https://github.com/ArtifexSoftware/mupdf/pull/55
