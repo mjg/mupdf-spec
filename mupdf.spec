@@ -29,7 +29,7 @@ Version:	%{gitdescribefedversion}
 # upper bound on python-clang version
 %global pyclang_version 21
 
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	A lightweight PDF viewer and toolkit
 License:	AGPL-3.0-or-later
 URL:		http://mupdf.com/
