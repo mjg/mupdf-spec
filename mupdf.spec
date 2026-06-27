@@ -1,6 +1,6 @@
 ## Pull in upstream source:
 # {{{ git submodule update --init --recursive 1>&2; git submodule }}}
-# {{{ git -C source tag -f 1.28.0-dev 962a04089e37d0315600d595595e6aba2d0a45cc }}}
+# {{{ git -C source tag -f 1.29.0-dev baaa3b237ad85c6afcb23dc3e4b827a3bfb0a0cb }}}
 
 ## Shallow clones do not allow tag computation:
 # {{{ git -C source/thirdparty/extract fetch --unshallow }}}
@@ -20,7 +20,7 @@ Name:		mupdf
 %global pypiname mupdf
 Version:	%{gitdescribefedversion}
 # git dev breaks abi without bumping!
-%global somajor 28
+%global somajor 29
 %global sominor 0
 %global soname %{somajor}.%{sominor}
 %global pkgconfig %{_libdir}/pkgconfig
