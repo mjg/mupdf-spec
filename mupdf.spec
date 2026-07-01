@@ -47,7 +47,7 @@ Source12:	%{name}-gl.desktop
 Patch:		0001-Do-not-complain-to-your-friendly-local-distribution-.patch
 # Do not generate wrong form of dependencies
 Patch:		0001-setup.py-do-not-require-libclang-and-swig.patch
-# Do install shared libraries in the python tree
+# Do not install shared libraries in the python tree
 Patch:		0001-setup.py-do-not-bundle-c-and-c-libs-in-wheel.patch
 # Suggested upstream:
 # Avoid core dump of python bindings with gcc15
@@ -56,9 +56,11 @@ Patch:		0001-pdf_choice_widget_options2-avoid-core-dump-with-_GLI.patch
 # Do not apply CXXFLAGS to swig
 # https://github.com/ArtifexSoftware/mupdf/pull/56
 Patch:		0001-do-not-use-CXXFLAGS-with-swig.patch
+# Fix FTBFS for UINT_MAX
+# https://github.com/ArtifexSoftware/mupdf/pull/98
+Patch:		0001-pdf-object.c-Include-UINT_MAX-definition-and-fix-FTB.patch
 # Upstreamable:
 Patch:		0001-mupdfwrap_test-adjust-to-mupdf-1.27.x.patch
-Patch:		0001-pdf-object.c-Include-UINT_MAX-definition-and-fix-FTB.patch
 
 BuildRequires:	gcc gcc-c++ make binutils desktop-file-utils coreutils pkgconfig
 BuildRequires:	openjpeg2-devel desktop-file-utils
