@@ -176,6 +176,8 @@ sed -i -e '/DZXING_EXPERIMENTAL_API/ d' Makelists
 # enforce same setting as above for py bindings:
 sed -i -e 's/barcode=yes/barcode=no/' scripts/wrap/__main__.py
 %endif
+# do not use venvs during build
+sed -i -e '/autovenv.enter/ d' scripts/wrap/__main__.py
 
 %generate_buildrequires
 %pyproject_buildrequires -R
