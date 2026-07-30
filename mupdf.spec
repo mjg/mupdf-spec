@@ -58,6 +58,7 @@ Patch:		0001-do-not-use-CXXFLAGS-with-swig.patch
 Patch:		0001-pdf-object.c-Include-UINT_MAX-definition-and-fix-FTB.patch
 # Upstreamable:
 Patch:		0001-mupdfwrap_test-adjust-to-mupdf-1.27.x.patch
+Patch:		0001-Replace-removed-Python-2-C-API-macros-for-SWIG-4.5.0.patch
 
 BuildRequires:	gcc gcc-c++ make binutils desktop-file-utils coreutils pkgconfig
 BuildRequires:	openjpeg2-devel desktop-file-utils
