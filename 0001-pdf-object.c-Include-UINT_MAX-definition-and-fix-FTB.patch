@@ -1,5 +1,5 @@
-From 940f3f4c80cd6b75f9eb8c1e6d4a7bb53c919763 Mon Sep 17 00:00:00 2001
-Message-ID: <940f3f4c80cd6b75f9eb8c1e6d4a7bb53c919763.1782817338.git.mjg@fedoraproject.org>
+From 46f078dba7fbfa4f1effde2ebec5c92794fe3be6 Mon Sep 17 00:00:00 2001
+Message-ID: <46f078dba7fbfa4f1effde2ebec5c92794fe3be6.1785954953.git.mjg@fedoraproject.org>
 From: Michael J Gruber <mjg@fedoraproject.org>
 Date: Tue, 30 Jun 2026 12:59:48 +0200
 Subject: [PATCH] pdf-object.c: Include UINT_MAX definition and fix FTBFS
@@ -11,7 +11,7 @@ introduced usage of UINT_MAX in this file, so include the definition.
  1 file changed, 1 insertion(+)
 
 diff --git a/source/pdf/pdf-object.c b/source/pdf/pdf-object.c
-index 18620b762..ff8afc663 100644
+index c7ecd101b..08e1a924a 100644
 --- a/source/pdf/pdf-object.c
 +++ b/source/pdf/pdf-object.c
 @@ -27,6 +27,7 @@
@@ -20,8 +20,8 @@ index 18620b762..ff8afc663 100644
  #include <string.h>
 +#include <limits.h>
  #include <math.h>
- #include <zlib.h> /* for crc32 */
  
+ #define PDF_MAKE_NAME(STRING,NAME) STRING,
 -- 
-2.55.0.rc2.784.gc71a16c163
+2.55.0.607.ge54b5b6513
 
