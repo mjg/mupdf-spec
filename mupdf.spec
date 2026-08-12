@@ -53,9 +53,6 @@ Patch:		0001-setup.py-do-not-bundle-c-and-c-libs-in-wheel.patch
 # Do not apply CXXFLAGS to swig
 # https://github.com/ArtifexSoftware/mupdf/pull/56
 Patch:		0001-do-not-use-CXXFLAGS-with-swig.patch
-# Fix FTBFS for UINT_MAX
-# https://github.com/ArtifexSoftware/mupdf/pull/98
-Patch:		0001-pdf-object.c-Include-UINT_MAX-definition-and-fix-FTB.patch
 # Upstreamable:
 Patch:		0001-mupdfwrap_test-adjust-to-mupdf-1.27.x.patch
 Patch:		0001-Replace-removed-Python-2-C-API-macros-for-SWIG-4.5.0.patch
