@@ -49,6 +49,8 @@ Patch:		0001-Do-not-complain-to-your-friendly-local-distribution-.patch
 Patch:		0001-setup.py-do-not-require-libclang-and-swig.patch
 # Do not install shared libraries in the python tree
 Patch:		0001-setup.py-do-not-bundle-c-and-c-libs-in-wheel.patch
+# Do not require bundled gumbo-parser
+Patch:		0001-Revert-Ignore-extra-Gumbo-block-type-when-creating-X.patch
 # Suggested upstream:
 # Do not apply CXXFLAGS to swig
 # https://github.com/ArtifexSoftware/mupdf/pull/56

@@ -1,0 +1,27 @@
+From 4792e4327434a218917d852a8b34d2a442b33d9b Mon Sep 17 00:00:00 2001
+Message-ID: <4792e4327434a218917d852a8b34d2a442b33d9b.1787133434.git.mjg@fedoraproject.org>
+From: Michael J Gruber <mjg@fedoraproject.org>
+Date: Wed, 19 Aug 2026 11:56:03 +0200
+Subject: [PATCH] Revert "Ignore extra Gumbo block type when creating XML."
+
+This reverts commit 57a835744b726e947815c33f8d0ead8c2b6df2eb and fixes
+FTBFS with gumbp-parser releases up to 0.13.2.
+---
+ source/fitz/xml.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/source/fitz/xml.c b/source/fitz/xml.c
+index ceb1b9698..396ef86a6 100644
+--- a/source/fitz/xml.c
++++ b/source/fitz/xml.c
+@@ -1202,7 +1202,6 @@ static void xml_from_gumbo(fz_context *ctx, struct parser *parser, GumboNode *no
+ 	case GUMBO_NODE_DOCUMENT:
+ 	case GUMBO_NODE_COMMENT:
+ 	case GUMBO_NODE_TEMPLATE:
+-	case GUMBO_NODE_PROCESSING_INSTRUCTION:
+ 		break;
+ 	}
+ }
+-- 
+2.55.0.870.ge58410cc7e
+
