@@ -29,7 +29,7 @@ Version:	%{gitdescribefedversion}
 # upper bound on python-clang version
 %global pyclang_version 21
 
-Release:	3%{?dist}
+Release:	4%{?dist}
 Summary:	A lightweight PDF viewer and toolkit
 License:	AGPL-3.0-or-later
 URL:		http://mupdf.com/
@@ -55,6 +55,10 @@ Patch:		0001-pdf_choice_widget_options2-avoid-core-dump-with-_GLI.patch
 # Do not apply CXXFLAGS to swig
 # https://github.com/ArtifexSoftware/mupdf/pull/56
 Patch:		0001-do-not-use-CXXFLAGS-with-swig.patch
+# Replace removed Python 2 C API macros with Python 3 equivalents
+# for compatibility with SWIG 4.5.0
+# https://github.com/ArtifexSoftware/mupdf/pull/102
+Patch:		0001-Replace-removed-Python-2-C-API-macros-for-SWIG-4.5.0.patch
 # Be more helpful with the new warning in 1.26.x
 # https://github.com/ArtifexSoftware/mupdf/pull/74
 Patch:		0001-pdf_font-report-font-name-in-warning.patch
