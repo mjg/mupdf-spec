@@ -29,7 +29,7 @@ Version:	%{gitdescribefedversion}
 # upper bound on python-clang version
 %global pyclang_version 21
 
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	A lightweight PDF viewer and toolkit
 License:	AGPL-3.0-or-later
 URL:		http://mupdf.com/
@@ -46,7 +46,7 @@ Source12:	%{name}-gl.desktop
 Patch:		0001-Do-not-complain-to-your-friendly-local-distribution-.patch
 # Do not generate wrong form of dependencies
 Patch:		0001-setup.py-do-not-require-libclang-and-swig.patch
-# Do install shared libraries in the python tree
+# Do not install shared libraries in the python tree
 Patch:		0001-setup.py-do-not-bundle-c-and-c-libs-in-wheel.patch
 # Suggested upstream:
 # Avoid core dump of python bindings with gcc15
