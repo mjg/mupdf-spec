@@ -55,8 +55,6 @@ Patch:		0001-Revert-Ignore-extra-Gumbo-block-type-when-creating-X.patch
 # Do not apply CXXFLAGS to swig
 # https://github.com/ArtifexSoftware/mupdf/pull/56
 Patch:		0001-do-not-use-CXXFLAGS-with-swig.patch
-# Upstreamable:
-Patch:		0001-mupdfwrap_test-adjust-to-mupdf-1.27.x.patch
 
 BuildRequires:	gcc gcc-c++ make binutils desktop-file-utils coreutils pkgconfig
 BuildRequires:	openjpeg2-devel desktop-file-utils
