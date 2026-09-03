@@ -5,7 +5,6 @@
 ## Shallow clones do not allow tag computation:
 # {{{ git -C source/thirdparty/extract fetch --unshallow }}}
 # {{{ git -C source/thirdparty/lcms2 fetch --unshallow }}}
-# {{{ git -C source/thirdparty/mujs fetch --unshallow }}}
 
 %global gitversion		{{{ git -C source rev-parse HEAD }}}
 %global gitshortversion		{{{ git -C source rev-parse --short HEAD }}}
@@ -38,8 +37,7 @@ URL:		http://mupdf.com/
 Source0:	{{{ GIT_DIRTY=1 git_pack path=source dir_name=mupdf }}}
 Source1:	{{{ GIT_DIRTY=1 git_pack path=source/thirdparty/extract dir_name=thirdparty/extract source_name=extract.tar.gz }}}
 Source2:	{{{ GIT_DIRTY=1 git_pack path=source/thirdparty/lcms2 dir_name=thirdparty/lcms2 source_name=lcms2.tar.gz }}}
-Source3:	{{{ GIT_DIRTY=1 git_pack path=source/thirdparty/mujs dir_name=thirdparty/mujs source_name=mujs.tar.gz }}}
-Source4:	{{{ GIT_DIRTY=1 git_pack path=source/thirdparty/cmark-gfm dir_name=thirdparty/cmark-gfm source_name=cmark-gfm.tar.gz }}}
+Source3:	{{{ GIT_DIRTY=1 git_pack path=source/thirdparty/cmark-gfm dir_name=thirdparty/cmark-gfm source_name=cmark-gfm.tar.gz }}}
 Source11:	%{name}.desktop
 Source12:	%{name}-gl.desktop
 # Fedora specific patches:
@@ -62,7 +60,7 @@ BuildRequires:	libjpeg-devel freetype-devel libXext-devel curl-devel
 BuildRequires:	harfbuzz-devel openssl-devel mesa-libEGL-devel
 BuildRequires:	mesa-libGL-devel mesa-libGLU-devel libXi-devel libXrandr-devel
 BuildRequires:	gumbo-parser-devel leptonica-devel tesseract-devel
-BuildRequires:	freeglut-devel
+BuildRequires:	freeglut-devel mujs-devel
 BuildRequires:	jbig2dec-devel brotli-devel
 BuildRequires:	swig python3-devel
 # Use python3-clang(major) where available:
@@ -82,9 +80,6 @@ Requires:	%{name}-libs%{_isa} = %{version}-%{release}
 # (see bug #1553915). Artifex make sure to rebase against upstream, who refuse
 # to integrate Artifex's changes. 
 Provides:	bundled(lcms2-devel) = {{{ git -C source/thirdparty/lcms2 describe --tags | sed -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1^\2.g\3/' -e ''s/rc/~rc/ }}}
-# muPDF needs the muJS sources for the build even if we build against the system
-# version so bundling them is the safer choice.
-Provides:	bundled(mujs-devel) = {{{ git -C source/thirdparty/mujs describe --tags | sed -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1^\2.g\3/' }}}
 # muPDF builds only against in-tree extract which is versioned along with ghostpdl.
 Provides:	bundled(extract) = {{{ git -C source/thirdparty/extract describe --tags | sed -e 's/^\(.*\)-\([0-9]*\)-g\(.*\)$/\1^\2.g\3/' }}}
 # cmark-gfm is not in Fedora.
@@ -143,9 +138,9 @@ Requires:	%{name}-cpp-libs%{_isa} = %{version}-%{release}
 The python3-%{pypiname} package contains low level mupdf python bindings.
 
 %prep
-%setup -a 1 -a 2 -a 3 -a 4 -n mupdf
+%setup -a 1 -a 2 -a 3 -n mupdf
 %autopatch -p1
-for d in $(ls thirdparty | grep -v -e extract -e lcms2 -e mujs -e cmark-gfm)
+for d in $(ls thirdparty | grep -v -e extract -e lcms2 -e cmark-gfm)
 do
 	rm -rf thirdparty/$d
 done
@@ -154,7 +149,7 @@ rm -f docs/README
 
 echo > user.make "\
 	USE_SYSTEM_LIBS := yes
-	USE_SYSTEM_MUJS := no # build needs source anyways
+	USE_SYSTEM_MUJS := yes
 	USE_TESSERACT := yes
 	VENV_FLAG :=
 	barcode := %{?with_barcode:yes}%{!?with_barcode:no}
