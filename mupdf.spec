@@ -27,7 +27,7 @@ Version:	%{gitdescribefedversion}
 # upstream prerelease versions tags need to be translated to Fedorian
 %global upversion %{version}
 # upper bound on python-clang version
-%global pyclang_version 21
+%global pyclang_version 23
 
 Release:	1%{?dist}
 Summary:	A lightweight PDF viewer and toolkit
@@ -53,6 +53,12 @@ Patch:		0001-setup.py-do-not-bundle-c-and-c-libs-in-wheel.patch
 # Do not apply CXXFLAGS to swig
 # https://github.com/ArtifexSoftware/mupdf/pull/56
 Patch:		0001-do-not-use-CXXFLAGS-with-swig.patch
+# https://bugs.ghostscript.com/show_bug.cgi?id=709448
+Patch:		0001-scripts-wrap-cpp.py-class_add_iterator-assert-on-fin.patch
+Patch:		0002-scripts-wrap-parse.py-has_refs-recover-definition-cu.patch
+Patch:		0003-scripts-wrap-parse.py-get_members-recover-definition.patch
+Patch:		0004-scripts-wrap-parse.py-get_members-test-cursor.kind-n.patch
+Patch:		0005-scripts-wrap-parse.py-get_members-descend-into-anony.patch
 
 BuildRequires:	gcc gcc-c++ make binutils desktop-file-utils coreutils pkgconfig
 BuildRequires:	openjpeg2-devel desktop-file-utils
