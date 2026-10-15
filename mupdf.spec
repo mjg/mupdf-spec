@@ -26,7 +26,7 @@ Version:	%{gitdescribefedversion}
 # upstream prerelease versions tags need to be translated to Fedorian
 %global upversion %{version}
 # upper bound on python-clang version
-%global pyclang_version 22
+%global pyclang_version 23
 
 Release:	1%{?dist}
 Summary:	A lightweight PDF viewer and toolkit
