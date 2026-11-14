@@ -59,6 +59,7 @@ Patch:		0004-scripts-wrap-parse.py-get_members-test-cursor.kind-n.patch
 Patch:		0005-scripts-wrap-parse.py-get_members-descend-into-anony.patch
 
 BuildRequires:	gcc gcc-c++ make binutils desktop-file-utils coreutils pkgconfig
+BuildRequires:	ctags nodejs pandoc
 BuildRequires:	openjpeg2-devel desktop-file-utils
 BuildRequires:	libjpeg-devel freetype-devel libXext-devel curl-devel
 BuildRequires:	harfbuzz-devel openssl-devel mesa-libEGL-devel
@@ -150,6 +151,8 @@ do
 done
 # avoid overwriting the proper README by the doc build instructions
 rm -f docs/README
+# build without the book until our pandoc reads asciidoc
+rm -f docs/explored/*
 
 echo > user.make "\
 	USE_SYSTEM_LIBS := yes
@@ -162,6 +165,10 @@ echo > user.make "\
 	verbose := yes
 "
 
+# avoid sphinx script and its pip install nigtmare
+sed -i -e '/^DOCS_HTML.*DOCS_SPHINX/ d' Makefile
+# avoid git usage in scripts/show_version.sh
+sed -i -e 's/mupdf_version="[^"]*"/mupdf_version="'%{gitshortversion}'"/' Makefile
 # c++ and python install targets rebuild unconditionally. Avoid multiple rebuilds:
 sed -i -e '/^install-shared-c++:/s/ c++//' Makefile
 sed -i -e '/^install-shared-python:/s/ python//' Makefile
